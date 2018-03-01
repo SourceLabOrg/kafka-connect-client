@@ -1,25 +1,5 @@
-/**
- * Copyright 2017 Stephen Powis https://github.com/Crim/pardot-java-client
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
- * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
- * persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
- * Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 package org.sourcelab.kafka.connect.apiclient.rest;
 
-import com.darksci.pardot.api.Configuration;
-import com.darksci.pardot.api.request.Request;
-import com.darksci.pardot.api.rest.handlers.RestResponseHandler;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
@@ -29,19 +9,32 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sourcelab.kafka.connect.apiclient.Configuration;
+import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
+import org.sourcelab.kafka.connect.apiclient.request.Request;
+import org.sourcelab.kafka.connect.apiclient.rest.handlers.RestResponseHandler;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -83,7 +76,7 @@ public class HttpClientRestClient implements RestClient {
         final SSLContext sslcontext = SSLContexts.createDefault();
 
         // Allow TLSv1 protocol only
-        final SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+        final LayeredConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
             sslcontext,
             new String[] { "TLSv1" },
             null,
@@ -93,9 +86,9 @@ public class HttpClientRestClient implements RestClient {
         // Setup client builder
         final HttpClientBuilder clientBuilder = HttpClientBuilder.create();
         clientBuilder
-            // Pardot disconnects requests after 120 seconds.
-            .setConnectionTimeToLive(130, TimeUnit.SECONDS)
-            .setSSLSocketFactory(sslsf);
+            // 3 min timeout?
+            .setConnectionTimeToLive(300, TimeUnit.SECONDS)
+            .setSSLSocketFactory(sslSocketFactory);
 
         // Define our RequestConfigBuilder
         final RequestConfig.Builder requestConfigBuilder = RequestConfig.custom();
@@ -153,51 +146,96 @@ public class HttpClientRestClient implements RestClient {
      */
     @Override
     public RestResponse submitRequest(final Request request) throws RestException {
+        final String url = constructApiUrl(request.getApiEndpoint());
+        final ResponseHandler<RestResponse> responseHandler = new RestResponseHandler();
+
         try {
-            return submitRequest(request, new RestResponseHandler());
+            switch (request.getRequestMethod()) {
+                case GET:
+                    return submitGetRequest(url, Collections.emptyMap(), responseHandler);
+                case POST:
+                    return submitPostRequest(url, request.getRequestBody(), responseHandler);
+                case PUT:
+                    return submitPutRequest(url, request.getRequestBody(), responseHandler);
+                default:
+                    throw new IllegalArgumentException("Unknown Request Method: " + request.getRequestMethod());
+            }
         } catch (IOException exception) {
             throw new RestException(exception.getMessage(), exception);
         }
     }
 
     /**
-     * For issuing an API Request.
-     * @param request The Request to perform.
-     * @param responseHandler How to parse the response.
-     * @param <T> The return type.
-     * @return The parsed API response.
+     * Internal GET method.
+     * @param url Url to GET to.
+     * @param getParams GET parameters to include in the request
+     * @param responseHandler The response Handler to use to parse the response
+     * @param <T> The type that ResponseHandler returns.
+     * @return Parsed response.
      */
-    private <T> T submitRequest(final Request request, final ResponseHandler<T> responseHandler) throws IOException {
-        final String url = constructApiUrl(request.getApiEndpoint());
-        return submitRequest(url, request.getRequestParameters(), responseHandler);
+    private <T> T submitGetRequest(final String url, final Map<String, String> getParams, final ResponseHandler<T> responseHandler) throws IOException {
+        try {
+            // Construct URI including our request parameters.
+            final URIBuilder uriBuilder = new URIBuilder(url)
+                .setCharset(StandardCharsets.UTF_8);
+
+            // Attach submitRequest params
+            for (Map.Entry<String, String> entry : getParams.entrySet()) {
+                uriBuilder.setParameter(entry.getKey(), entry.getValue());
+            }
+
+            // Build Get Request
+            final HttpGet get = new HttpGet(uriBuilder.build());
+
+            // Add Accept header.
+            get.addHeader(new BasicHeader("Accept", "application/json"));
+
+            // Conditionally add content-type header?
+            get.addHeader(new BasicHeader("Content-Type", "application/json"));
+
+            logger.info("Executing request {}", get.getRequestLine());
+
+            // Execute and return
+            return httpClient.execute(get, responseHandler);
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            // Typically this is a parse error.
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            // Bad URI building
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
      * Internal POST method.
      * @param url Url to POST to.
-     * @param postParams POST parameters to include in the request
+     * @param requestBody POST entity include in the request body
      * @param responseHandler The response Handler to use to parse the response
      * @param <T> The type that ResponseHandler returns.
      * @return Parsed response.
      */
-    private <T> T submitRequest(final String url, Map<String, String> postParams, final ResponseHandler<T> responseHandler) throws IOException {
+    private <T> T submitPostRequest(final String url, final Object requestBody, final ResponseHandler<T> responseHandler) throws IOException {
         try {
             final HttpPost post = new HttpPost(url);
 
+            // Add Accept header.
+            post.addHeader(new BasicHeader("Accept", "application/json"));
+
+            // Conditionally add content-type header?
+            post.addHeader(new BasicHeader("Content-Type", "application/json"));
+
             // Define required auth params
             final List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("user_key", configuration.getUserKey()));
-            if (configuration.getApiKey() != null) {
-                params.add(new BasicNameValuePair("api_key", configuration.getApiKey()));
-            }
 
-            // Attach submitRequest params
-            for (Map.Entry<String, String> entry : postParams.entrySet()) {
-                params.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-            }
-            post.setEntity(new UrlEncodedFormEntity(params));
+            // Convert to Json
+            final String jsonPayloadStr = JacksonFactory.newInstance().writeValueAsString(requestBody);
 
-            logger.info("Executing request {} with {}", post.getRequestLine(), filterSensitiveParams(params));
+            post.setEntity(new StringEntity(jsonPayloadStr));
+
+            logger.info("Executing request {} with {}", post.getRequestLine(), jsonPayloadStr);
 
             // Execute and return
             return httpClient.execute(post, responseHandler);
@@ -206,9 +244,52 @@ public class HttpClientRestClient implements RestClient {
         } catch (IOException e) {
             // Typically this is a parse error.
             e.printStackTrace();
-        } finally {
-            // Only close at end
-            //httpClient.close();
+        }
+        return null;
+    }
+
+    /**
+     * Internal PUT method.
+     * @param url Url to POST to.
+     * @param requestBody POST entity include in the request body
+     * @param responseHandler The response Handler to use to parse the response
+     * @param <T> The type that ResponseHandler returns.
+     * @return Parsed response.
+     */
+    private <T> T submitPutRequest(final String url, final Object requestBody, final ResponseHandler<T> responseHandler) throws IOException {
+        try {
+            // Construct URI including our request parameters.
+            final URIBuilder uriBuilder = new URIBuilder(url)
+                .setCharset(StandardCharsets.UTF_8);
+
+            final HttpPut put = new HttpPut(url);
+
+            // Add Accept header.
+            put.addHeader(new BasicHeader("Accept", "application/json"));
+
+            // Conditionally add content-type header?
+            put.addHeader(new BasicHeader("Content-Type", "application/json"));
+
+            // Define required auth params
+            final List<NameValuePair> params = new ArrayList<>();
+
+            // Convert to Json
+            final String jsonPayloadStr = JacksonFactory.newInstance().writeValueAsString(requestBody);
+
+            put.setEntity(new StringEntity(jsonPayloadStr));
+
+            logger.info("Executing request {} with {}", put.getRequestLine(), jsonPayloadStr);
+
+            // Execute and return
+            return httpClient.execute(put, responseHandler);
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            // Typically this is a parse error.
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            // Bad URI building
+            e.printStackTrace();
         }
         return null;
     }
@@ -219,35 +300,6 @@ public class HttpClientRestClient implements RestClient {
      * @return Constructed URL for the end point.
      */
     private String constructApiUrl(final String endPoint) {
-        return configuration.getPardotApiHost()
-            + "/" + endPoint
-            + "/version/"
-            + configuration.getPardotApiVersion();
-    }
-
-    /**
-     * Internal helper utility to prevent sensitive field values from being logged.
-     * @param inputParams The input request parameters.
-     * @return A filtered list of params suitable to be logged.
-     */
-    private List<NameValuePair> filterSensitiveParams(final List<NameValuePair> inputParams) {
-        // Define sensitive fields
-        final String[] sensitiveFields = new String[] { "user_key", "password", "api_key" };
-
-        // Create a copy of the list
-        final List<NameValuePair> copiedList = new ArrayList<>();
-        copiedList.addAll(inputParams);
-
-        // Loop over each sensitive field name.
-        for (final String sensitiveField : sensitiveFields) {
-            // Remove sensitive param from copied list
-            if (copiedList.removeIf((nameValuePair -> nameValuePair.getName().equals(sensitiveField)))) {
-                // Add dummy value
-                copiedList.add(new BasicNameValuePair(sensitiveField, "XXXXXXX"));
-            }
-        }
-
-        // Return the filtered list
-        return copiedList;
+        return configuration.getApiHost() + endPoint;
     }
 }
