@@ -12,10 +12,17 @@ public class ConnectorDefinition {
     private Map<String, String> config;
     private List<TaskDefinition> tasks;
 
+    /**
+     * Default constructor.
+     */
     public ConnectorDefinition() {
-
     }
 
+    /**
+     * Constructor
+     * @param name Name of Connector.
+     * @param config Configuration values for connector.
+     */
     public ConnectorDefinition(final String name, final Map<String, String> config) {
         this.name = name;
         this.config = Collections.unmodifiableMap(new HashMap<>(config));

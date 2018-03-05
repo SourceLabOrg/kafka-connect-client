@@ -1,0 +1,9 @@
+{
+  "name": "My Test Connector",
+  "connector": {
+    "state": "RUNNING",
+    "worker_id": "192.168.86.201:8083"
+  },
+  "tasks": [],
+  "type": "unknown"
+}

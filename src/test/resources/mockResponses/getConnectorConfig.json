@@ -1,0 +1,6 @@
+{
+  "connector.class": "org.apache.kafka.connect.tools.MockConnector",
+  "tasks.max": "10",
+  "topics": "test-topic",
+  "name": "My Test Connector"
+}
