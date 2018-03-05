@@ -9,6 +9,7 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -157,6 +158,8 @@ public class HttpClientRestClient implements RestClient {
                     return submitPostRequest(url, request.getRequestBody(), responseHandler);
                 case PUT:
                     return submitPutRequest(url, request.getRequestBody(), responseHandler);
+                case DELETE:
+                    return submitDeleteRequest(url, request.getRequestBody(), responseHandler);
                 default:
                     throw new IllegalArgumentException("Unknown Request Method: " + request.getRequestMethod());
             }
@@ -282,6 +285,50 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(put, responseHandler);
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            // Typically this is a parse error.
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            // Bad URI building
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Internal DELETE method.
+     * @param url Url to DELETE to.
+     * @param requestBody POST entity include in the request body
+     * @param responseHandler The response Handler to use to parse the response
+     * @param <T> The type that ResponseHandler returns.
+     * @return Parsed response.
+     */
+    private <T> T submitDeleteRequest(final String url, final Object requestBody, final ResponseHandler<T> responseHandler) throws IOException {
+        try {
+            // Construct URI including our request parameters.
+            final URIBuilder uriBuilder = new URIBuilder(url)
+                .setCharset(StandardCharsets.UTF_8);
+
+            final HttpDelete delete = new HttpDelete(url);
+
+            // Add Accept header.
+            delete.addHeader(new BasicHeader("Accept", "application/json"));
+
+            // Conditionally add content-type header?
+            delete.addHeader(new BasicHeader("Content-Type", "application/json"));
+
+            // Define required auth params
+            final List<NameValuePair> params = new ArrayList<>();
+
+            // Convert to Json
+            final String jsonPayloadStr = JacksonFactory.newInstance().writeValueAsString(requestBody);
+
+            logger.info("Executing request {} with {}", delete.getRequestLine(), jsonPayloadStr);
+
+            // Execute and return
+            return httpClient.execute(delete, responseHandler);
         } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {

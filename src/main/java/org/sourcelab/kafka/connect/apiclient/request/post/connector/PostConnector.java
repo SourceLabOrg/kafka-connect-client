@@ -5,10 +5,10 @@ import org.sourcelab.kafka.connect.apiclient.request.post.PostRequest;
 
 import java.io.IOException;
 
-public class PostConnectors implements PostRequest<String> {
+public class PostConnector implements PostRequest<String> {
     private final ConnectorDefinition connectorDefinition;
 
-    public PostConnectors(final ConnectorDefinition connectorDefinition) {
+    public PostConnector(final ConnectorDefinition connectorDefinition) {
         if (connectorDefinition == null) {
             throw new NullPointerException("ConnectorDefinition parameter cannot be a null reference!");
         }

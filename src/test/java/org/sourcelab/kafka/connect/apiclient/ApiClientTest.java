@@ -88,11 +88,49 @@ public class ApiClientTest {
      */
     @Test
     public void testUpdateConnectorConfig() {
+        final String connectorName = "My Test Connector";
+
         final Map<String, String> config = new HashMap<>();
         config.put("connector.class", "org.apache.kafka.connect.tools.MockConnector");
         config.put("tasks.max", "10");
         config.put("topics", "test-topic");
 
-        logger.info("Result: {}", apiClient.updateConnectorConfig("My Test Connector", config));
+        logger.info("Result: {}", apiClient.updateConnectorConfig(connectorName, config));
+    }
+
+    /**
+     * Test restarting a connector.
+     */
+    @Test
+    public void testRestartConnector() {
+        final String connectorName = "My Test Connector";
+        logger.info("Result: {}", apiClient.restartConnector(connectorName));
+    }
+
+    /**
+     * Test pausing a connector.
+     */
+    @Test
+    public void testPauseConnector() {
+        final String connectorName = "My Test Connector";
+        logger.info("Result: {}", apiClient.pauseConnector(connectorName));
+    }
+
+    /**
+     * Test pausing a connector.
+     */
+    @Test
+    public void testResumeConnector() {
+        final String connectorName = "My Test Connector";
+        logger.info("Result: {}", apiClient.resumeConnector(connectorName));
+    }
+
+    /**
+     * Test pausing a connector.
+     */
+    @Test
+    public void testDeleteConnector() {
+        final String connectorName = "My Test Connector";
+        logger.info("Result: {}", apiClient.deleteConnector(connectorName));
     }
 }
