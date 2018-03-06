@@ -41,11 +41,6 @@ final ApiClient client = new ApiClient(configuration);
 
 Public methods available on ApiClient can be [found here](src/main/java/org/sourcelab/kafka/connect/apiclient/ApiClient.java#L101-L266)
 
-## How to Contribute 
-
-Want to help implement the missing API end points?  Fork the repository, write some code, and 
-submit a PR to the project!
-
 ## Changelog
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
