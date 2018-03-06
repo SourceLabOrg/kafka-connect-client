@@ -1,8 +1,10 @@
 package org.sourcelab.kafka.connect.apiclient.request.delete;
 
-import com.sun.xml.internal.rngom.util.Uri;
+import com.google.common.base.Preconditions;
 
 import java.io.IOException;
+
+import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines a request to delete a connector.
@@ -15,15 +17,13 @@ public final class DeleteConnector implements DeleteRequest<Boolean> {
      * @param connectorName Name of the connector.
      */
     public DeleteConnector(final String connectorName) {
-        if (connectorName == null) {
-            throw new NullPointerException("connectorName parameter may not be null!");
-        }
+        Preconditions.checkNotNull(connectorName);
         this.connectorName = connectorName;
     }
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + Uri.escapeDisallowedChars(connectorName);
+        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName);
     }
 
     @Override

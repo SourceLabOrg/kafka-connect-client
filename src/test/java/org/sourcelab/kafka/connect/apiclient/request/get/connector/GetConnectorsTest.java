@@ -9,7 +9,9 @@ import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectors;
 import java.io.IOException;
 import java.util.Collection;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class GetConnectorsTest extends AbstractRequestTest {
     private static final Logger logger = LoggerFactory.getLogger(GetConnectorsTest.class);

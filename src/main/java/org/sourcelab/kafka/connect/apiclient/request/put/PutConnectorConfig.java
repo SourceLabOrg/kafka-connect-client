@@ -1,6 +1,6 @@
 package org.sourcelab.kafka.connect.apiclient.request.put;
 
-import com.sun.xml.internal.rngom.util.Uri;
+import com.google.common.base.Preconditions;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 
@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines request to update a connectors configuration.
@@ -22,19 +24,15 @@ public final class PutConnectorConfig implements PutRequest<ConnectorDefinition>
      * @param config Map of configuration items.
      */
     public PutConnectorConfig(final String connectorName, final Map<String, String> config) {
-        if (connectorName == null) {
-            throw new NullPointerException("connectorName parameter may not be null!");
-        }
-        if (config == null) {
-            throw new NullPointerException("config parameter may not be null!");
-        }
+        Preconditions.checkNotNull(connectorName);
+        Preconditions.checkNotNull(config);
         this.connectorName = connectorName;
         this.config = Collections.unmodifiableMap(new HashMap<>(config));
     }
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + Uri.escapeDisallowedChars(connectorName) + "/config";
+        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/config";
     }
 
     @Override

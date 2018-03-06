@@ -1,8 +1,10 @@
 package org.sourcelab.kafka.connect.apiclient.request.post;
 
-import com.sun.xml.internal.rngom.util.Uri;
+import com.google.common.base.Preconditions;
 
 import java.io.IOException;
+
+import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines request to restart a connector's task.
@@ -17,16 +19,14 @@ public final class PostConnectorTaskRestart implements PostRequest<Boolean> {
      * @param taskId Id of the task.
      */
     public PostConnectorTaskRestart(final String connectorName, final int taskId) {
-        if (connectorName == null) {
-            throw new NullPointerException("connectorName parameter may not be null!");
-        }
+        Preconditions.checkNotNull(connectorName);
         this.connectorName = connectorName;
         this.taskId = taskId;
     }
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + Uri.escapeDisallowedChars(connectorName) + "/tasks/" + taskId + "/restart";
+        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/tasks/" + taskId + "/restart";
     }
 
     @Override

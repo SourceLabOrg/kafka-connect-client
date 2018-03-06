@@ -1,5 +1,6 @@
 package org.sourcelab.kafka.connect.apiclient.request.post;
 
+import com.google.common.base.Preconditions;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
@@ -17,9 +18,7 @@ public final class PostConnector implements PostRequest<ConnectorDefinition> {
      * @param connectorDefinition Defines the new connector to be deployed.
      */
     public PostConnector(final NewConnectorDefinition connectorDefinition) {
-        if (connectorDefinition == null) {
-            throw new NullPointerException("ConnectorDefinition parameter cannot be a null reference!");
-        }
+        Preconditions.checkNotNull(connectorDefinition);
         this.connectorDefinition = connectorDefinition;
     }
 

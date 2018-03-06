@@ -1,6 +1,6 @@
 package org.sourcelab.kafka.connect.apiclient.request.put;
 
-import com.sun.xml.internal.rngom.util.Uri;
+import com.google.common.base.Preconditions;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigValidationResults;
 
@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines request to validate a connector plugin's configuration.
@@ -22,19 +24,15 @@ public final class PutConnectorPluginConfigValidate implements PutRequest<Connec
      * @param config Configuration entries to validate.
      */
     public PutConnectorPluginConfigValidate(final String connectorPluginName, final Map<String, String> config) {
-        if (connectorPluginName == null) {
-            throw new NullPointerException("ConnectorPluginName parameter may not be null!");
-        }
-        if (config == null) {
-            throw new NullPointerException("config parameter may not be null!");
-        }
+        Preconditions.checkNotNull(connectorPluginName);
+        Preconditions.checkNotNull(config);
         this.connectorPluginName = connectorPluginName;
         this.config = Collections.unmodifiableMap(new HashMap<>(config));
     }
 
     @Override
     public String getApiEndpoint() {
-        return "/connector-plugins/" + Uri.escapeDisallowedChars(connectorPluginName) + "/config/validate";
+        return "/connector-plugins/" + urlPathSegmentEscaper().escape(connectorPluginName) + "/config/validate";
     }
 
     @Override

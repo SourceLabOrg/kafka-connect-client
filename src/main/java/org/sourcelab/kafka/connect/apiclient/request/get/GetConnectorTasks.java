@@ -1,11 +1,13 @@
 package org.sourcelab.kafka.connect.apiclient.request.get;
 
-import com.sun.xml.internal.rngom.util.Uri;
+import com.google.common.base.Preconditions;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.Task;
 
 import java.io.IOException;
 import java.util.Collection;
+
+import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines request to get tasks for a connector.
@@ -19,15 +21,13 @@ public final class GetConnectorTasks implements GetRequest<Collection<Task>> {
      * @param connectorName name of the connector.
      */
     public GetConnectorTasks(final String connectorName) {
-        if (connectorName == null) {
-            throw new NullPointerException("connectorName parameter may not be null!");
-        }
+        Preconditions.checkNotNull(connectorName);
         this.connectorName = connectorName;
     }
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + Uri.escapeDisallowedChars(connectorName) + "/tasks";
+        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/tasks";
     }
 
     @Override
