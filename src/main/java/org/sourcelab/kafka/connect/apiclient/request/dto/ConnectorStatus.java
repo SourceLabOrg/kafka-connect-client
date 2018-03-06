@@ -3,7 +3,10 @@ package org.sourcelab.kafka.connect.apiclient.request.dto;
 import java.util.List;
 import java.util.Map;
 
-public class ConnectorStatus {
+/**
+ * Represents the status of a deployed connector.
+ */
+public final class ConnectorStatus {
     private String name;
     private Map<String, String> connector;
     private List<TaskStatus> tasks;
@@ -29,7 +32,10 @@ public class ConnectorStatus {
             + '}';
     }
 
-    private static class TaskStatus {
+    /**
+     * Defines the status of a Task.
+     */
+    private static final class TaskStatus {
         private int id;
         private String state;
         private String workerId;

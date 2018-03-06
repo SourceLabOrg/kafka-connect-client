@@ -4,7 +4,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NewConnectorDefinition {
+/**
+ * Defines a new Connector and its configuration to be deployed.
+ */
+public final class NewConnectorDefinition {
     private final String name;
     private final Map<String, String> config;
 

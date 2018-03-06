@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * Represents Details about a Task.
  */
-public class Task {
+public final class Task {
     private TaskId id;
     private Map<String, String> config;
 

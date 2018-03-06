@@ -6,9 +6,16 @@ import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
 
 import java.io.IOException;
 
-public class PostConnector implements PostRequest<ConnectorDefinition> {
+/**
+ * Defines request to deploy a new connector.
+ */
+public final class PostConnector implements PostRequest<ConnectorDefinition> {
     private final NewConnectorDefinition connectorDefinition;
 
+    /**
+     * Constructor
+     * @param connectorDefinition Defines the new connector to be deployed.
+     */
     public PostConnector(final NewConnectorDefinition connectorDefinition) {
         if (connectorDefinition == null) {
             throw new NullPointerException("ConnectorDefinition parameter cannot be a null reference!");

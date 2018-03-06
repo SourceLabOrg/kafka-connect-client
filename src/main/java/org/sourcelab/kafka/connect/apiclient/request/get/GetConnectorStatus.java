@@ -3,21 +3,30 @@ package org.sourcelab.kafka.connect.apiclient.request.get;
 import com.sun.xml.internal.rngom.util.Uri;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
-import org.sourcelab.kafka.connect.apiclient.request.get.GetRequest;
 
 import java.io.IOException;
 
-public class GetConnectorStatus implements GetRequest<ConnectorStatus> {
+/**
+ * Defines request to get the status of a connector.
+ */
+public final class GetConnectorStatus implements GetRequest<ConnectorStatus> {
 
-    private final String name;
+    private final String connectorName;
 
-    public GetConnectorStatus(final String name) {
-        this.name = name;
+    /**
+     * Constructor.
+     * @param connectorName Name of connector.
+     */
+    public GetConnectorStatus(final String connectorName) {
+        if (connectorName == null) {
+            throw new NullPointerException("connectorName parameter may not be null!");
+        }
+        this.connectorName = connectorName;
     }
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + Uri.escapeDisallowedChars(name) + "/status";
+        return "/connectors/" + Uri.escapeDisallowedChars(connectorName) + "/status";
     }
 
     @Override

@@ -1,12 +1,14 @@
 package org.sourcelab.kafka.connect.apiclient.request.get;
 
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
-import org.sourcelab.kafka.connect.apiclient.request.get.GetRequest;
 
 import java.io.IOException;
 import java.util.Collection;
 
-public class GetConnectors implements GetRequest<Collection<String>> {
+/**
+ * Defines request to get list of deployed connectors.
+ */
+public final class GetConnectors implements GetRequest<Collection<String>> {
     @Override
     public String getApiEndpoint() {
         return "/connectors";

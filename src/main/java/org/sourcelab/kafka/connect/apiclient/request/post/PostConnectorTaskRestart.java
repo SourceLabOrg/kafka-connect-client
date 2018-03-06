@@ -4,10 +4,18 @@ import com.sun.xml.internal.rngom.util.Uri;
 
 import java.io.IOException;
 
-public class PostConnectorTaskRestart implements PostRequest<Boolean> {
+/**
+ * Defines request to restart a connector's task.
+ */
+public final class PostConnectorTaskRestart implements PostRequest<Boolean> {
     private final String connectorName;
     private final int taskId;
 
+    /**
+     * Constructor.
+     * @param connectorName Name of connector.
+     * @param taskId Id of the task.
+     */
     public PostConnectorTaskRestart(final String connectorName, final int taskId) {
         if (connectorName == null) {
             throw new NullPointerException("connectorName parameter may not be null!");

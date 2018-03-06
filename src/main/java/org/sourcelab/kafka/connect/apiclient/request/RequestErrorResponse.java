@@ -1,7 +1,10 @@
 package org.sourcelab.kafka.connect.apiclient.request;
 
-public class RequestErrorResponse {
-    private int errorCode;
+/**
+ * Represents an error response from the rest service.
+ */
+public final class RequestErrorResponse {
+    private int errorCode = 0;
     private String message;
 
     public int getErrorCode() {

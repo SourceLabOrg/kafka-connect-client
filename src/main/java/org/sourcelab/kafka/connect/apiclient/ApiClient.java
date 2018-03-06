@@ -6,6 +6,7 @@ import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.Request;
 import org.sourcelab.kafka.connect.apiclient.request.RequestErrorResponse;
 import org.sourcelab.kafka.connect.apiclient.request.delete.DeleteConnector;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPlugin;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigValidationResults;
@@ -20,7 +21,6 @@ import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorStatus;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTaskStatus;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTasks;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectors;
-import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.post.PostConnector;
 import org.sourcelab.kafka.connect.apiclient.request.post.PostConnectorRestart;
 import org.sourcelab.kafka.connect.apiclient.request.post.PostConnectorTaskRestart;
@@ -37,6 +37,11 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * API Client for interacting with the Kafka-Connect Rest Endpoint.
+ * Official Rest Endpoint documentation can be found here:
+ *   https://docs.confluent.io/current/connect/restapi.html
+ */
 public class ApiClient {
     private static final Logger logger = LoggerFactory.getLogger(ApiClient.class);
 
@@ -76,49 +81,32 @@ public class ApiClient {
         this.restClient = restClient;
     }
 
-    private <T> T submitRequest(final Request<T> request) {
-        // Submit request
-        final RestResponse restResponse = getRestClient().submitRequest(request);
-        final int responseCode = restResponse.getHttpCode();
-        String responseStr = restResponse.getResponseStr();
-
-        // If we have a valid response
-        logger.info("Response: {}", restResponse);
-
-        // Check for invalid http status codes
-        if (responseCode >= 200 && responseCode < 300) {
-            // These response codes have no values
-            if ((responseCode == 204 || responseCode == 205) && responseStr == null) {
-                // Avoid NPE
-                responseStr = "";
-            }
-
-            try {
-                return request.parseResponse(responseStr);
-            } catch (final IOException exception) {
-                throw new RuntimeException(exception.getMessage(), exception);
-            }
-        }
-
-        // Attempt to parse error response
-        try {
-            final RequestErrorResponse errorResponse = JacksonFactory.newInstance().readValue(responseStr, RequestErrorResponse.class);
-            throw new InvalidRequestException(errorResponse.getMessage(), errorResponse.getErrorCode());
-        } catch (IOException e) {
-            // swallow
-        }
-        throw new InvalidRequestException("Invalid response from server: " + responseStr, restResponse.getHttpCode());
-
-    }
-
+    /**
+     * Get a list of active connectors.
+     * https://docs.confluent.io/current/connect/restapi.html#get--connectors
+     *
+     * @return Collection of connector names currently deployed.
+     */
     public Collection<String> getConnectors() {
         return submitRequest(new GetConnectors());
     }
 
+    /**
+     * Get information about the connector.
+     * https://docs.confluent.io/current/connect/restapi.html#get--connectors-(string-name)
+     * @param connectorName Name of connector.
+     * @return Connector details.
+     */
     public ConnectorDefinition getConnector(final String connectorName) {
         return submitRequest(new GetConnector(connectorName));
     }
 
+    /**
+     * Get the configuration for the connector.
+     * https://docs.confluent.io/current/connect/restapi.html#get--connectors-(string-name)-config
+     * @param connectorName Name of connector.
+     * @return Configuration for connector.
+     */
     public Map<String, String> getConnectorConfig(final String connectorName) {
         return submitRequest(new GetConnectorConfig(connectorName));
     }
@@ -260,10 +248,40 @@ public class ApiClient {
         );
     }
 
-    /**
-     * package protected for access in tests.
-     * @return Rest Client.
-     */
+    private <T> T submitRequest(final Request<T> request) {
+        // Submit request
+        final RestResponse restResponse = getRestClient().submitRequest(request);
+        final int responseCode = restResponse.getHttpCode();
+        String responseStr = restResponse.getResponseStr();
+
+        // If we have a valid response
+        logger.info("Response: {}", restResponse);
+
+        // Check for invalid http status codes
+        if (responseCode >= 200 && responseCode < 300) {
+            // These response codes have no values
+            if ((responseCode == 204 || responseCode == 205) && responseStr == null) {
+                // Avoid NPE
+                responseStr = "";
+            }
+
+            try {
+                return request.parseResponse(responseStr);
+            } catch (final IOException exception) {
+                throw new RuntimeException(exception.getMessage(), exception);
+            }
+        }
+
+        // Attempt to parse error response
+        try {
+            final RequestErrorResponse errorResponse = JacksonFactory.newInstance().readValue(responseStr, RequestErrorResponse.class);
+            throw new InvalidRequestException(errorResponse.getMessage(), errorResponse.getErrorCode());
+        } catch (IOException e) {
+            // swallow
+        }
+        throw new InvalidRequestException("Invalid response from server: " + responseStr, restResponse.getHttpCode());
+    }
+
     private RestClient getRestClient() {
         // If we haven't initialized.
         if (!isInitialized) {

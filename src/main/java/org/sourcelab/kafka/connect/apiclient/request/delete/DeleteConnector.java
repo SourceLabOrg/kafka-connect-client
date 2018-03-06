@@ -1,20 +1,29 @@
 package org.sourcelab.kafka.connect.apiclient.request.delete;
 
 import com.sun.xml.internal.rngom.util.Uri;
-import org.sourcelab.kafka.connect.apiclient.request.delete.DeleteRequest;
 
 import java.io.IOException;
 
-public class DeleteConnector implements DeleteRequest<Boolean> {
-    private final String name;
+/**
+ * Defines a request to delete a connector.
+ */
+public final class DeleteConnector implements DeleteRequest<Boolean> {
+    private final String connectorName;
 
-    public DeleteConnector(final String name) {
-        this.name = name;
+    /**
+     * Constructor.
+     * @param connectorName Name of the connector.
+     */
+    public DeleteConnector(final String connectorName) {
+        if (connectorName == null) {
+            throw new NullPointerException("connectorName parameter may not be null!");
+        }
+        this.connectorName = connectorName;
     }
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + Uri.escapeDisallowedChars(name);
+        return "/connectors/" + Uri.escapeDisallowedChars(connectorName);
     }
 
     @Override

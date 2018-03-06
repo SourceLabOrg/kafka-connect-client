@@ -3,8 +3,8 @@ package org.sourcelab.kafka.connect.apiclient.request.dto;
 /**
  * Represents the Status of a Task.
  */
-public class TaskStatus {
-    private int id;
+public final class TaskStatus {
+    private int id = -1;
     private String state;
     private String trace;
     private String workerId;

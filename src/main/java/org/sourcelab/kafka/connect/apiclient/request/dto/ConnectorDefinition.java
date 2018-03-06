@@ -3,7 +3,10 @@ package org.sourcelab.kafka.connect.apiclient.request.dto;
 import java.util.List;
 import java.util.Map;
 
-public class ConnectorDefinition {
+/**
+ * Represents a Connector.
+ */
+public final class ConnectorDefinition {
     private String name;
     private String type;
     private Map<String, String> config;
@@ -35,7 +38,10 @@ public class ConnectorDefinition {
             + '}';
     }
 
-    private static class TaskDefinition {
+    /**
+     * Represents a Task.
+     */
+    private static final class TaskDefinition {
         private String connector;
         private int task;
 

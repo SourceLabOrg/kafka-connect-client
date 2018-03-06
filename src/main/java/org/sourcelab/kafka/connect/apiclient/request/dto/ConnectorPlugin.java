@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 /**
  * Represents details about a Connector Plugin.
  */
-public class ConnectorPlugin {
+public final class ConnectorPlugin {
     @JsonAlias("class")
     private String className;
     private String type;

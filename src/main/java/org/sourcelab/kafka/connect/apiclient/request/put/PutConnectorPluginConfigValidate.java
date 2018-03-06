@@ -9,10 +9,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PutConnectorPluginConfigValidate implements PutRequest<ConnectorPluginConfigValidationResults> {
+/**
+ * Defines request to validate a connector plugin's configuration.
+ */
+public final class PutConnectorPluginConfigValidate implements PutRequest<ConnectorPluginConfigValidationResults> {
     private final String connectorPluginName;
     private final Map<String, String> config;
 
+    /**
+     * Constructor.
+     * @param connectorPluginName Name of the class for the connector plugin.
+     * @param config Configuration entries to validate.
+     */
     public PutConnectorPluginConfigValidate(final String connectorPluginName, final Map<String, String> config) {
         if (connectorPluginName == null) {
             throw new NullPointerException("ConnectorPluginName parameter may not be null!");

@@ -6,7 +6,10 @@ import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPlugin;
 import java.io.IOException;
 import java.util.Collection;
 
-public class GetConnectorPlugins implements GetRequest<Collection<ConnectorPlugin>> {
+/**
+ * Defines request to get a list of connector plugins.
+ */
+public final class GetConnectorPlugins implements GetRequest<Collection<ConnectorPlugin>> {
 
     @Override
     public String getApiEndpoint() {

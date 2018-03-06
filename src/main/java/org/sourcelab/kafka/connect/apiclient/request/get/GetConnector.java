@@ -3,21 +3,30 @@ package org.sourcelab.kafka.connect.apiclient.request.get;
 import com.sun.xml.internal.rngom.util.Uri;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
-import org.sourcelab.kafka.connect.apiclient.request.get.GetRequest;
 
 import java.io.IOException;
 
-public class GetConnector implements GetRequest<ConnectorDefinition> {
+/**
+ * Defines request to get details about a deployed connector.
+ */
+public final class GetConnector implements GetRequest<ConnectorDefinition> {
 
-    private final String name;
+    private final String connectorName;
 
-    public GetConnector(final String name) {
-        this.name = name;
+    /**
+     * Constructor.
+     * @param connectorName Name of the connector.
+     */
+    public GetConnector(final String connectorName) {
+        if (connectorName == null) {
+            throw new NullPointerException("connectorName parameter may not be null!");
+        }
+        this.connectorName = connectorName;
     }
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + Uri.escapeDisallowedChars(name);
+        return "/connectors/" + Uri.escapeDisallowedChars(connectorName);
     }
 
     @Override

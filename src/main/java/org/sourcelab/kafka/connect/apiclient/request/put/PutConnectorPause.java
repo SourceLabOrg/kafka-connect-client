@@ -1,20 +1,29 @@
 package org.sourcelab.kafka.connect.apiclient.request.put;
 
 import com.sun.xml.internal.rngom.util.Uri;
-import org.sourcelab.kafka.connect.apiclient.request.put.PutRequest;
 
 import java.io.IOException;
 
-public class PutConnectorPause implements PutRequest<Boolean> {
-    private final String name;
+/**
+ * Defines request to pause a connector.
+ */
+public final class PutConnectorPause implements PutRequest<Boolean> {
+    private final String connectorName;
 
-    public PutConnectorPause(final String name) {
-        this.name = name;
+    /**
+     * Constructor.
+     * @param connectorName Name of connector
+     */
+    public PutConnectorPause(final String connectorName) {
+        if (connectorName == null) {
+            throw new NullPointerException("connectorName parameter may not be null!");
+        }
+        this.connectorName = connectorName;
     }
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + Uri.escapeDisallowedChars(name) + "/pause";
+        return "/connectors/" + Uri.escapeDisallowedChars(connectorName) + "/pause";
     }
 
     @Override

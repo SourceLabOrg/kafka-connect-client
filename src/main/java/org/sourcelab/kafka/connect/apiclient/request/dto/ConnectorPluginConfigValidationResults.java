@@ -7,8 +7,8 @@ import java.util.Collection;
  * Represents results from the Connector Plugin Config Validation API end point.
  */
 public final class ConnectorPluginConfigValidationResults {
-    private String name;
-    private int errorCount;
+    private String name = null;
+    private int errorCount = 0;
     private Collection<String> groups = new ArrayList<>();
     private Collection<Config> configs = new ArrayList<>();
 
@@ -41,7 +41,7 @@ public final class ConnectorPluginConfigValidationResults {
     /**
      * Defines a config item.
      */
-    private final static class Config {
+    private static final class Config {
         private Definition definition;
         private Value value;
 
@@ -64,7 +64,7 @@ public final class ConnectorPluginConfigValidationResults {
         /**
          * Represents the Definition of a config item.
          */
-        private final static class Definition {
+        private static final class Definition {
             private String name;
             private String type;
             private boolean required = false;
@@ -142,7 +142,7 @@ public final class ConnectorPluginConfigValidationResults {
         /**
          * Defines a config item value.
          */
-        private final static class Value {
+        private static final class Value {
             private String name;
             private String value;
             private Collection<String> recommendedValues = new ArrayList<>();

@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Defines a Connector Plugin Configuration.
  */
-public class ConnectorPluginConfigDefinition {
+public final class ConnectorPluginConfigDefinition {
     private final String name;
     private final Map<String, String> config;
 
