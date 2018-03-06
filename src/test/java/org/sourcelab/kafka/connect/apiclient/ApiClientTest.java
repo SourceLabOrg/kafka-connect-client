@@ -17,8 +17,10 @@
 
 package org.sourcelab.kafka.connect.apiclient;
 
+import categories.IntegrationTest;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigDefinition;
@@ -33,6 +35,7 @@ import java.util.Map;
  * Assumes kafka-connect is running at localhost.  More or less a sanity test
  * rather than checking assertions.
  */
+@Category(IntegrationTest.class)
 public class ApiClientTest {
     private static final Logger logger = LoggerFactory.getLogger(ApiClientTest.class);
 
