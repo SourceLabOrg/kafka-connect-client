@@ -39,7 +39,7 @@ final ApiClient client = new ApiClient(configuration);
  */
 ```
 
-Public methods available on ApiClient can be [found here](blob/master/src/main/java/org/sourcelab/kafka/connect/apiclient/ApiClient.java#L101-L266)
+Public methods available on ApiClient can be [found here](src/main/java/org/sourcelab/kafka/connect/apiclient/ApiClient.java#L101-L266)
 
 ## How to Contribute 
 
