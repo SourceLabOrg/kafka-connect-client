@@ -1,20 +1,20 @@
-package org.sourcelab.kafka.connect.apiclient.request.put.connector;
+package org.sourcelab.kafka.connect.apiclient.request.put;
 
 import com.sun.xml.internal.rngom.util.Uri;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutRequest;
 
 import java.io.IOException;
 
-public class PutConnectorResume implements PutRequest<Boolean> {
+public class PutConnectorPause implements PutRequest<Boolean> {
     private final String name;
 
-    public PutConnectorResume(final String name) {
+    public PutConnectorPause(final String name) {
         this.name = name;
     }
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + Uri.escapeDisallowedChars(name) + "/resume";
+        return "/connectors/" + Uri.escapeDisallowedChars(name) + "/pause";
     }
 
     @Override

@@ -1,32 +1,28 @@
-package org.sourcelab.kafka.connect.apiclient.request.put.connector;
+package org.sourcelab.kafka.connect.apiclient.request.get;
 
 import com.sun.xml.internal.rngom.util.Uri;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
-import org.sourcelab.kafka.connect.apiclient.request.put.PutRequest;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetRequest;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-public class PutConnectorConfig implements PutRequest<ConnectorDefinition> {
+public class GetConnector implements GetRequest<ConnectorDefinition> {
+
     private final String name;
-    private final Map<String, String> config;
 
-    public PutConnectorConfig(final String name, final Map<String, String> config) {
+    public GetConnector(final String name) {
         this.name = name;
-        this.config = Collections.unmodifiableMap(new HashMap(config));
     }
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + Uri.escapeDisallowedChars(name) + "/config";
+        return "/connectors/" + Uri.escapeDisallowedChars(name);
     }
 
     @Override
     public Object getRequestBody() {
-        return config;
+        return null;
     }
 
     @Override

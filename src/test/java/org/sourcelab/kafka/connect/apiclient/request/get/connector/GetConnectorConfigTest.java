@@ -1,6 +1,7 @@
 package org.sourcelab.kafka.connect.apiclient.request.get.connector;
 
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorConfig;
 
 import java.util.Map;
 

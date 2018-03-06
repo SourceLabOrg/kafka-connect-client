@@ -1,0 +1,14 @@
+[{
+  "id": {
+    "connector": "MyTestConnector",
+    "task": 0
+  },
+  "config": {
+    "connector.class": "org.apache.kafka.connect.tools.VerifiableSourceConnector",
+    "task.class": "org.apache.kafka.connect.tools.VerifiableSourceTask",
+    "tasks.max": "1",
+    "topics": "test-topic",
+    "name": "MyTestConnector",
+    "id": "0"
+  }
+}]

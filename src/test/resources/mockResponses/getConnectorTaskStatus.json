@@ -1,0 +1,6 @@
+{
+  "state": "FAILED",
+  "trace": "org.apache.kafka.connect.errors.ConnectException: Invalid VerifiableSourceTask configuration\n\tat org.apache.kafka.connect.tools.VerifiableSourceTask.start(VerifiableSourceTask.java:79)\n\tat org.apache.kafka.connect.runtime.WorkerSourceTask.execute(WorkerSourceTask.java:157)\n\tat org.apache.kafka.connect.runtime.WorkerTask.doRun(WorkerTask.java:170)\n\tat org.apache.kafka.connect.runtime.WorkerTask.run(WorkerTask.java:214)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\nCaused by: java.lang.NumberFormatException: null\n\tat java.lang.Long.parseLong(Long.java:552)\n\tat java.lang.Long.parseLong(Long.java:631)\n\tat org.apache.kafka.connect.tools.VerifiableSourceTask.start(VerifiableSourceTask.java:77)\n\t... 8 more\n",
+  "id": 0,
+  "worker_id": "192.168.86.201:8083"
+}

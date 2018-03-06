@@ -15,18 +15,26 @@ import java.text.SimpleDateFormat;
 public class JacksonFactory {
 
     /**
+     * Holds our jackson singleton mapper.  ObjectMapper is defined as being
+     * ThreadSafe so this should be OK to stash as a static and shared.
+     */
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+    /*
+     * Statically configure the instance.
+     */
+    static {
+        // Configure mapper
+        mapper
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    }
+
+    /**
      * Creates properly configured Jackson Object Mapper instances.
      * @return ObjectMapper instance.
      */
     public static ObjectMapper newInstance() {
-        // Create new mapper
-        final ObjectMapper mapper = new ObjectMapper();
-
-        // Configure it
-        mapper
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-
         return mapper;
     }
 }

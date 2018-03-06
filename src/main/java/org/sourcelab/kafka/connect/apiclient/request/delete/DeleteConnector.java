@@ -1,4 +1,4 @@
-package org.sourcelab.kafka.connect.apiclient.request.delete.connector;
+package org.sourcelab.kafka.connect.apiclient.request.delete;
 
 import com.sun.xml.internal.rngom.util.Uri;
 import org.sourcelab.kafka.connect.apiclient.request.delete.DeleteRequest;

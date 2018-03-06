@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
+import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,7 @@ public class ApiClientTest {
     private static final Logger logger = LoggerFactory.getLogger(ApiClientTest.class);
 
     private ApiClient apiClient;
+    private final String connectorName = "MyTestConnector";
 
     @Before
     public void setup() {
@@ -46,7 +48,7 @@ public class ApiClientTest {
      */
     @Test
     public void testGetConnector() {
-        logger.info("Result: {}", apiClient.getConnector("My Test Connector"));
+        logger.info("Result: {}", apiClient.getConnector(connectorName));
     }
 
     /**
@@ -55,7 +57,7 @@ public class ApiClientTest {
      */
     @Test
     public void testGetConnectorConfig() {
-        logger.info("Result: {}", apiClient.getConnectorConfig("My Test Connector"));
+        logger.info("Result: {}", apiClient.getConnectorConfig(connectorName));
     }
 
     /**
@@ -64,7 +66,7 @@ public class ApiClientTest {
      */
     @Test
     public void testGetConnectorStatus() {
-        logger.info("Result: {}", apiClient.getConnectorStatus("My Test Connector"));
+        logger.info("Result: {}", apiClient.getConnectorStatus(connectorName));
     }
 
     /**
@@ -73,13 +75,13 @@ public class ApiClientTest {
      */
     @Test
     public void testAddConnector() {
-        apiClient.addConnector(ConnectorDefinition.newBuilder()
-            .withName("My Test Connector")
-            .withConfig("connector.class", "org.apache.kafka.connect.tools.MockConnector")
-            .withConfig("tasks.max", 10)
+        logger.info("Result: {}", apiClient.addConnector(NewConnectorDefinition.newBuilder()
+            .withName(connectorName)
+            .withConfig("connector.class", "org.apache.kafka.connect.tools.VerifiableSourceConnector")
+            .withConfig("tasks.max", 3)
             .withConfig("topics", "test-topic")
             .build()
-        );
+        ));
     }
 
     /**
@@ -88,8 +90,6 @@ public class ApiClientTest {
      */
     @Test
     public void testUpdateConnectorConfig() {
-        final String connectorName = "My Test Connector";
-
         final Map<String, String> config = new HashMap<>();
         config.put("connector.class", "org.apache.kafka.connect.tools.MockConnector");
         config.put("tasks.max", "10");
@@ -103,7 +103,6 @@ public class ApiClientTest {
      */
     @Test
     public void testRestartConnector() {
-        final String connectorName = "My Test Connector";
         logger.info("Result: {}", apiClient.restartConnector(connectorName));
     }
 
@@ -112,7 +111,6 @@ public class ApiClientTest {
      */
     @Test
     public void testPauseConnector() {
-        final String connectorName = "My Test Connector";
         logger.info("Result: {}", apiClient.pauseConnector(connectorName));
     }
 
@@ -121,7 +119,6 @@ public class ApiClientTest {
      */
     @Test
     public void testResumeConnector() {
-        final String connectorName = "My Test Connector";
         logger.info("Result: {}", apiClient.resumeConnector(connectorName));
     }
 
@@ -130,7 +127,30 @@ public class ApiClientTest {
      */
     @Test
     public void testDeleteConnector() {
-        final String connectorName = "My Test Connector";
         logger.info("Result: {}", apiClient.deleteConnector(connectorName));
+    }
+
+    /**
+     * Test retrieving tasks for a running connector.
+     */
+    @Test
+    public void testGetConnectorTasks() {
+        logger.info("Result: {}", apiClient.getConnectorTasks(connectorName));
+    }
+
+    /**
+     * Test retrieving status about a specific task for a running connector.
+     */
+    @Test
+    public void testGetConnectorTaskStatus() {
+        logger.info("Result: {}", apiClient.getConnectorTaskStatus(connectorName, 0));
+    }
+
+    /**
+     * Test retrieving status about a specific task for a running connector.
+     */
+    @Test
+    public void testRestartConnectorTask() {
+        logger.info("Result: {}", apiClient.restartConnectorTask(connectorName, 0));
     }
 }

@@ -1,41 +1,34 @@
 package org.sourcelab.kafka.connect.apiclient.request.dto;
 
-import java.util.List;
 import java.util.Map;
 
-public class ConnectorDefinition {
-    private String name;
-    private String type;
+/**
+ * Represents Details about a Task.
+ */
+public class Task {
+    private TaskId id;
     private Map<String, String> config;
-    private List<TaskDefinition> tasks;
 
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
+    public TaskId getId() {
+        return id;
     }
 
     public Map<String, String> getConfig() {
         return config;
     }
 
-    public List<TaskDefinition> getTasks() {
-        return tasks;
-    }
-
     @Override
     public String toString() {
-        return "ConnectorDefinition{"
-            + "name='" + name + '\''
-            + ", type='" + type + '\''
+        return "Task{"
+            + "id=" + id
             + ", config=" + config
-            + ", tasks=" + tasks
             + '}';
     }
 
-    private static class TaskDefinition {
+    /**
+     * Defines a Task Id.
+     */
+    private static class TaskId {
         private String connector;
         private int task;
 
@@ -49,7 +42,7 @@ public class ConnectorDefinition {
 
         @Override
         public String toString() {
-            return "TaskDefinition{"
+            return "TaskId{"
                 + "connector='" + connector + '\''
                 + ", task=" + task
                 + '}';

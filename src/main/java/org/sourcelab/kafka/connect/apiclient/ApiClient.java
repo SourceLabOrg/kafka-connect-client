@@ -5,18 +5,24 @@ import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.Request;
 import org.sourcelab.kafka.connect.apiclient.request.RequestErrorResponse;
-import org.sourcelab.kafka.connect.apiclient.request.delete.connector.DeleteConnector;
+import org.sourcelab.kafka.connect.apiclient.request.delete.DeleteConnector;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
-import org.sourcelab.kafka.connect.apiclient.request.get.connector.GetConnector;
-import org.sourcelab.kafka.connect.apiclient.request.get.connector.GetConnectorConfig;
-import org.sourcelab.kafka.connect.apiclient.request.get.connector.GetConnectorStatus;
-import org.sourcelab.kafka.connect.apiclient.request.get.connector.GetConnectors;
+import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
+import org.sourcelab.kafka.connect.apiclient.request.dto.Task;
+import org.sourcelab.kafka.connect.apiclient.request.dto.TaskStatus;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnector;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorConfig;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorStatus;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTaskStatus;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTasks;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectors;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
-import org.sourcelab.kafka.connect.apiclient.request.post.connector.PostConnector;
-import org.sourcelab.kafka.connect.apiclient.request.post.connector.PostConnectorRestart;
-import org.sourcelab.kafka.connect.apiclient.request.put.connector.PutConnectorConfig;
-import org.sourcelab.kafka.connect.apiclient.request.put.connector.PutConnectorPause;
-import org.sourcelab.kafka.connect.apiclient.request.put.connector.PutConnectorResume;
+import org.sourcelab.kafka.connect.apiclient.request.post.PostConnector;
+import org.sourcelab.kafka.connect.apiclient.request.post.PostConnectorRestart;
+import org.sourcelab.kafka.connect.apiclient.request.post.PostConnectorTaskRestart;
+import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorConfig;
+import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorPause;
+import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorResume;
 import org.sourcelab.kafka.connect.apiclient.rest.HttpClientRestClient;
 import org.sourcelab.kafka.connect.apiclient.rest.InvalidRequestException;
 import org.sourcelab.kafka.connect.apiclient.rest.RestClient;
@@ -123,8 +129,14 @@ public class ApiClient {
         return submitRequest(new GetConnectorStatus(connectorName));
     }
 
-    // TODO Add return value
-    public String addConnector(final ConnectorDefinition connectorDefinition) {
+    /**
+     * Create a new connector, returning the current connector info if successful.
+     * https://docs.confluent.io/current/connect/restapi.html#post--connectors
+     *
+     * @param connectorDefinition Defines the new connector to deploy
+     * @return connector info.
+     */
+    public ConnectorDefinition addConnector(final NewConnectorDefinition connectorDefinition) {
         return submitRequest(new PostConnector(connectorDefinition));
     }
 
@@ -182,6 +194,41 @@ public class ApiClient {
      */
     public Boolean deleteConnector(final String connectorName) {
         return submitRequest(new DeleteConnector(connectorName));
+    }
+
+    /**
+     * Get a list of tasks currently running for the connector.
+     * https://docs.confluent.io/current/connect/restapi.html#get--connectors-(string-name)-tasks
+     *
+     * @param connectorName Name of connector to retrieve tasks for.
+     * @return Collection of details about each task.
+     */
+    public Collection<Task> getConnectorTasks(final String connectorName) {
+        return submitRequest(new GetConnectorTasks(connectorName));
+    }
+
+    /**
+     * Get a task’s status.
+     * https://docs.confluent.io/current/connect/restapi.html#get--connectors-(string-name)-tasks-(int-taskid)-status
+     *
+     * @param connectorName Name of connector to retrieve tasks for.
+     * @param taskId Id of task to get status for.
+     * @return Details about task.
+     */
+    public TaskStatus getConnectorTaskStatus(final String connectorName, final int taskId) {
+        return submitRequest(new GetConnectorTaskStatus(connectorName, taskId));
+    }
+
+    /**
+     * Restart an individual task.
+     * https://docs.confluent.io/current/connect/restapi.html#post--connectors-(string-name)-tasks-(int-taskid)-restart
+     *
+     * @param connectorName Name of connector to restart tasks for.
+     * @param taskId Id of task to restart
+     * @return True if a success.
+     */
+    public Boolean restartConnectorTask(final String connectorName, final int taskId) {
+        return submitRequest(new PostConnectorTaskRestart(connectorName, taskId));
     }
 
     /**

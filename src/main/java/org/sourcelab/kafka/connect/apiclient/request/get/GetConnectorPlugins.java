@@ -1,15 +1,16 @@
-package org.sourcelab.kafka.connect.apiclient.request.get.connector;
+package org.sourcelab.kafka.connect.apiclient.request.get;
 
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
-import org.sourcelab.kafka.connect.apiclient.request.get.GetRequest;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPlugin;
 
 import java.io.IOException;
 import java.util.Collection;
 
-public class GetConnectors implements GetRequest<Collection<String>> {
+public class GetConnectorPlugins implements GetRequest<Collection<ConnectorPlugin>> {
+
     @Override
     public String getApiEndpoint() {
-        return "/connectors";
+        return "/connector-plugins";
     }
 
     @Override
@@ -18,7 +19,7 @@ public class GetConnectors implements GetRequest<Collection<String>> {
     }
 
     @Override
-    public Collection<String> parseResponse(final String responseStr) throws IOException {
+    public Collection<ConnectorPlugin> parseResponse(final String responseStr) throws IOException {
         return JacksonFactory.newInstance().readValue(responseStr, Collection.class);
     }
 }
