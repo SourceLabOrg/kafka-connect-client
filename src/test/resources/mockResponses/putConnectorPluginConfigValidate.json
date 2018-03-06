@@ -1,0 +1,132 @@
+{
+  "name": "org.apache.kafka.connect.tools.VerifiableSourceConnector",
+  "error_count": 1,
+  "groups": ["Common", "Transforms"],
+  "configs": [{
+    "definition": {
+      "name": "name",
+      "type": "STRING",
+      "required": true,
+      "default_value": null,
+      "importance": "HIGH",
+      "documentation": "Globally unique name to use for this connector.",
+      "group": "Common",
+      "width": "MEDIUM",
+      "display_name": "Connector name",
+      "dependents": [],
+      "order": 1
+    },
+    "value": {
+      "name": "name",
+      "value": null,
+      "recommended_values": [],
+      "errors": ["Missing required configuration \"name\" which has no default value."],
+      "visible": true
+    }
+  }, {
+    "definition": {
+      "name": "connector.class",
+      "type": "STRING",
+      "required": true,
+      "default_value": null,
+      "importance": "HIGH",
+      "documentation": "Name or alias of the class for this connector. Must be a subclass of org.apache.kafka.connect.connector.Connector. If the connector is org.apache.kafka.connect.file.FileStreamSinkConnector, you can either specify this full name,  or use \"FileStreamSink\" or \"FileStreamSinkConnector\" to make the configuration a bit shorter",
+      "group": "Common",
+      "width": "LONG",
+      "display_name": "Connector class",
+      "dependents": [],
+      "order": 2
+    },
+    "value": {
+      "name": "connector.class",
+      "value": "org.apache.kafka.connect.tools.VerifiableSourceConnector",
+      "recommended_values": [],
+      "errors": [],
+      "visible": true
+    }
+  }, {
+    "definition": {
+      "name": "tasks.max",
+      "type": "INT",
+      "required": false,
+      "default_value": "1",
+      "importance": "HIGH",
+      "documentation": "Maximum number of tasks to use for this connector.",
+      "group": "Common",
+      "width": "SHORT",
+      "display_name": "Tasks max",
+      "dependents": [],
+      "order": 3
+    },
+    "value": {
+      "name": "tasks.max",
+      "value": "3",
+      "recommended_values": [],
+      "errors": [],
+      "visible": true
+    }
+  }, {
+    "definition": {
+      "name": "key.converter",
+      "type": "CLASS",
+      "required": false,
+      "default_value": null,
+      "importance": "LOW",
+      "documentation": "Converter class used to convert between Kafka Connect format and the serialized form that is written to Kafka. This controls the format of the keys in messages written to or read from Kafka, and since this is independent of connectors it allows any connector to work with any serialization format. Examples of common formats include JSON and Avro.",
+      "group": "Common",
+      "width": "SHORT",
+      "display_name": "Key converter class",
+      "dependents": [],
+      "order": 4
+    },
+    "value": {
+      "name": "key.converter",
+      "value": null,
+      "recommended_values": [],
+      "errors": [],
+      "visible": true
+    }
+  }, {
+    "definition": {
+      "name": "value.converter",
+      "type": "CLASS",
+      "required": false,
+      "default_value": null,
+      "importance": "LOW",
+      "documentation": "Converter class used to convert between Kafka Connect format and the serialized form that is written to Kafka. This controls the format of the values in messages written to or read from Kafka, and since this is independent of connectors it allows any connector to work with any serialization format. Examples of common formats include JSON and Avro.",
+      "group": "Common",
+      "width": "SHORT",
+      "display_name": "Value converter class",
+      "dependents": [],
+      "order": 5
+    },
+    "value": {
+      "name": "value.converter",
+      "value": null,
+      "recommended_values": [],
+      "errors": [],
+      "visible": true
+    }
+  }, {
+    "definition": {
+      "name": "transforms",
+      "type": "LIST",
+      "required": false,
+      "default_value": null,
+      "importance": "LOW",
+      "documentation": "Aliases for the transformations to be applied to records.",
+      "group": "Transforms",
+      "width": "LONG",
+      "display_name": "Transforms",
+      "dependents": [],
+      "order": 6
+    },
+    "value": {
+      "name": "transforms",
+      "value": null,
+      "recommended_values": [],
+      "errors": [],
+      "visible": true
+    }
+  }]
+}

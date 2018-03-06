@@ -6,12 +6,15 @@ import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.Request;
 import org.sourcelab.kafka.connect.apiclient.request.RequestErrorResponse;
 import org.sourcelab.kafka.connect.apiclient.request.delete.DeleteConnector;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPlugin;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
 import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.Task;
 import org.sourcelab.kafka.connect.apiclient.request.dto.TaskStatus;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnector;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorConfig;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorPlugins;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorStatus;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTaskStatus;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTasks;
@@ -22,6 +25,7 @@ import org.sourcelab.kafka.connect.apiclient.request.post.PostConnectorRestart;
 import org.sourcelab.kafka.connect.apiclient.request.post.PostConnectorTaskRestart;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorConfig;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorPause;
+import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorPluginConfigValidate;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorResume;
 import org.sourcelab.kafka.connect.apiclient.rest.HttpClientRestClient;
 import org.sourcelab.kafka.connect.apiclient.rest.InvalidRequestException;
@@ -229,6 +233,30 @@ public class ApiClient {
      */
     public Boolean restartConnectorTask(final String connectorName, final int taskId) {
         return submitRequest(new PostConnectorTaskRestart(connectorName, taskId));
+    }
+
+    /**
+     * Return a list of connector plugins installed in the Kafka Connect cluster.
+     * https://docs.confluent.io/current/connect/restapi.html#get--connector-plugins-
+     *
+     * @return Collection of available connector plugins.
+     */
+    public Collection<ConnectorPlugin> getConnectorPlugins() {
+        return submitRequest(new GetConnectorPlugins());
+    }
+
+    /**
+     * Validate the provided configuration values against the configuration definition. This API performs per config
+     * validation, returns suggested values and error messages during validation.
+     * https://docs.confluent.io/current/connect/restapi.html#put--connector-plugins-(string-name)-config-validate
+     *
+     * @param configDefinition Defines the configuration to validate.
+     * @return Results of the validation.
+     */
+    public String validateConnectorPluginConfig(final ConnectorPluginConfigDefinition configDefinition) {
+        return submitRequest(
+            new PutConnectorPluginConfigValidate(configDefinition.getName(), configDefinition.getConfig())
+        );
     }
 
     /**

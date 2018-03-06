@@ -273,12 +273,8 @@ public class HttpClientRestClient implements RestClient {
             // Conditionally add content-type header?
             put.addHeader(new BasicHeader("Content-Type", "application/json"));
 
-            // Define required auth params
-            final List<NameValuePair> params = new ArrayList<>();
-
-            // Convert to Json
+            // Convert to Json and submit as payload.
             final String jsonPayloadStr = JacksonFactory.newInstance().writeValueAsString(requestBody);
-
             put.setEntity(new StringEntity(jsonPayloadStr));
 
             logger.info("Executing request {} with {}", put.getRequestLine(), jsonPayloadStr);

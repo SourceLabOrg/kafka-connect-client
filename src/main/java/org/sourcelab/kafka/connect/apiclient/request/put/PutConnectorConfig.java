@@ -16,7 +16,7 @@ public class PutConnectorConfig implements PutRequest<ConnectorDefinition> {
 
     public PutConnectorConfig(final String name, final Map<String, String> config) {
         this.name = name;
-        this.config = Collections.unmodifiableMap(new HashMap(config));
+        this.config = Collections.unmodifiableMap(new HashMap<>(config));
     }
 
     @Override

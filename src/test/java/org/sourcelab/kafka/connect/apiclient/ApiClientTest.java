@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
 
 import java.util.HashMap;
@@ -147,10 +148,32 @@ public class ApiClientTest {
     }
 
     /**
-     * Test retrieving status about a specific task for a running connector.
+     * Test restarting a specific task for a running connector.
      */
     @Test
     public void testRestartConnectorTask() {
         logger.info("Result: {}", apiClient.restartConnectorTask(connectorName, 0));
+    }
+
+    /**
+     * Test retrieving available connector plugins.
+     */
+    @Test
+    public void testGetConnectorPlugins() {
+        logger.info("Result: {}", apiClient.getConnectorPlugins());
+    }
+
+    /**
+     * Test retrieving available connector plugins.
+     */
+    @Test
+    public void testValidateConnectorPluginConfig() {
+        logger.info("Result: {}", apiClient.validateConnectorPluginConfig(ConnectorPluginConfigDefinition.newBuilder()
+            .withName("VerifiableSourceConnector")
+            .withConfig("connector.class", "org.apache.kafka.connect.tools.VerifiableSourceConnector")
+            .withConfig("tasks.max", 3)
+            .withConfig("topics", "test-topic")
+            .build()
+        ));
     }
 }

@@ -1,0 +1,9 @@
+[{
+  "class": "org.apache.kafka.connect.file.FileStreamSinkConnector",
+  "type": "sink",
+  "version": "1.0.0-cp1"
+}, {
+  "class": "org.apache.kafka.connect.file.FileStreamSourceConnector",
+  "type": "source",
+  "version": "1.0.0-cp1"
+}]
