@@ -2,11 +2,7 @@
 
 ## What is it? 
 
-This library intends to be....todo
-
-**Note** It currently is not fully featured/fully implemented. If there is a feature/end point that you
-need that is not yet implemented, please read the **[How to Contribute](#how-to-contribute)** section, or **[Create an issue](#)** 
-requesting it. 
+This library intends to give you an easy way to interact with the [Kafka-Connect](https://docs.confluent.io/current/connect/restapi.html) REST service (V4). 
 
 **Note** Use this library at your own risk!  Currently there are no known issues, but as an **unofficial** library,
  there are no guarantees.  
@@ -19,19 +15,31 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>org.sourcelab</groupId>
     <artifactId>kafka-connect-client</artifactId>
-    <version>0.1.0</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
 Example Code:
 ```java
-// TODO
+/*
+ * Create a new configuration object.
+ *
+ * This configuration also allows you to define some optional details on your connection,
+ * such as using an outbound proxy (authenticated or not).
+ */
+final Configuration configuration = new Configuration("hostname.for.kafka-connect.service.com:8083");
+
+/*
+ * Create an instance of ApiClient, passing your configuration.
+ */
+final ApiClient client = new ApiClient(configuration);
+
+/*
+ * Making requests by calling the public methods available on ApiClient.
+ */
 ```
 
-## What Features are implemented?
-
-### Accounts
-Official Documentation: [TODO](#)
+Public methods available on ApiClient can be [found here](blob/master/src/main/java/org/sourcelab/kafka/connect/apiclient/ApiClient.java#L101-L266)
 
 ## How to Contribute 
 
