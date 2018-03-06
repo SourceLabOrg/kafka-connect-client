@@ -2,14 +2,14 @@ package org.sourcelab.kafka.connect.apiclient.request.put;
 
 import com.sun.xml.internal.rngom.util.Uri;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
-import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigValidationResults;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PutConnectorPluginConfigValidate implements PutRequest<String> {
+public class PutConnectorPluginConfigValidate implements PutRequest<ConnectorPluginConfigValidationResults> {
     private final String connectorPluginName;
     private final Map<String, String> config;
 
@@ -35,8 +35,7 @@ public class PutConnectorPluginConfigValidate implements PutRequest<String> {
     }
 
     @Override
-    public String parseResponse(final String responseStr) throws IOException {
-        //return JacksonFactory.newInstance().readValue(responseStr, ConnectorDefinition.class);
-        return responseStr;
+    public ConnectorPluginConfigValidationResults parseResponse(final String responseStr) throws IOException {
+        return JacksonFactory.newInstance().readValue(responseStr, ConnectorPluginConfigValidationResults.class);
     }
 }

@@ -8,6 +8,7 @@ import org.sourcelab.kafka.connect.apiclient.request.RequestErrorResponse;
 import org.sourcelab.kafka.connect.apiclient.request.delete.DeleteConnector;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPlugin;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigDefinition;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigValidationResults;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
 import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.Task;
@@ -253,7 +254,7 @@ public class ApiClient {
      * @param configDefinition Defines the configuration to validate.
      * @return Results of the validation.
      */
-    public String validateConnectorPluginConfig(final ConnectorPluginConfigDefinition configDefinition) {
+    public ConnectorPluginConfigValidationResults validateConnectorPluginConfig(final ConnectorPluginConfigDefinition configDefinition) {
         return submitRequest(
             new PutConnectorPluginConfigValidate(configDefinition.getName(), configDefinition.getConfig())
         );
