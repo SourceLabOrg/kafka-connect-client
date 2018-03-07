@@ -20,7 +20,7 @@ package org.sourcelab.kafka.connect.apiclient.rest;
 /**
  * Represents the response from the API.
  */
-public class RestResponse {
+public final class RestResponse {
     private final String responseStr;
     private final int httpCode;
 

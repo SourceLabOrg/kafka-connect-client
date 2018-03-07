@@ -59,8 +59,8 @@ import java.util.Map;
  * Official Rest Endpoint documentation can be found here:
  *   https://docs.confluent.io/current/connect/restapi.html
  */
-public class ApiClient {
-    private static final Logger logger = LoggerFactory.getLogger(ApiClient.class);
+public class KafkaConnectClient {
+    private static final Logger logger = LoggerFactory.getLogger(KafkaConnectClient.class);
 
     /**
      * Our API Configuration.
@@ -82,7 +82,7 @@ public class ApiClient {
      * Default Constructor.
      * @param configuration Api Client Configuration.
      */
-    public ApiClient(final Configuration configuration) {
+    public KafkaConnectClient(final Configuration configuration) {
         this.configuration = configuration;
         this.restClient = new HttpClientRestClient();
     }
@@ -93,7 +93,7 @@ public class ApiClient {
      * @param configuration Pardot Api Configuration.
      * @param restClient RestClient implementation to use.
      */
-    public ApiClient(final Configuration configuration, final RestClient restClient) {
+    public KafkaConnectClient(final Configuration configuration, final RestClient restClient) {
         this.configuration = configuration;
         this.restClient = restClient;
     }
@@ -293,7 +293,7 @@ public class ApiClient {
         try {
             final RequestErrorResponse errorResponse = JacksonFactory.newInstance().readValue(responseStr, RequestErrorResponse.class);
             throw new InvalidRequestException(errorResponse.getMessage(), errorResponse.getErrorCode());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // swallow
         }
         throw new InvalidRequestException("Invalid response from server: " + responseStr, restResponse.getHttpCode());

@@ -30,16 +30,30 @@ Example Code:
 final Configuration configuration = new Configuration("hostname.for.kafka-connect.service.com:8083");
 
 /*
- * Create an instance of ApiClient, passing your configuration.
+ * Create an instance of KafkaConnectClient, passing your configuration.
  */
-final ApiClient client = new ApiClient(configuration);
+final KafkaConnectClient client = new KafkaConnectClient(configuration);
 
 /*
  * Making requests by calling the public methods available on ApiClient.
+ * 
+ * For example, get a list of deployed connectors:
  */
+final Collection<String> connectorList = client.getConnectors();
+
+/*
+ * Or to deploy a new connector:
+ */
+final ConnectorDefinition connectorDefition = client.addConnector(NewConnectorDefinition.newBuilder()
+    .withName("MyNewConnector")
+    .withConfig("connector.class", "org.apache.kafka.connect.tools.VerifiableSourceConnector")
+    .withConfig("tasks.max", 3)
+    .withConfig("topics", "test-topic")
+    .build()
+));
 ```
 
-Public methods available on ApiClient can be [found here](src/main/java/org/sourcelab/kafka/connect/apiclient/ApiClient.java#L101-L266)
+Public methods available on KafkaConnectClient can be [found here](src/main/java/org/sourcelab/kafka/connect/apiclient/ApiClient.java#L101-L266)
 
 ## Changelog
 

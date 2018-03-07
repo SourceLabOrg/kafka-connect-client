@@ -30,7 +30,7 @@ import java.io.IOException;
 /**
  * Handles parsing a response to RestResponse object.
  */
-public class RestResponseHandler implements ResponseHandler<RestResponse> {
+public final class RestResponseHandler implements ResponseHandler<RestResponse> {
     private static final Logger logger = LoggerFactory.getLogger(RestResponseHandler.class);
 
     @Override
@@ -46,7 +46,7 @@ public class RestResponseHandler implements ResponseHandler<RestResponse> {
 
             // Construct return object
             return new RestResponse(responseStr, statusCode);
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             logger.error("Failed to read entity: {}", exception.getMessage(), exception);
             // TODO throw exception
             return null;
