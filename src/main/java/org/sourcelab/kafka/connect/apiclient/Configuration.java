@@ -22,7 +22,7 @@ package org.sourcelab.kafka.connect.apiclient;
  *
  * Also allows for configuring an optional proxy with or without authentication.
  */
-public class Configuration {
+public final class Configuration {
     // Defines the URL/Hostname of Kafka-Connect
     private final String apiHost;
 

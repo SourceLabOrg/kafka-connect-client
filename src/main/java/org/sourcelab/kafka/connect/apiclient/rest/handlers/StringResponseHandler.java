@@ -27,7 +27,7 @@ import java.io.IOException;
 /**
  * Returns response as a string.
  */
-public class StringResponseHandler implements ResponseHandler<String> {
+public final class StringResponseHandler implements ResponseHandler<String> {
     @Override
     public String handleResponse(final HttpResponse response) throws IOException {
 
