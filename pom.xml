@@ -46,8 +46,14 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <!-- guava version -->
+        <guava.version>24.0-jre</guava.version>
+
+        <!-- Http Components version -->
+        <http-components.version>4.5.5</http-components.version>
+
         <!-- Jackson version -->
-        <jackson.version>2.9.3</jackson.version>
+        <jackson.version>2.9.4</jackson.version>
 
         <!-- Define which version of junit you'll be running -->
         <junit.version>4.12</junit.version>
@@ -75,14 +81,14 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.4</version>
+            <version>${http-components.version}</version>
         </dependency>
 
         <!-- Guava for Preconditions and URI Escaping -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>24.0-jre</version>
+            <version>${guava.version}</version>
         </dependency>
 
         <!-- For parsing XML responses to POJOs -->
