@@ -48,12 +48,12 @@ public class BadLoggersTest {
         walk(projectRootPath);
     }
 
-    private void walk(File root) throws FileNotFoundException {
-        File[] list = root.listFiles();
+    private void walk(final File root) throws FileNotFoundException {
+        final File[] list = root.listFiles();
 
         if (list == null) return;
 
-        for (File f : list) {
+        for (final File f : list) {
             if (f.isDirectory()) {
                 walk(f);
             } else {
@@ -66,11 +66,11 @@ public class BadLoggersTest {
         }
     }
 
-    private void testFile(File myFile) throws FileNotFoundException {
-        String fileData = new Scanner(myFile).useDelimiter("\\Z").next();
+    private void testFile(final File myFile) throws FileNotFoundException {
+        final String fileData = new Scanner(myFile).useDelimiter("\\Z").next();
 
         // Look for our pattern
-        Matcher matches = regexPattern.matcher(fileData);
+        final Matcher matches = regexPattern.matcher(fileData);
 
         // If we didn't find a match
         if (!matches.find()) {
@@ -78,7 +78,7 @@ public class BadLoggersTest {
         }
 
         // Grab out the Class name
-        String loggerClassName = matches.group(1);
+        final String loggerClassName = matches.group(1);
         if (loggerClassName == null) {
             return;
         }
@@ -86,7 +86,7 @@ public class BadLoggersTest {
         // Get class name from the file name
         // I bet this will be completely broken for inner classes...
         // if you run into that, just exclude it? or figure out a better solution to this :p
-        String className = myFile.getName().replace(".java", "");
+        final String className = myFile.getName().replace(".java", "");
         if (!className.equals(loggerClassName)) {
             logger.info("Class {} ClassNameUsedByLogger {} ", className, loggerClassName);
             assertFalse("Found instance of logger using wrong class? " + myFile.getPath() + " Using " + loggerClassName, true);

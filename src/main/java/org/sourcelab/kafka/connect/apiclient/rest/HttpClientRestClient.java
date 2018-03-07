@@ -147,7 +147,7 @@ public class HttpClientRestClient implements RestClient {
         if (httpClient != null) {
             try {
                 httpClient.close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 logger.error("Error closing: {}", e.getMessage(), e);
             }
         }
@@ -178,7 +178,7 @@ public class HttpClientRestClient implements RestClient {
                 default:
                     throw new IllegalArgumentException("Unknown Request Method: " + request.getRequestMethod());
             }
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             throw new RestException(exception.getMessage(), exception);
         }
     }
@@ -198,7 +198,7 @@ public class HttpClientRestClient implements RestClient {
                 .setCharset(StandardCharsets.UTF_8);
 
             // Attach submitRequest params
-            for (Map.Entry<String, String> entry : getParams.entrySet()) {
+            for (final Map.Entry<String, String> entry : getParams.entrySet()) {
                 uriBuilder.setParameter(entry.getKey(), entry.getValue());
             }
 
@@ -215,12 +215,12 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(get, responseHandler);
-        } catch (ClientProtocolException e) {
+        } catch (final ClientProtocolException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // Typically this is a parse error.
             e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             // Bad URI building
             e.printStackTrace();
         }
@@ -257,9 +257,9 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(post, responseHandler);
-        } catch (ClientProtocolException e) {
+        } catch (final ClientProtocolException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // Typically this is a parse error.
             e.printStackTrace();
         }
@@ -296,12 +296,12 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(put, responseHandler);
-        } catch (ClientProtocolException e) {
+        } catch (final ClientProtocolException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // Typically this is a parse error.
             e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             // Bad URI building
             e.printStackTrace();
         }
@@ -340,12 +340,12 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(delete, responseHandler);
-        } catch (ClientProtocolException e) {
+        } catch (final ClientProtocolException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // Typically this is a parse error.
             e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             // Bad URI building
             e.printStackTrace();
         }

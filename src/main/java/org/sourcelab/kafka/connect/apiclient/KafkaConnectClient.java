@@ -293,7 +293,7 @@ public class KafkaConnectClient {
         try {
             final RequestErrorResponse errorResponse = JacksonFactory.newInstance().readValue(responseStr, RequestErrorResponse.class);
             throw new InvalidRequestException(errorResponse.getMessage(), errorResponse.getErrorCode());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // swallow
         }
         throw new InvalidRequestException("Invalid response from server: " + responseStr, restResponse.getHttpCode());
