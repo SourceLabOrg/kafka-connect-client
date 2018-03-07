@@ -30,16 +30,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Integration test over ApiClient.
+ * Integration test over KafkaConnectClient.
  *
  * Assumes kafka-connect is running at localhost.  More or less a sanity test
  * rather than checking assertions.
  */
 @Category(IntegrationTest.class)
-public class ApiClientTest {
-    private static final Logger logger = LoggerFactory.getLogger(ApiClientTest.class);
+public class KafkaConnectClientTest {
+    private static final Logger logger = LoggerFactory.getLogger(KafkaConnectClientTest.class);
 
-    private ApiClient apiClient;
+    private KafkaConnectClient kafkaConnectClient;
     private final String connectorName = "MyTestConnector";
 
     @Before
@@ -50,7 +50,7 @@ public class ApiClientTest {
             apiHost = "localhost:8083";
         }
         // Build api client
-        this.apiClient = new ApiClient(new Configuration(apiHost));
+        this.kafkaConnectClient = new KafkaConnectClient(new Configuration(apiHost));
     }
 
     /**
@@ -59,7 +59,7 @@ public class ApiClientTest {
      */
     @Test
     public void testGetConnectors() {
-        logger.info("Result: {}", apiClient.getConnectors());
+        logger.info("Result: {}", kafkaConnectClient.getConnectors());
     }
 
     /**
@@ -68,7 +68,7 @@ public class ApiClientTest {
      */
     @Test
     public void testGetConnector() {
-        logger.info("Result: {}", apiClient.getConnector(connectorName));
+        logger.info("Result: {}", kafkaConnectClient.getConnector(connectorName));
     }
 
     /**
@@ -77,7 +77,7 @@ public class ApiClientTest {
      */
     @Test
     public void testGetConnectorConfig() {
-        logger.info("Result: {}", apiClient.getConnectorConfig(connectorName));
+        logger.info("Result: {}", kafkaConnectClient.getConnectorConfig(connectorName));
     }
 
     /**
@@ -86,7 +86,7 @@ public class ApiClientTest {
      */
     @Test
     public void testGetConnectorStatus() {
-        logger.info("Result: {}", apiClient.getConnectorStatus(connectorName));
+        logger.info("Result: {}", kafkaConnectClient.getConnectorStatus(connectorName));
     }
 
     /**
@@ -95,7 +95,7 @@ public class ApiClientTest {
      */
     @Test
     public void testAddConnector() {
-        logger.info("Result: {}", apiClient.addConnector(NewConnectorDefinition.newBuilder()
+        logger.info("Result: {}", kafkaConnectClient.addConnector(NewConnectorDefinition.newBuilder()
             .withName(connectorName)
             .withConfig("connector.class", "org.apache.kafka.connect.tools.VerifiableSourceConnector")
             .withConfig("tasks.max", 3)
@@ -115,7 +115,7 @@ public class ApiClientTest {
         config.put("tasks.max", "10");
         config.put("topics", "test-topic");
 
-        logger.info("Result: {}", apiClient.updateConnectorConfig(connectorName, config));
+        logger.info("Result: {}", kafkaConnectClient.updateConnectorConfig(connectorName, config));
     }
 
     /**
@@ -123,7 +123,7 @@ public class ApiClientTest {
      */
     @Test
     public void testRestartConnector() {
-        logger.info("Result: {}", apiClient.restartConnector(connectorName));
+        logger.info("Result: {}", kafkaConnectClient.restartConnector(connectorName));
     }
 
     /**
@@ -131,7 +131,7 @@ public class ApiClientTest {
      */
     @Test
     public void testPauseConnector() {
-        logger.info("Result: {}", apiClient.pauseConnector(connectorName));
+        logger.info("Result: {}", kafkaConnectClient.pauseConnector(connectorName));
     }
 
     /**
@@ -139,7 +139,7 @@ public class ApiClientTest {
      */
     @Test
     public void testResumeConnector() {
-        logger.info("Result: {}", apiClient.resumeConnector(connectorName));
+        logger.info("Result: {}", kafkaConnectClient.resumeConnector(connectorName));
     }
 
     /**
@@ -147,7 +147,7 @@ public class ApiClientTest {
      */
     @Test
     public void testDeleteConnector() {
-        logger.info("Result: {}", apiClient.deleteConnector(connectorName));
+        logger.info("Result: {}", kafkaConnectClient.deleteConnector(connectorName));
     }
 
     /**
@@ -155,7 +155,7 @@ public class ApiClientTest {
      */
     @Test
     public void testGetConnectorTasks() {
-        logger.info("Result: {}", apiClient.getConnectorTasks(connectorName));
+        logger.info("Result: {}", kafkaConnectClient.getConnectorTasks(connectorName));
     }
 
     /**
@@ -163,7 +163,7 @@ public class ApiClientTest {
      */
     @Test
     public void testGetConnectorTaskStatus() {
-        logger.info("Result: {}", apiClient.getConnectorTaskStatus(connectorName, 0));
+        logger.info("Result: {}", kafkaConnectClient.getConnectorTaskStatus(connectorName, 0));
     }
 
     /**
@@ -171,7 +171,7 @@ public class ApiClientTest {
      */
     @Test
     public void testRestartConnectorTask() {
-        logger.info("Result: {}", apiClient.restartConnectorTask(connectorName, 0));
+        logger.info("Result: {}", kafkaConnectClient.restartConnectorTask(connectorName, 0));
     }
 
     /**
@@ -179,7 +179,7 @@ public class ApiClientTest {
      */
     @Test
     public void testGetConnectorPlugins() {
-        logger.info("Result: {}", apiClient.getConnectorPlugins());
+        logger.info("Result: {}", kafkaConnectClient.getConnectorPlugins());
     }
 
     /**
@@ -187,7 +187,7 @@ public class ApiClientTest {
      */
     @Test
     public void testValidateConnectorPluginConfig() {
-        logger.info("Result: {}", apiClient.validateConnectorPluginConfig(ConnectorPluginConfigDefinition.newBuilder()
+        logger.info("Result: {}", kafkaConnectClient.validateConnectorPluginConfig(ConnectorPluginConfigDefinition.newBuilder()
             .withName("VerifiableSourceConnector")
             .withConfig("connector.class", "org.apache.kafka.connect.tools.VerifiableSourceConnector")
             .withConfig("tasks.max", 3)
