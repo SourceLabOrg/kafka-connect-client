@@ -2,5 +2,8 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.1.0 (03/01/18)
+## 1.0.1 (04/05/18)
+- Update Jackson dependency to 2.9.5 [CVE-2018-7489](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7489).
+
+## 1.0.0 (03/01/18)
 - Initial release!
