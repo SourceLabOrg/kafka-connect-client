@@ -52,7 +52,7 @@ public final class ConnectorStatus {
     /**
      * Defines the status of a Task.
      */
-    private static final class TaskStatus {
+    public static final class TaskStatus {
         private int id;
         private String state;
         private String workerId;
