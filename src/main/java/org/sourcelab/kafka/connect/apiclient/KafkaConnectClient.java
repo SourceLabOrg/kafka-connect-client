@@ -272,7 +272,7 @@ public class KafkaConnectClient {
         String responseStr = restResponse.getResponseStr();
 
         // If we have a valid response
-        logger.info("Response: {}", restResponse);
+        logger.debug("Response: {}", restResponse);
 
         // Check for invalid http status codes
         if (responseCode >= 200 && responseCode < 300) {

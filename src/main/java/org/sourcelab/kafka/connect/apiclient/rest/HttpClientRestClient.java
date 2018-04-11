@@ -211,7 +211,7 @@ public class HttpClientRestClient implements RestClient {
             // Conditionally add content-type header?
             get.addHeader(new BasicHeader("Content-Type", "application/json"));
 
-            logger.info("Executing request {}", get.getRequestLine());
+            logger.debug("Executing request {}", get.getRequestLine());
 
             // Execute and return
             return httpClient.execute(get, responseHandler);
@@ -253,7 +253,7 @@ public class HttpClientRestClient implements RestClient {
 
             post.setEntity(new StringEntity(jsonPayloadStr));
 
-            logger.info("Executing request {} with {}", post.getRequestLine(), jsonPayloadStr);
+            logger.debug("Executing request {} with {}", post.getRequestLine(), jsonPayloadStr);
 
             // Execute and return
             return httpClient.execute(post, responseHandler);
@@ -292,7 +292,7 @@ public class HttpClientRestClient implements RestClient {
             final String jsonPayloadStr = JacksonFactory.newInstance().writeValueAsString(requestBody);
             put.setEntity(new StringEntity(jsonPayloadStr));
 
-            logger.info("Executing request {} with {}", put.getRequestLine(), jsonPayloadStr);
+            logger.debug("Executing request {} with {}", put.getRequestLine(), jsonPayloadStr);
 
             // Execute and return
             return httpClient.execute(put, responseHandler);
@@ -336,7 +336,7 @@ public class HttpClientRestClient implements RestClient {
             // Convert to Json
             final String jsonPayloadStr = JacksonFactory.newInstance().writeValueAsString(requestBody);
 
-            logger.info("Executing request {} with {}", delete.getRequestLine(), jsonPayloadStr);
+            logger.debug("Executing request {} with {}", delete.getRequestLine(), jsonPayloadStr);
 
             // Execute and return
             return httpClient.execute(delete, responseHandler);
