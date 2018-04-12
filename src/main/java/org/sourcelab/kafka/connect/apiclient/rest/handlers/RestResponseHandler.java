@@ -48,7 +48,7 @@ public final class RestResponseHandler implements ResponseHandler<RestResponse> 
             return new RestResponse(responseStr, statusCode);
         } catch (final IOException exception) {
             logger.error("Failed to read entity: {}", exception.getMessage(), exception);
-            // TODO throw exception
+            // TODO throw exceptions
             return null;
         }
     }
