@@ -6,7 +6,7 @@
 
     <groupId>org.sourcelab</groupId>
     <artifactId>kafka-connect-client</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <!-- Require Maven 3.3.9 -->
@@ -344,6 +344,9 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <keyname>SourceLab.org</keyname>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
