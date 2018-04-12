@@ -58,7 +58,7 @@ public final class ConnectorDefinition {
     /**
      * Represents a Task.
      */
-    private static final class TaskDefinition {
+    public static final class TaskDefinition {
         private String connector;
         private int task;
 

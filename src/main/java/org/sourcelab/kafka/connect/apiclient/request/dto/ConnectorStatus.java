@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Represents the status of a deployed connector.
  */
-public final class ConnectorStatus {
+public class ConnectorStatus {
     private String name;
     private Map<String, String> connector;
     private List<TaskStatus> tasks;
@@ -52,7 +52,7 @@ public final class ConnectorStatus {
     /**
      * Defines the status of a Task.
      */
-    private static final class TaskStatus {
+    public static class TaskStatus {
         private int id;
         private String state;
         private String workerId;

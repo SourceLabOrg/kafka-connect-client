@@ -46,7 +46,7 @@ import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorPause;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorPluginConfigValidate;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorResume;
 import org.sourcelab.kafka.connect.apiclient.rest.HttpClientRestClient;
-import org.sourcelab.kafka.connect.apiclient.rest.InvalidRequestException;
+import org.sourcelab.kafka.connect.apiclient.rest.exceptions.InvalidRequestException;
 import org.sourcelab.kafka.connect.apiclient.rest.RestClient;
 import org.sourcelab.kafka.connect.apiclient.rest.RestResponse;
 
@@ -272,7 +272,7 @@ public class KafkaConnectClient {
         String responseStr = restResponse.getResponseStr();
 
         // If we have a valid response
-        logger.info("Response: {}", restResponse);
+        logger.debug("Response: {}", restResponse);
 
         // Check for invalid http status codes
         if (responseCode >= 200 && responseCode < 300) {
@@ -292,7 +292,7 @@ public class KafkaConnectClient {
         // Attempt to parse error response
         try {
             final RequestErrorResponse errorResponse = JacksonFactory.newInstance().readValue(responseStr, RequestErrorResponse.class);
-            throw new InvalidRequestException(errorResponse.getMessage(), errorResponse.getErrorCode());
+            throw InvalidRequestException.factory(errorResponse);
         } catch (final IOException e) {
             // swallow
         }

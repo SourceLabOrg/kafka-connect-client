@@ -15,25 +15,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.sourcelab.kafka.connect.apiclient.rest;
+package org.sourcelab.kafka.connect.apiclient.rest.exceptions;
 
 /**
- * Represents when a request is invalid.
+ * Represents when a request is rejected due because the resource is unable to be located.
  */
-public class InvalidRequestException extends RuntimeException {
-    private final int errorCode;
+public class ResourceNotFoundException extends InvalidRequestException {
 
-    public InvalidRequestException(final String message, final int errorCode) {
-        super(message);
-        this.errorCode = errorCode;
-    }
-
-    public InvalidRequestException(final String message, final Throwable cause) {
-        super(message, cause);
-        this.errorCode = -1;
-    }
-
-    public int getErrorCode() {
-        return errorCode;
+    /**
+     * Constructor.
+     * @param message Error message.
+     */
+    public ResourceNotFoundException(String message) {
+        super(message, 404);
     }
 }
