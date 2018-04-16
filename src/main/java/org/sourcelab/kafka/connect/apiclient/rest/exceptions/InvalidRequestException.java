@@ -37,6 +37,16 @@ public class InvalidRequestException extends RuntimeException {
     }
 
     /**
+     * Constructor.
+     * @param message Error message.
+     * @param cause Originating exception.
+     */
+    public InvalidRequestException(final String message, final Throwable cause) {
+        super(message, cause);
+        this.errorCode = -1;
+    }
+
+    /**
      * @return Http Error Code.
      */
     public int getErrorCode() {

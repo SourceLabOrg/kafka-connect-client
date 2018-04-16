@@ -43,10 +43,13 @@ import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.Request;
+import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ConnectionException;
+import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ResultParsingException;
 import org.sourcelab.kafka.connect.apiclient.rest.handlers.RestResponseHandler;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.net.SocketException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -215,16 +218,13 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(get, responseHandler);
-        } catch (final ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
+        } catch (final ClientProtocolException | SocketException | URISyntaxException connectionException) {
+            // Typically this is a connection issue.
+            throw new ConnectionException(connectionException.getMessage(), connectionException);
+        } catch (final IOException ioException) {
             // Typically this is a parse error.
-            e.printStackTrace();
-        } catch (final URISyntaxException e) {
-            // Bad URI building
-            e.printStackTrace();
+            throw new ResultParsingException(ioException.getMessage(), ioException);
         }
-        return null;
     }
 
     /**
@@ -257,13 +257,13 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(post, responseHandler);
-        } catch (final ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
+        } catch (final ClientProtocolException | SocketException connectionException) {
+            // Typically this is a connection issue.
+            throw new ConnectionException(connectionException.getMessage(), connectionException);
+        } catch (final IOException ioException) {
             // Typically this is a parse error.
-            e.printStackTrace();
+            throw new ResultParsingException(ioException.getMessage(), ioException);
         }
-        return null;
     }
 
     /**
@@ -296,16 +296,13 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(put, responseHandler);
-        } catch (final ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
+        } catch (final ClientProtocolException | SocketException | URISyntaxException connectionException) {
+            // Typically this is a connection issue.
+            throw new ConnectionException(connectionException.getMessage(), connectionException);
+        } catch (final IOException ioException) {
             // Typically this is a parse error.
-            e.printStackTrace();
-        } catch (final URISyntaxException e) {
-            // Bad URI building
-            e.printStackTrace();
+            throw new ResultParsingException(ioException.getMessage(), ioException);
         }
-        return null;
     }
 
     /**
@@ -340,16 +337,13 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(delete, responseHandler);
-        } catch (final ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
+        } catch (final ClientProtocolException | SocketException | URISyntaxException connectionException) {
+            // Typically this is a connection issue.
+            throw new ConnectionException(connectionException.getMessage(), connectionException);
+        } catch (final IOException ioException) {
             // Typically this is a parse error.
-            e.printStackTrace();
-        } catch (final URISyntaxException e) {
-            // Bad URI building
-            e.printStackTrace();
+            throw new ResultParsingException(ioException.getMessage(), ioException);
         }
-        return null;
     }
 
     /**
