@@ -47,7 +47,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- guava version -->
-        <guava.version>24.0-jre</guava.version>
+        <guava.version>25.0-jre</guava.version>
 
         <!-- Http Components version -->
         <http-components.version>4.5.5</http-components.version>
