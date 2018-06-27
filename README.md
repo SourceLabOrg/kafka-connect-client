@@ -53,7 +53,7 @@ final ConnectorDefinition connectorDefition = client.addConnector(NewConnectorDe
 ));
 ```
 
-Public methods available on KafkaConnectClient can be [found here](src/main/java/org/sourcelab/kafka/connect/apiclient/ApiClient.java#L101-L266)
+Public methods available on KafkaConnectClient can be [found here](src/main/java/org/sourcelab/kafka/connect/apiclient/KafkaConnectClient.java#L62)
 
 ## Changelog
 
