@@ -15,7 +15,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>org.sourcelab</groupId>
     <artifactId>kafka-connect-client</artifactId>
-    <version>1.0.3</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
