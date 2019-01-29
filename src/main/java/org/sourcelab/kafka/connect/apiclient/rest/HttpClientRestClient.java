@@ -71,7 +71,6 @@ public class HttpClientRestClient implements RestClient {
         new BasicHeader("Content-Type", "application/json")
     ));
 
-
     /**
      * Save a copy of the configuration.
      */
