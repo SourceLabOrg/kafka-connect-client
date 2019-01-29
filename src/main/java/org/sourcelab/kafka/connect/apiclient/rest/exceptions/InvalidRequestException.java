@@ -48,7 +48,8 @@ public class InvalidRequestException extends RuntimeException {
     }
 
     /**
-     * @return Http Error Code.
+     * Resulting HTTP Status code.
+     * @return Http Status Code.
      */
     public int getErrorCode() {
         return errorCode;

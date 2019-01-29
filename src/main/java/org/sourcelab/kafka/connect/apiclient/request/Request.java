@@ -26,17 +26,20 @@ import java.io.IOException;
 public interface Request<T> {
 
     /**
-     * @return The name of the end point this request uses. Example: "campaign", "user", etc..
+     * The name of the API end point to issue a request against.  This is appended to the API Hostname.
+     * @return The name of the end point this request uses.
      */
     String getApiEndpoint();
 
     /**
+     * Request Method, IE POST, GET, etc..
      * @return The type of HTTP Request.
      */
     RequestMethod getRequestMethod();
 
     /**
-     * @return correctly formatted request parameters.
+     * Object to be submitted as the body of the request.  It will be serialized to JSON using Jackson.
+     * @return Object representing request body content.
      */
     Object getRequestBody();
 
