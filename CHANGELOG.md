@@ -4,6 +4,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.0.4 (UNRELEASED)
 - Updated Guava from 24.0-JRE to 25.0-JRE for [CVE-2018-10237](https://github.com/google/guava/wiki/CVE-2018-10237).
+- Replace internal calls to Guava's Preconditions with Objects.requireNonNull()
 
 ## 1.0.3 (04/16/2018)
 - More specific exception classes thrown when requests fail.
