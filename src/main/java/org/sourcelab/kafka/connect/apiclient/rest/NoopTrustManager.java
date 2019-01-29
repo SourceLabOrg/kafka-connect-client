@@ -25,11 +25,11 @@ import java.security.cert.X509Certificate;
  */
 class NoopTrustManager implements X509TrustManager {
     @Override
-    public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s) {
+    public void checkClientTrusted(final X509Certificate[] x509Certificates, final String input) {
     }
 
     @Override
-    public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s) {
+    public void checkServerTrusted(final X509Certificate[] x509Certificates, final String input) {
     }
 
     @Override
