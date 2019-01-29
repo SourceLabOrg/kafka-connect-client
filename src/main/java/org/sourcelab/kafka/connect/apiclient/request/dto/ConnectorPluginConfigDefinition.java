@@ -29,7 +29,7 @@ public final class ConnectorPluginConfigDefinition {
     private final Map<String, String> config;
 
     /**
-     * Constructor
+     * Constructor.
      * @param connectorPluginName Name of Connector Plugin.
      * @param config Configuration values for connector.
      */

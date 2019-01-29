@@ -31,7 +31,7 @@ public final class PostConnector implements PostRequest<ConnectorDefinition> {
     private final NewConnectorDefinition connectorDefinition;
 
     /**
-     * Constructor
+     * Constructor.
      * @param connectorDefinition Defines the new connector to be deployed.
      */
     public PostConnector(final NewConnectorDefinition connectorDefinition) {

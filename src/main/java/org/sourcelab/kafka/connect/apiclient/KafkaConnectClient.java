@@ -46,9 +46,9 @@ import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorPause;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorPluginConfigValidate;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorResume;
 import org.sourcelab.kafka.connect.apiclient.rest.HttpClientRestClient;
-import org.sourcelab.kafka.connect.apiclient.rest.exceptions.InvalidRequestException;
 import org.sourcelab.kafka.connect.apiclient.rest.RestClient;
 import org.sourcelab.kafka.connect.apiclient.rest.RestResponse;
+import org.sourcelab.kafka.connect.apiclient.rest.exceptions.InvalidRequestException;
 
 import java.io.IOException;
 import java.util.Collection;

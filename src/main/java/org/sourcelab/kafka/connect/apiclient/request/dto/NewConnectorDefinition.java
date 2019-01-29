@@ -29,7 +29,7 @@ public final class NewConnectorDefinition {
     private final Map<String, String> config;
 
     /**
-     * Constructor
+     * Constructor.
      * @param name Name of Connector.
      * @param config Configuration values for connector.
      */
