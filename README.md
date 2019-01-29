@@ -26,7 +26,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
  * Create a new configuration object.
  *
  * This configuration also allows you to define some optional details on your connection,
- * such as using an outbound proxy (authenticated or not).
+ * such as using an outbound proxy (authenticated or not), SSL client settings, etc..
  */
 final Configuration configuration = new Configuration("http://hostname.for.kafka-connect.service.com:8083");
 
@@ -52,6 +52,10 @@ final ConnectorDefinition connectorDefition = client.addConnector(NewConnectorDe
     .withConfig("topics", "test-topic")
     .build()
 ));
+
+/*
+ * See KafkaConnectClient for other available options.
+ */
 ```
 
 Public methods available on KafkaConnectClient can be [found here](src/main/java/org/sourcelab/kafka/connect/apiclient/KafkaConnectClient.java#L62)
@@ -61,9 +65,6 @@ Public methods available on KafkaConnectClient can be [found here](src/main/java
 ```java
 /*
  * Create a new configuration object.
- *
- * This configuration also allows you to define some optional details on your connection,
- * such as using an outbound proxy (authenticated or not).
  */
 final Configuration configuration = new Configuration("https://hostname.for.kafka-connect.service.com:8083");
 
