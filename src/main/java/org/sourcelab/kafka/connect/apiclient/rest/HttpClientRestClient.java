@@ -195,7 +195,7 @@ public class HttpClientRestClient implements RestClient {
      * @param <T> The type that ResponseHandler returns.
      * @return Parsed response.
      */
-    private <T> T submitGetRequest(final String url, final Map<String, String> getParams, final ResponseHandler<T> responseHandler) {
+    private <T> T submitGetRequest(final String url, final Map<String, String> getParams, final ResponseHandler<T> responseHandler) throws IOException {
         try {
             // Construct URI including our request parameters.
             final URIBuilder uriBuilder = new URIBuilder(url)
@@ -233,7 +233,7 @@ public class HttpClientRestClient implements RestClient {
      * @param <T> The type that ResponseHandler returns.
      * @return Parsed response.
      */
-    private <T> T submitPostRequest(final String url, final Object requestBody, final ResponseHandler<T> responseHandler) {
+    private <T> T submitPostRequest(final String url, final Object requestBody, final ResponseHandler<T> responseHandler) throws IOException {
         try {
             final HttpPost post = new HttpPost(url);
 
@@ -266,7 +266,7 @@ public class HttpClientRestClient implements RestClient {
      * @param <T> The type that ResponseHandler returns.
      * @return Parsed response.
      */
-    private <T> T submitPutRequest(final String url, final Object requestBody, final ResponseHandler<T> responseHandler) {
+    private <T> T submitPutRequest(final String url, final Object requestBody, final ResponseHandler<T> responseHandler) throws IOException {
         try {
             final HttpPut put = new HttpPut(url);
 
@@ -298,7 +298,7 @@ public class HttpClientRestClient implements RestClient {
      * @param <T> The type that ResponseHandler returns.
      * @return Parsed response.
      */
-    private <T> T submitDeleteRequest(final String url, final Object requestBody, final ResponseHandler<T> responseHandler) {
+    private <T> T submitDeleteRequest(final String url, final Object requestBody, final ResponseHandler<T> responseHandler) throws IOException {
         try {
             final HttpDelete delete = new HttpDelete(url);
 
