@@ -17,9 +17,8 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.delete;
 
-import com.google.common.base.Preconditions;
-
 import java.io.IOException;
+import java.util.Objects;
 
 import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
@@ -34,7 +33,7 @@ public final class DeleteConnector implements DeleteRequest<Boolean> {
      * @param connectorName Name of the connector.
      */
     public DeleteConnector(final String connectorName) {
-        Preconditions.checkNotNull(connectorName);
+        Objects.requireNonNull(connectorName);
         this.connectorName = connectorName;
     }
 

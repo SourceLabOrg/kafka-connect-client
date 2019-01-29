@@ -17,11 +17,11 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.get;
 
-import com.google.common.base.Preconditions;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
@@ -37,7 +37,7 @@ public final class GetConnectorConfig implements GetRequest<Map<String, String>>
      * @param connectorName Name of the connector.
      */
     public GetConnectorConfig(final String connectorName) {
-        Preconditions.checkNotNull(connectorName);
+        Objects.requireNonNull(connectorName);
         this.connectorName = connectorName;
     }
 

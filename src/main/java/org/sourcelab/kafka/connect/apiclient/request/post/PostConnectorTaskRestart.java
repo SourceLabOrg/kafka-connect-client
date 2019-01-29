@@ -17,9 +17,9 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.post;
 
-import com.google.common.base.Preconditions;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
@@ -36,7 +36,7 @@ public final class PostConnectorTaskRestart implements PostRequest<Boolean> {
      * @param taskId Id of the task.
      */
     public PostConnectorTaskRestart(final String connectorName, final int taskId) {
-        Preconditions.checkNotNull(connectorName);
+        Objects.requireNonNull(connectorName);
         this.connectorName = connectorName;
         this.taskId = taskId;
     }

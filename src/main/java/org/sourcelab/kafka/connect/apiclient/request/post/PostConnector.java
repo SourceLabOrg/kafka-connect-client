@@ -17,12 +17,12 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.post;
 
-import com.google.common.base.Preconditions;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Defines request to deploy a new connector.
@@ -35,7 +35,7 @@ public final class PostConnector implements PostRequest<ConnectorDefinition> {
      * @param connectorDefinition Defines the new connector to be deployed.
      */
     public PostConnector(final NewConnectorDefinition connectorDefinition) {
-        Preconditions.checkNotNull(connectorDefinition);
+        Objects.requireNonNull(connectorDefinition);
         this.connectorDefinition = connectorDefinition;
     }
 

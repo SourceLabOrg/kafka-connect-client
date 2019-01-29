@@ -17,12 +17,12 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.get;
 
-import com.google.common.base.Preconditions;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.Task;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Objects;
 
 import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
@@ -38,7 +38,7 @@ public final class GetConnectorTasks implements GetRequest<Collection<Task>> {
      * @param connectorName name of the connector.
      */
     public GetConnectorTasks(final String connectorName) {
-        Preconditions.checkNotNull(connectorName);
+        Objects.requireNonNull(connectorName);
         this.connectorName = connectorName;
     }
 
