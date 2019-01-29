@@ -54,7 +54,7 @@ final ConnectorDefinition connectorDefition = client.addConnector(NewConnectorDe
 ));
 
 /*
- * See KafkaConnectClient for other available options.
+ * See KafkaConnectClient for other available operations.
  */
 ```
 
@@ -69,16 +69,20 @@ Public methods available on KafkaConnectClient can be [found here](src/main/java
 final Configuration configuration = new Configuration("https://hostname.for.kafka-connect.service.com:8083");
 
 /*
- * If you have a JKS formatted TrustStore file to validate your Kafka-Connect host's certificate with, 
- * you can provide it to the configuration.
+ * If you're JVM's TrustStore has already been updated to accept the certificate installed on your Kafka-Connect 
+ * instance, then no further configuration is required. Typically this is done using the 'key-tool' command.
+ * 
+ * Alternatively, you can configure the path to JKS formatted TrustStore file to validate the host's certificate
+ * with.
  */
 configuration.useTrustStore(
-    new File("/path/to/truststore.jks"), "TrustStorePasswordHere (Optional)"
+    new File("/path/to/truststore.jks"), "TrustStorePasswordHere or NULL"
 );
 
 /*
- * Optionally, you can disable all verifications of Kafka-Connect's SSL certificates.
- * Doing this is HIGHLY discouraged and defeats most of the purpose of using SSL in the first place.
+ * Optionally instead of providing a TrustStore, you can disable all verifications of Kafka-Connect's SSL certificates.
+ * 
+ * Doing this is HIGHLY DISCOURAGED!
  */
 //configuration.useInsecureSslCertificates();
 
