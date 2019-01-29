@@ -69,7 +69,7 @@ Public methods available on KafkaConnectClient can be [found here](src/main/java
 final Configuration configuration = new Configuration("https://hostname.for.kafka-connect.service.com:8083");
 
 /*
- * If you're JVM's TrustStore has already been updated to accept the certificate installed on your Kafka-Connect 
+ * If your JVM's TrustStore has already been updated to accept the certificate installed on your Kafka-Connect 
  * instance, then no further configuration is required. Typically this is done using the 'key-tool' command.
  * 
  * Alternatively, you can configure the path to JKS formatted TrustStore file to validate the host's certificate
