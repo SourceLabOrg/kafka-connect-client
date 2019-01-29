@@ -20,7 +20,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 ```
 
 
-##### Example Code:
+#### Example Code:
 ```java
 /*
  * Create a new configuration object.
@@ -57,7 +57,7 @@ final ConnectorDefinition connectorDefition = client.addConnector(NewConnectorDe
 Public methods available on KafkaConnectClient can be [found here](src/main/java/org/sourcelab/kafka/connect/apiclient/KafkaConnectClient.java#L62)
 
 
-##### Communicating with HTTPS enabled Kafka-Connect REST server:
+#### Communicating with HTTPS enabled Kafka-Connect REST server:
 ```java
 /*
  * Create a new configuration object.
