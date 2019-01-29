@@ -2,7 +2,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.0.4 (UNRELEASED)
+## 1.1.0 (UNRELEASED)
+
+### New Features
+- Added ability to communicate with Kafka-Connect REST endpoints using SSL.  More can be found in README.
 
 ### Internal Dependency Updates
 - Updated Guava from 24.0-JRE to 25.0-JRE for [CVE-2018-10237](https://github.com/google/guava/wiki/CVE-2018-10237).
