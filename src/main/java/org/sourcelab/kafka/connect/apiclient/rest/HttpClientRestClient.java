@@ -17,8 +17,8 @@
 
 package org.sourcelab.kafka.connect.apiclient.rest;
 
+import org.apache.http.Header;
 import org.apache.http.HttpHost;
-import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
@@ -52,9 +52,9 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -65,6 +65,14 @@ public class HttpClientRestClient implements RestClient {
     private static final Logger logger = LoggerFactory.getLogger(HttpClientRestClient.class);
 
     /**
+     * Default headers included with every request.
+     */
+    private static final Collection<Header> DEFAULT_HEADERS = Collections.unmodifiableCollection(Arrays.asList(
+        new BasicHeader("Accept", "application/json"),
+        new BasicHeader("Content-Type", "application/json")
+    ));
+
+    /**
      * Save a copy of the configuration.
      */
     private Configuration configuration;
@@ -73,7 +81,6 @@ public class HttpClientRestClient implements RestClient {
      * Our underlying Http Client.
      */
     private CloseableHttpClient httpClient;
-
 
     /**
      * Constructor.
@@ -208,11 +215,8 @@ public class HttpClientRestClient implements RestClient {
             // Build Get Request
             final HttpGet get = new HttpGet(uriBuilder.build());
 
-            // Add Accept header.
-            get.addHeader(new BasicHeader("Accept", "application/json"));
-
-            // Conditionally add content-type header?
-            get.addHeader(new BasicHeader("Content-Type", "application/json"));
+            // Add default headers.
+            DEFAULT_HEADERS.forEach(get::addHeader);
 
             logger.debug("Executing request {}", get.getRequestLine());
 
@@ -239,14 +243,8 @@ public class HttpClientRestClient implements RestClient {
         try {
             final HttpPost post = new HttpPost(url);
 
-            // Add Accept header.
-            post.addHeader(new BasicHeader("Accept", "application/json"));
-
-            // Conditionally add content-type header?
-            post.addHeader(new BasicHeader("Content-Type", "application/json"));
-
-            // Define required auth params
-            final List<NameValuePair> params = new ArrayList<>();
+            // Add default headers.
+            DEFAULT_HEADERS.forEach(post::addHeader);
 
             // Convert to Json
             final String jsonPayloadStr = JacksonFactory.newInstance().writeValueAsString(requestBody);
@@ -276,17 +274,10 @@ public class HttpClientRestClient implements RestClient {
      */
     private <T> T submitPutRequest(final String url, final Object requestBody, final ResponseHandler<T> responseHandler) throws IOException {
         try {
-            // Construct URI including our request parameters.
-            final URIBuilder uriBuilder = new URIBuilder(url)
-                .setCharset(StandardCharsets.UTF_8);
-
             final HttpPut put = new HttpPut(url);
 
-            // Add Accept header.
-            put.addHeader(new BasicHeader("Accept", "application/json"));
-
-            // Conditionally add content-type header?
-            put.addHeader(new BasicHeader("Content-Type", "application/json"));
+            // Add default headers.
+            DEFAULT_HEADERS.forEach(put::addHeader);
 
             // Convert to Json and submit as payload.
             final String jsonPayloadStr = JacksonFactory.newInstance().writeValueAsString(requestBody);
@@ -296,7 +287,7 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(put, responseHandler);
-        } catch (final ClientProtocolException | SocketException | URISyntaxException connectionException) {
+        } catch (final ClientProtocolException | SocketException connectionException) {
             // Typically this is a connection issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
         } catch (final IOException ioException) {
@@ -315,20 +306,10 @@ public class HttpClientRestClient implements RestClient {
      */
     private <T> T submitDeleteRequest(final String url, final Object requestBody, final ResponseHandler<T> responseHandler) throws IOException {
         try {
-            // Construct URI including our request parameters.
-            final URIBuilder uriBuilder = new URIBuilder(url)
-                .setCharset(StandardCharsets.UTF_8);
-
             final HttpDelete delete = new HttpDelete(url);
 
-            // Add Accept header.
-            delete.addHeader(new BasicHeader("Accept", "application/json"));
-
-            // Conditionally add content-type header?
-            delete.addHeader(new BasicHeader("Content-Type", "application/json"));
-
-            // Define required auth params
-            final List<NameValuePair> params = new ArrayList<>();
+            // Add default headers.
+            DEFAULT_HEADERS.forEach(delete::addHeader);
 
             // Convert to Json
             final String jsonPayloadStr = JacksonFactory.newInstance().writeValueAsString(requestBody);
@@ -337,7 +318,7 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(delete, responseHandler);
-        } catch (final ClientProtocolException | SocketException | URISyntaxException connectionException) {
+        } catch (final ClientProtocolException | SocketException connectionException) {
             // Typically this is a connection issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
         } catch (final IOException ioException) {
