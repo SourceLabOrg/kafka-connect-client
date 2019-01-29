@@ -17,6 +17,7 @@
 
 package org.sourcelab.kafka.connect.apiclient.rest;
 
+import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.ssl.SSLContexts;
@@ -41,6 +42,11 @@ import java.util.Objects;
  * Utility for properly configuring the SSL Context based on client configuration settings.
  */
 class HttpsContextBuilder {
+    /**
+     * Accept TLS1.2, 1.1, and 1.0 protocols.
+     */
+    private static final String[] sslProtocols = new String[] { "TLSv1.2", "TLSv1.1", "TLSv1" };
+
     /**
      * Client configuration.
      */
@@ -113,5 +119,26 @@ class HttpsContextBuilder {
         }
 
         return sslcontext;
+    }
+
+    /**
+     * Get allowed SSL Protocols.
+     * @return allowed SslProtocols.
+     */
+    private String[] getSslProtocols() {
+        return sslProtocols;
+    }
+
+    /**
+     * Properly configured SslSocketFactory based on client configuration.
+     * @return SslSocketFactory instance.
+     */
+    LayeredConnectionSocketFactory createSslSocketFactory() {
+        return new SSLConnectionSocketFactory(
+            getSslContext(),
+            getSslProtocols(),
+            null,
+            getHostnameVerifier()
+        );
     }
 }

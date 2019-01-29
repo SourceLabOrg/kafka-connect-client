@@ -29,6 +29,9 @@ public final class Configuration {
     // Defines the URL/Hostname of Kafka-Connect
     private final String apiHost;
 
+    // Optional Connection settings
+    private int requestTimeoutInSeconds = 300;
+
     // Optional SSL options
     private boolean ignoreInvalidSslCertificates = false;
     private File trustStoreFile = null;
@@ -115,6 +118,16 @@ public final class Configuration {
         return this;
     }
 
+    /**
+     * Set the request timeout value, in seconds.
+     * @param requestTimeoutInSeconds How long before a request times out, in seconds.
+     * @return Configuration instance.
+     */
+    public Configuration useRequestTimeoutInSeconds(final int requestTimeoutInSeconds) {
+        this.requestTimeoutInSeconds = requestTimeoutInSeconds;
+        return this;
+    }
+
     public String getProxyHost() {
         return proxyHost;
     }
@@ -151,10 +164,15 @@ public final class Configuration {
         return trustStorePassword;
     }
 
+    public int getRequestTimeoutInSeconds() {
+        return requestTimeoutInSeconds;
+    }
+
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder("Configuration{")
-            .append("apiHost='").append(apiHost).append('\'');
+            .append("apiHost='").append(apiHost).append('\'')
+            .append(", requestTimeout='").append(requestTimeoutInSeconds).append('\'');
         if (proxyHost != null) {
             stringBuilder
                 .append(", proxy='").append(proxyScheme).append("://");
@@ -165,6 +183,13 @@ public final class Configuration {
             }
 
             stringBuilder.append(proxyHost).append(":").append(proxyPort).append('\'');
+        }
+        stringBuilder.append(", ignoreInvalidSslCertificates='").append(ignoreInvalidSslCertificates).append('\'');
+        if (trustStoreFile != null) {
+            stringBuilder.append(", sslTrustStoreFile='").append(trustStoreFile).append('\'');
+            if (trustStorePassword != null) {
+                stringBuilder.append(", sslTrustStorePassword='******'");
+            }
         }
         stringBuilder.append('}');
 
