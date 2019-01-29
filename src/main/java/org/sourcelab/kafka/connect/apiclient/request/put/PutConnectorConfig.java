@@ -17,7 +17,6 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.put;
 
-import com.google.common.base.Preconditions;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 
@@ -25,6 +24,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
@@ -41,8 +41,8 @@ public final class PutConnectorConfig implements PutRequest<ConnectorDefinition>
      * @param config Map of configuration items.
      */
     public PutConnectorConfig(final String connectorName, final Map<String, String> config) {
-        Preconditions.checkNotNull(connectorName);
-        Preconditions.checkNotNull(config);
+        Objects.requireNonNull(connectorName);
+        Objects.requireNonNull(config);
         this.connectorName = connectorName;
         this.config = Collections.unmodifiableMap(new HashMap<>(config));
     }

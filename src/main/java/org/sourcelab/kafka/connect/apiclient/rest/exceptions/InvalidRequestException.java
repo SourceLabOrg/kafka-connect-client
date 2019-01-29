@@ -17,8 +17,9 @@
 
 package org.sourcelab.kafka.connect.apiclient.rest.exceptions;
 
-import com.google.common.base.Preconditions;
 import org.sourcelab.kafka.connect.apiclient.request.RequestErrorResponse;
+
+import java.util.Objects;
 
 /**
  * Represents when a request is invalid.
@@ -59,7 +60,7 @@ public class InvalidRequestException extends RuntimeException {
      * @return Appropriate Exception class.
      */
     public static InvalidRequestException factory(final RequestErrorResponse errorResponse) {
-        Preconditions.checkNotNull(errorResponse, "Invalid RequestErrorResponse parameter, must not be null");
+        Objects.requireNonNull(errorResponse, "Invalid RequestErrorResponse parameter, must not be null");
 
         switch (errorResponse.getErrorCode()) {
             case 404:

@@ -17,11 +17,11 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.get;
 
-import com.google.common.base.Preconditions;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.TaskStatus;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
@@ -39,7 +39,7 @@ public final class GetConnectorTaskStatus implements GetRequest<TaskStatus> {
      * @param taskId Task id.
      */
     public GetConnectorTaskStatus(final String connectorName, final int taskId) {
-        Preconditions.checkNotNull(connectorName);
+        Objects.requireNonNull(connectorName);
         this.connectorName = connectorName;
         this.taskId = taskId;
     }
