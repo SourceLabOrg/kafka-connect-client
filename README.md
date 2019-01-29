@@ -19,7 +19,8 @@ This client library is released on Maven Central.  Add a new dependency to your 
 </dependency>
 ```
 
-Example Code:
+
+##### Example Code:
 ```java
 /*
  * Create a new configuration object.
@@ -27,7 +28,7 @@ Example Code:
  * This configuration also allows you to define some optional details on your connection,
  * such as using an outbound proxy (authenticated or not).
  */
-final Configuration configuration = new Configuration("hostname.for.kafka-connect.service.com:8083");
+final Configuration configuration = new Configuration("http://hostname.for.kafka-connect.service.com:8083");
 
 /*
  * Create an instance of KafkaConnectClient, passing your configuration.
@@ -54,6 +55,38 @@ final ConnectorDefinition connectorDefition = client.addConnector(NewConnectorDe
 ```
 
 Public methods available on KafkaConnectClient can be [found here](src/main/java/org/sourcelab/kafka/connect/apiclient/KafkaConnectClient.java#L62)
+
+
+##### Communicating with HTTPS enabled Kafka-Connect REST server:
+```java
+/*
+ * Create a new configuration object.
+ *
+ * This configuration also allows you to define some optional details on your connection,
+ * such as using an outbound proxy (authenticated or not).
+ */
+final Configuration configuration = new Configuration("https://hostname.for.kafka-connect.service.com:8083");
+
+/*
+ * If you have a JKS formatted TrustStore file to validate your Kafka-Connect host's certificate with, 
+ * you can provide it to the configuration.
+ */
+configuration.useTrustStore(
+    new File("/path/to/truststore.jks"), "TrustStorePasswordHere (Optional)"
+);
+
+/*
+ * Optionally, you can disable all verifications of Kafka-Connect's SSL certificates.
+ * Doing this is HIGHLY discouraged and defeats most of the purpose of using SSL in the first place.
+ */
+//configuration.useInsecureSslCertificates();
+
+/*
+ * Create an instance of KafkaConnectClient, passing your configuration.
+ */
+final KafkaConnectClient client = new KafkaConnectClient(configuration);
+
+```
 
 ## Changelog
 
