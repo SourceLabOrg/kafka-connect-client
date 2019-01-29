@@ -19,7 +19,6 @@ package org.sourcelab.kafka.connect.apiclient.rest;
 
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
-import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
@@ -53,11 +52,9 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
