@@ -17,6 +17,10 @@
 
 package org.sourcelab.kafka.connect.apiclient;
 
+import java.io.File;
+import java.net.URL;
+import java.util.Objects;
+
 /**
  * Configure your Kafka Connect API client.
  *
@@ -25,6 +29,11 @@ package org.sourcelab.kafka.connect.apiclient;
 public final class Configuration {
     // Defines the URL/Hostname of Kafka-Connect
     private final String apiHost;
+
+    // Optional SSL options
+    private boolean ignoreInvalidSslCertificates = false;
+    private File trustStoreFile = null;
+    private String trustStorePassword = null;
 
     // Optional Proxy Configuration
     private String proxyHost = null;
@@ -45,10 +54,11 @@ public final class Configuration {
         }
 
         // Normalize into "http://<hostname>"
-        if (!kafkaConnectHost.startsWith("http://")) {
-            this.apiHost = "http://" + kafkaConnectHost;
-        } else {
+        if (kafkaConnectHost.startsWith("http://") || kafkaConnectHost.startsWith("https://")) {
             this.apiHost = kafkaConnectHost;
+        } else {
+            // Assume http protocol
+            this.apiHost = "http://" + kafkaConnectHost;
         }
     }
 
@@ -80,6 +90,32 @@ public final class Configuration {
         return this;
     }
 
+    /**
+     * Skip all validation of SSL Certificates.  This is insecure and highly discouraged!
+     *
+     * @return Configuration instance.
+     */
+    public Configuration useInsecureSslCertificates() {
+        this.ignoreInvalidSslCertificates = true;
+        return this;
+    }
+
+    /**
+     * You can supply a path to a JKS trust store to be used to validate SSL certificates with.
+     *
+     * Alternatively you can can explicitly add your certificate to the JVM's truststore using a command like:
+     * keytool -importcert -keystore truststore.jks -file servercert.pem
+     *
+     * @param trustStorePath file path to truststore.
+     * @param password (optional) Password for truststore.
+     * @return Configuration instance.
+     */
+    public Configuration useTrustStore(final File trustStorePath, final String password) {
+        this.trustStoreFile = Objects.requireNonNull(trustStorePath);
+        this.trustStorePassword = password;
+        return this;
+    }
+
     public String getProxyHost() {
         return proxyHost;
     }
@@ -102,6 +138,18 @@ public final class Configuration {
 
     public String getApiHost() {
         return apiHost;
+    }
+
+    public boolean getIgnoreInvalidSslCertificates() {
+        return ignoreInvalidSslCertificates;
+    }
+
+    public File getTrustStoreFile() {
+        return trustStoreFile;
+    }
+
+    public String getTrustStorePassword() {
+        return trustStorePassword;
     }
 
     @Override

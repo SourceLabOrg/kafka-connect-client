@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,10 +48,21 @@ public class KafkaConnectClientTest {
         // Pull apiHost from environment
         String apiHost = System.getenv("KAFKA_CONNECT_HOST");
         if (apiHost == null || apiHost.isEmpty()) {
-            apiHost = "localhost:8083";
+            apiHost = "http://localhost:8083";
         }
+
+        final Configuration configuration = new Configuration(apiHost);
+
+        // Pull trust store configuration from environment
+        final String sslTrustStoreFile = System.getenv("KAFKA_CONNECT_TRUSTSTORE");
+        if (sslTrustStoreFile != null && !sslTrustStoreFile.isEmpty()) {
+            configuration.useTrustStore(
+                new File(sslTrustStoreFile), System.getenv("KAFKA_CONNECT_TRUSTSTORE_PASSWORD")
+            );
+        }
+
         // Build api client
-        this.kafkaConnectClient = new KafkaConnectClient(new Configuration(apiHost));
+        this.kafkaConnectClient = new KafkaConnectClient(configuration);
     }
 
     /**

@@ -31,6 +31,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -47,11 +48,19 @@ import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ConnectionException
 import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ResultParsingException;
 import org.sourcelab.kafka.connect.apiclient.rest.handlers.RestResponseHandler;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyManagementException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -91,15 +100,15 @@ public class HttpClientRestClient implements RestClient {
         // Save reference to configuration
         this.configuration = configuration;
 
-        // Create default SSLContext
-        final SSLContext sslcontext = SSLContexts.createDefault();
+        // Create https context builder utility.
+        final HttpsContextBuilder httpsContextBuilder = new HttpsContextBuilder(configuration);
 
-        // Allow TLSv1 protocol only
+        // Allow TLSv1.2, TLSv1.1, TLSv1 protocols
         final LayeredConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
-            sslcontext,
-            new String[] { "TLSv1" },
+            httpsContextBuilder.getSslContext(),
+            new String[] { "TLSv1.2", "TLSv1.1", "TLSv1" },
             null,
-            SSLConnectionSocketFactory.getDefaultHostnameVerifier()
+            httpsContextBuilder.getHostnameVerifier()
         );
 
         // Setup client builder
