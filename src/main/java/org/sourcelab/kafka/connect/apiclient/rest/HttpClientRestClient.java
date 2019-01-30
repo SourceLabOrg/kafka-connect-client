@@ -51,7 +51,6 @@ import org.sourcelab.kafka.connect.apiclient.rest.handlers.RestResponseHandler;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
