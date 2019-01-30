@@ -21,6 +21,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.ResponseHandler;
@@ -29,8 +30,11 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -45,8 +49,11 @@ import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ResultParsingExcept
 import org.sourcelab.kafka.connect.apiclient.rest.handlers.RestResponseHandler;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.SocketException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
@@ -77,6 +84,8 @@ public class HttpClientRestClient implements RestClient {
      * Our underlying Http Client.
      */
     private CloseableHttpClient httpClient;
+
+    private HttpClientContext httpClientContext;
 
     /**
      * Constructor.
@@ -109,6 +118,15 @@ public class HttpClientRestClient implements RestClient {
         // Define our RequestConfigBuilder
         final RequestConfig.Builder requestConfigBuilder = RequestConfig.custom();
 
+        // Define our Credentials Provider
+        final CredentialsProvider credsProvider = new BasicCredentialsProvider();
+
+        // Define our context
+        httpClientContext = HttpClientContext.create();
+
+        // Define our auth cache
+        final AuthCache authCache = new BasicAuthCache();
+
         // If we have a configured proxy host
         if (configuration.getProxyHost() != null) {
             // Define proxy host
@@ -120,20 +138,52 @@ public class HttpClientRestClient implements RestClient {
 
             // If we have proxy auth enabled
             if (configuration.getProxyUsername() != null) {
-                // Create credential provider
-                final CredentialsProvider credsProvider = new BasicCredentialsProvider();
+                // Add proxy credentials
                 credsProvider.setCredentials(
                     new AuthScope(configuration.getProxyHost(), configuration.getProxyPort()),
                     new UsernamePasswordCredentials(configuration.getProxyUsername(), configuration.getProxyPassword())
                 );
 
-                // Attach Credentials provider to client builder.
-                clientBuilder.setDefaultCredentialsProvider(credsProvider);
+                // Preemptive load context with authentication.
+                authCache.put(
+                    new HttpHost(configuration.getProxyHost(), configuration.getProxyPort(), configuration.getProxyScheme()), new BasicScheme()
+                );
             }
 
             // Attach Proxy to request config builder
             requestConfigBuilder.setProxy(proxyHost);
         }
+
+        // If BasicAuth credentials are configured.
+        if (configuration.getBasicAuthUsername() != null) {
+            try {
+                // parse ApiHost for Hostname and port.
+                final URL apiUrl = new URL(configuration.getApiHost());
+
+                // Add Kafka-Connect credentials
+                credsProvider.setCredentials(
+                    new AuthScope(apiUrl.getHost(), apiUrl.getPort()),
+                    new UsernamePasswordCredentials(
+                        configuration.getBasicAuthUsername(),
+                        configuration.getBasicAuthPassword()
+                    )
+                );
+
+                // Preemptive load context with authentication.
+                authCache.put(
+                    new HttpHost(apiUrl.getHost(), apiUrl.getPort(), apiUrl.getProtocol()), new BasicScheme()
+                );
+            } catch (final MalformedURLException exception) {
+                throw new RuntimeException(exception.getMessage(), exception);
+            }
+        }
+
+        // Configure context.
+        httpClientContext.setAuthCache(authCache);
+        httpClientContext.setCredentialsProvider(credsProvider);
+
+        // Attach Credentials provider to client builder.
+        clientBuilder.setDefaultCredentialsProvider(credsProvider);
 
         // Attach default request config
         clientBuilder.setDefaultRequestConfig(requestConfigBuilder.build());
@@ -211,7 +261,7 @@ public class HttpClientRestClient implements RestClient {
             logger.debug("Executing request {}", get.getRequestLine());
 
             // Execute and return
-            return httpClient.execute(get, responseHandler);
+            return httpClient.execute(get, responseHandler, httpClientContext);
         } catch (final ClientProtocolException | SocketException | URISyntaxException connectionException) {
             // Typically this is a connection issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
@@ -244,7 +294,7 @@ public class HttpClientRestClient implements RestClient {
             logger.debug("Executing request {} with {}", post.getRequestLine(), jsonPayloadStr);
 
             // Execute and return
-            return httpClient.execute(post, responseHandler);
+            return httpClient.execute(post, responseHandler, httpClientContext);
         } catch (final ClientProtocolException | SocketException connectionException) {
             // Typically this is a connection issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
@@ -276,7 +326,7 @@ public class HttpClientRestClient implements RestClient {
             logger.debug("Executing request {} with {}", put.getRequestLine(), jsonPayloadStr);
 
             // Execute and return
-            return httpClient.execute(put, responseHandler);
+            return httpClient.execute(put, responseHandler, httpClientContext);
         } catch (final ClientProtocolException | SocketException connectionException) {
             // Typically this is a connection issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
@@ -307,7 +357,7 @@ public class HttpClientRestClient implements RestClient {
             logger.debug("Executing request {} with {}", delete.getRequestLine(), jsonPayloadStr);
 
             // Execute and return
-            return httpClient.execute(delete, responseHandler);
+            return httpClient.execute(delete, responseHandler, httpClientContext);
         } catch (final ClientProtocolException | SocketException connectionException) {
             // Typically this is a connection issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
