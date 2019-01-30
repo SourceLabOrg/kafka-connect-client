@@ -21,6 +21,8 @@ import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.ssl.SSLContexts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
 
 import javax.net.ssl.HostnameVerifier;
@@ -42,6 +44,8 @@ import java.util.Objects;
  * Utility for properly configuring the SSL Context based on client configuration settings.
  */
 class HttpsContextBuilder {
+    private static final Logger logger = LoggerFactory.getLogger(HttpsContextBuilder.class);
+
     /**
      * Accept TLS1.2, 1.1, and 1.0 protocols.
      */
@@ -134,6 +138,11 @@ class HttpsContextBuilder {
      * @return SslSocketFactory instance.
      */
     LayeredConnectionSocketFactory createSslSocketFactory() {
+        // Emit an warning letting everyone know we're using an insecure configuration.
+        if (configuration.getIgnoreInvalidSslCertificates()) {
+            logger.warn("Using insecure configuration, skipping server-side certificate validation checks.");
+        }
+
         return new SSLConnectionSocketFactory(
             getSslContext(),
             getSslProtocols(),
