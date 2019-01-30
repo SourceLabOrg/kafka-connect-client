@@ -15,19 +15,20 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>org.sourcelab</groupId>
     <artifactId>kafka-connect-client</artifactId>
-    <version>1.0.3</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
-Example Code:
+
+#### Example Code:
 ```java
 /*
  * Create a new configuration object.
  *
  * This configuration also allows you to define some optional details on your connection,
- * such as using an outbound proxy (authenticated or not).
+ * such as using an outbound proxy (authenticated or not), SSL client settings, etc..
  */
-final Configuration configuration = new Configuration("hostname.for.kafka-connect.service.com:8083");
+final Configuration configuration = new Configuration("http://hostname.for.kafka-connect.service.com:8083");
 
 /*
  * Create an instance of KafkaConnectClient, passing your configuration.
@@ -51,9 +52,46 @@ final ConnectorDefinition connectorDefition = client.addConnector(NewConnectorDe
     .withConfig("topics", "test-topic")
     .build()
 ));
+
+/*
+ * See KafkaConnectClient for other available operations.
+ */
 ```
 
 Public methods available on KafkaConnectClient can be [found here](src/main/java/org/sourcelab/kafka/connect/apiclient/KafkaConnectClient.java#L62)
+
+
+#### Communicating with HTTPS enabled Kafka-Connect REST server:
+```java
+/*
+ * Create a new configuration object.
+ */
+final Configuration configuration = new Configuration("https://hostname.for.kafka-connect.service.com:8083");
+
+/*
+ * If your JVM's TrustStore has already been updated to accept the certificate installed on your Kafka-Connect 
+ * instance, then no further configuration is required. Typically this is done using the 'key-tool' command.
+ * 
+ * Alternatively, you can configure the path to JKS formatted TrustStore file to validate the host's certificate
+ * with.
+ */
+configuration.useTrustStore(
+    new File("/path/to/truststore.jks"), "TrustStorePasswordHere or NULL"
+);
+
+/*
+ * Optionally instead of providing a TrustStore, you can disable all verifications of Kafka-Connect's SSL certificates.
+ * 
+ * Doing this is HIGHLY DISCOURAGED!
+ */
+//configuration.useInsecureSslCertificates();
+
+/*
+ * Create an instance of KafkaConnectClient, passing your configuration.
+ */
+final KafkaConnectClient client = new KafkaConnectClient(configuration);
+
+```
 
 ## Changelog
 

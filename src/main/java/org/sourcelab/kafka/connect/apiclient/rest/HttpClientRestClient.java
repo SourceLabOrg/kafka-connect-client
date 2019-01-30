@@ -30,14 +30,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
@@ -47,7 +44,6 @@ import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ConnectionException
 import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ResultParsingException;
 import org.sourcelab.kafka.connect.apiclient.rest.handlers.RestResponseHandler;
 
-import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.URISyntaxException;
@@ -98,23 +94,17 @@ public class HttpClientRestClient implements RestClient {
         // Save reference to configuration
         this.configuration = configuration;
 
-        // Create default SSLContext
-        final SSLContext sslcontext = SSLContexts.createDefault();
-
-        // Allow TLSv1 protocol only
-        final LayeredConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
-            sslcontext,
-            new String[] { "TLSv1" },
-            null,
-            SSLConnectionSocketFactory.getDefaultHostnameVerifier()
-        );
+        // Create https context builder utility.
+        final HttpsContextBuilder httpsContextBuilder = new HttpsContextBuilder(configuration);
 
         // Setup client builder
         final HttpClientBuilder clientBuilder = HttpClientBuilder.create();
         clientBuilder
-            // 3 min timeout?
-            .setConnectionTimeToLive(300, TimeUnit.SECONDS)
-            .setSSLSocketFactory(sslSocketFactory);
+            // Define timeout
+            .setConnectionTimeToLive(configuration.getRequestTimeoutInSeconds(), TimeUnit.SECONDS)
+
+            // Define SSL Socket Factory instance.
+            .setSSLSocketFactory(httpsContextBuilder.createSslSocketFactory());
 
         // Define our RequestConfigBuilder
         final RequestConfig.Builder requestConfigBuilder = RequestConfig.custom();
