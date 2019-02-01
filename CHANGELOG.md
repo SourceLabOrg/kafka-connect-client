@@ -2,7 +2,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.2.0 (UNRELEASED)
+## 1.2.0 (02/02/2019)
 
 ### New Features
 - Added ability to authenticate with Kafka-Connect REST endpoints utilizing Basic-Authentication.
