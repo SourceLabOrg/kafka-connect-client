@@ -4,9 +4,6 @@
 
 This library intends to give you an easy way to interact with the [Kafka-Connect](https://docs.confluent.io/current/connect/restapi.html) REST service (V4). 
 
-**Note** Use this library at your own risk!  Currently there are no known issues, but as an **unofficial** library,
- there are no guarantees.  
-
 ## How to use this library
 
 This client library is released on Maven Central.  Add a new dependency to your project's POM file:
@@ -15,7 +12,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>org.sourcelab</groupId>
     <artifactId>kafka-connect-client</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
