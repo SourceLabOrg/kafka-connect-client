@@ -64,6 +64,8 @@ public class InvalidRequestException extends RuntimeException {
         Objects.requireNonNull(errorResponse, "Invalid RequestErrorResponse parameter, must not be null");
 
         switch (errorResponse.getErrorCode()) {
+            case 401:
+                return new UnauthorizedRequestException(errorResponse.getMessage(), errorResponse.getErrorCode());
             case 404:
                 return new ResourceNotFoundException(errorResponse.getMessage());
             case 409:

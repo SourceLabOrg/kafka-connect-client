@@ -61,6 +61,11 @@ public class KafkaConnectClientTest {
             );
         }
 
+        final String basicAuthUsername = System.getenv("KAFKA_CONNECT_BASICAUTH_USERNAME");
+        if (basicAuthUsername != null && !basicAuthUsername.isEmpty()) {
+            configuration.useBasicAuth(basicAuthUsername, System.getenv("KAFKA_CONNECT_BASICAUTH_PASSWORD"));
+        }
+
         // Build api client
         this.kafkaConnectClient = new KafkaConnectClient(configuration);
     }

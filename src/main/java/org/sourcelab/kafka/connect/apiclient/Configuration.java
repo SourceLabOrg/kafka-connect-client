@@ -29,8 +29,12 @@ public final class Configuration {
     // Defines the URL/Hostname of Kafka-Connect
     private final String apiHost;
 
-    // Optional Connection settings
+    // Optional Connection options
     private int requestTimeoutInSeconds = 300;
+
+    // Optional BasicAuth options
+    private String basicAuthUsername = null;
+    private String basicAuthPassword = null;
 
     // Optional SSL options
     private boolean ignoreInvalidSslCertificates = false;
@@ -62,6 +66,19 @@ public final class Configuration {
             // Assume http protocol
             this.apiHost = "http://" + kafkaConnectHost;
         }
+    }
+
+    /**
+     * Allow setting http Basic-Authentication username and password to authenticate requests.
+     *
+     * @param username username to authenticate requests to Kafka-Connect with.
+     * @param password password to authenticate requests to Kafka-Connect with.
+     * @return Configuration instance.
+     */
+    public Configuration useBasicAuth(final String username, final String password) {
+        this.basicAuthUsername = username;
+        this.basicAuthPassword = password;
+        return this;
     }
 
     /**
@@ -168,6 +185,14 @@ public final class Configuration {
         return requestTimeoutInSeconds;
     }
 
+    public String getBasicAuthUsername() {
+        return basicAuthUsername;
+    }
+
+    public String getBasicAuthPassword() {
+        return basicAuthPassword;
+    }
+
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder("Configuration{")
@@ -190,6 +215,11 @@ public final class Configuration {
             if (trustStorePassword != null) {
                 stringBuilder.append(", sslTrustStorePassword='******'");
             }
+        }
+        if (basicAuthUsername != null) {
+            stringBuilder
+                .append(", basicAuthUsername='").append(basicAuthUsername).append('\'')
+                .append(", basicAuthPassword='******'");
         }
         stringBuilder.append('}');
 

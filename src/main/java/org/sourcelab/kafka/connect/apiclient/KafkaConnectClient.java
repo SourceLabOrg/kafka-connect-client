@@ -17,6 +17,7 @@
 
 package org.sourcelab.kafka.connect.apiclient;
 
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
@@ -49,6 +50,7 @@ import org.sourcelab.kafka.connect.apiclient.rest.HttpClientRestClient;
 import org.sourcelab.kafka.connect.apiclient.rest.RestClient;
 import org.sourcelab.kafka.connect.apiclient.rest.RestResponse;
 import org.sourcelab.kafka.connect.apiclient.rest.exceptions.InvalidRequestException;
+import org.sourcelab.kafka.connect.apiclient.rest.exceptions.UnauthorizedRequestException;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -287,6 +289,19 @@ public class KafkaConnectClient {
             } catch (final IOException exception) {
                 throw new RuntimeException(exception.getMessage(), exception);
             }
+        }
+
+        // Server reject's client's authentication.
+        if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
+            // Throw contextual error msg based on if credentials are configured or not.
+            String errorMsg;
+            if (configuration.getBasicAuthUsername() == null) {
+                errorMsg = "Server required authentication credentials but none were provided in client configuration.";
+            } else {
+                errorMsg = "Client authentication credentials (username=" + configuration.getBasicAuthUsername() + ") was rejected by server.";
+            }
+            errorMsg = errorMsg + " Server responded with: \"" + responseStr + "\"";
+            throw new UnauthorizedRequestException(errorMsg, responseCode);
         }
 
         // Attempt to parse error response
