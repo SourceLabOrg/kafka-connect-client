@@ -161,6 +161,14 @@
             <version>2.6</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Test Http/Https Client -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.4.14.v20181114</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
