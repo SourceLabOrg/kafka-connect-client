@@ -48,6 +48,7 @@ import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ConnectionException
 import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ResultParsingException;
 import org.sourcelab.kafka.connect.apiclient.rest.handlers.RestResponseHandler;
 
+import javax.net.ssl.SSLHandshakeException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.SocketException;
@@ -261,8 +262,8 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(get, responseHandler, httpClientContext);
-        } catch (final ClientProtocolException | SocketException | URISyntaxException connectionException) {
-            // Typically this is a connection issue.
+        } catch (final ClientProtocolException | SocketException | URISyntaxException | SSLHandshakeException connectionException) {
+            // Typically this is a connection or certificate issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
         } catch (final IOException ioException) {
             // Typically this is a parse error.
@@ -294,7 +295,7 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(post, responseHandler, httpClientContext);
-        } catch (final ClientProtocolException | SocketException connectionException) {
+        } catch (final ClientProtocolException | SocketException | SSLHandshakeException connectionException) {
             // Typically this is a connection issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
         } catch (final IOException ioException) {
@@ -326,7 +327,7 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(put, responseHandler, httpClientContext);
-        } catch (final ClientProtocolException | SocketException connectionException) {
+        } catch (final ClientProtocolException | SocketException | SSLHandshakeException connectionException) {
             // Typically this is a connection issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
         } catch (final IOException ioException) {
@@ -357,7 +358,7 @@ public class HttpClientRestClient implements RestClient {
 
             // Execute and return
             return httpClient.execute(delete, responseHandler, httpClientContext);
-        } catch (final ClientProtocolException | SocketException connectionException) {
+        } catch (final ClientProtocolException | SocketException | SSLHandshakeException connectionException) {
             // Typically this is a connection issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
         } catch (final IOException ioException) {
