@@ -84,7 +84,7 @@ configuration.useTrustStore(
 //configuration.useInsecureSslCertificates();
 
 /*
- * If your Kafka-Connect instance is configured to require a valid client certificate, you can configure a KeyStore for
+ * If your Kafka-Connect instance is configured to validate client certificates, you can configure a KeyStore for
  * the client to send with each request:
  */
 configuration.useKeyStore(

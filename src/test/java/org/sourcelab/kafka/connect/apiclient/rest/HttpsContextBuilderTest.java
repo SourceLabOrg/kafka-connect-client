@@ -22,12 +22,7 @@ import org.junit.Test;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
 
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
-import java.io.File;
-
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
