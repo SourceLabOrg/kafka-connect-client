@@ -73,7 +73,7 @@ final Configuration configuration = new Configuration("https://hostname.for.kafk
  * with.
  */
 configuration.useTrustStore(
-    new File("/path/to/truststore.jks"), "TrustStorePasswordHere or NULL"
+    new File("/path/to/truststore.jks"), "Optional Password Here or NULL"
 );
 
 /*
@@ -82,6 +82,14 @@ configuration.useTrustStore(
  * Doing this is HIGHLY DISCOURAGED!
  */
 //configuration.useInsecureSslCertificates();
+
+/*
+ * If your Kafka-Connect instance is configured to require a valid client certificate, you can configure a KeyStore for
+ * the client to send with each request:
+ */
+configuration.useKeyStore(
+    new File("/path/to/keystore.jks"), "Optional Password Here or NULL"    
+);
 
 /*
  * Create an instance of KafkaConnectClient, passing your configuration.
