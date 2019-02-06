@@ -2,10 +2,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.3.0 (UNRELEASED)
+## 1.3.0 (02/06/2019)
 
 ### New Features
-- Added ability to configure sending a client certificate in order to authenicate Kafka-Connect REST endpoints.
+- Added ability to configure sending a client certificate in order to authenticate Kafka-Connect REST endpoints.
 
 ## 1.2.0 (02/02/2019)
 
