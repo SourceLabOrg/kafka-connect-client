@@ -36,10 +36,14 @@ public final class Configuration {
     private String basicAuthUsername = null;
     private String basicAuthPassword = null;
 
-    // Optional SSL options
+    // Optional settings to validate Kafka-Connect's SSL certificate.
     private boolean ignoreInvalidSslCertificates = false;
     private File trustStoreFile = null;
     private String trustStorePassword = null;
+
+    // Optional settings to send a client certificate with request.
+    private File keyStoreFile = null;
+    private String keyStorePassword = null;
 
     // Optional Proxy Configuration
     private String proxyHost = null;
@@ -59,7 +63,7 @@ public final class Configuration {
             throw new NullPointerException("Kafka Connect Host parameter cannot be null!");
         }
 
-        // Normalize into "http://<hostname>"
+        // Normalize into "http://<hostname>" if not specified.
         if (kafkaConnectHost.startsWith("http://") || kafkaConnectHost.startsWith("https://")) {
             this.apiHost = kafkaConnectHost;
         } else {
@@ -120,18 +124,33 @@ public final class Configuration {
     }
 
     /**
-     * You can supply a path to a JKS trust store to be used to validate SSL certificates with.
+     * (Optional) Supply a path to a JKS trust store to be used to validate SSL certificates with.  You'll need this
+     * if you're using Self Signed certificates.
      *
      * Alternatively you can can explicitly add your certificate to the JVM's truststore using a command like:
      * keytool -importcert -keystore truststore.jks -file servercert.pem
      *
-     * @param trustStorePath file path to truststore.
-     * @param password (optional) Password for truststore.
+     * @param trustStoreFile file path to truststore.
+     * @param password (optional) Password for truststore. Pass null if no password.
      * @return Configuration instance.
      */
-    public Configuration useTrustStore(final File trustStorePath, final String password) {
-        this.trustStoreFile = Objects.requireNonNull(trustStorePath);
+    public Configuration useTrustStore(final File trustStoreFile, final String password) {
+        this.trustStoreFile = Objects.requireNonNull(trustStoreFile);
         this.trustStorePassword = password;
+        return this;
+    }
+
+    /**
+     * (Optional) Supply a path to a JKS key store to be used for client validation.  You'll need this if your
+     * Kafka-Connect instance is configured to only accept requests from clients with a valid certificate.
+     *
+     * @param keyStoreFile file path to keystore.
+     * @param password (optional) Password for keystore. Pass null if no password.
+     * @return Configuration instance.
+     */
+    public Configuration useKeyStore(final File keyStoreFile, final String password) {
+        this.keyStoreFile = Objects.requireNonNull(keyStoreFile);
+        this.keyStorePassword = password;
         return this;
     }
 
@@ -183,6 +202,14 @@ public final class Configuration {
 
     public int getRequestTimeoutInSeconds() {
         return requestTimeoutInSeconds;
+    }
+
+    public File getKeyStoreFile() {
+        return keyStoreFile;
+    }
+
+    public String getKeyStorePassword() {
+        return keyStorePassword;
     }
 
     public String getBasicAuthUsername() {
