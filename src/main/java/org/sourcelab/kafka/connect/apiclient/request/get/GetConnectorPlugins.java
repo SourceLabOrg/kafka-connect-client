@@ -21,6 +21,7 @@ import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPlugin;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -40,6 +41,6 @@ public final class GetConnectorPlugins implements GetRequest<Collection<Connecto
 
     @Override
     public Collection<ConnectorPlugin> parseResponse(final String responseStr) throws IOException {
-        return JacksonFactory.newInstance().readValue(responseStr, Collection.class);
+        return Arrays.asList(JacksonFactory.newInstance().readValue(responseStr, ConnectorPlugin[].class));
     }
 }

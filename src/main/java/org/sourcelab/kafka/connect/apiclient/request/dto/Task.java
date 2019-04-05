@@ -45,7 +45,7 @@ public final class Task {
     /**
      * Defines a Task Id.
      */
-    private static class TaskId {
+    public static class TaskId {
         private String connector;
         private int task;
 

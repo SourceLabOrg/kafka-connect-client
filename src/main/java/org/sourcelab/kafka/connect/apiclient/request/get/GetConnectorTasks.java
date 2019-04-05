@@ -21,6 +21,7 @@ import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.Task;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -54,6 +55,6 @@ public final class GetConnectorTasks implements GetRequest<Collection<Task>> {
 
     @Override
     public Collection<Task> parseResponse(final String responseStr) throws IOException {
-        return JacksonFactory.newInstance().readValue(responseStr, Collection.class);
+        return Arrays.asList(JacksonFactory.newInstance().readValue(responseStr, Task[].class));
     }
 }
