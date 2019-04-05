@@ -58,7 +58,7 @@ public final class ConnectorPluginConfigValidationResults {
     /**
      * Defines a config item.
      */
-    private static final class Config {
+    public static final class Config {
         private Definition definition;
         private Value value;
 
@@ -81,7 +81,7 @@ public final class ConnectorPluginConfigValidationResults {
         /**
          * Represents the Definition of a config item.
          */
-        private static final class Definition {
+        public static final class Definition {
             private String name;
             private String type;
             private boolean required = false;
@@ -159,7 +159,7 @@ public final class ConnectorPluginConfigValidationResults {
         /**
          * Defines a config item value.
          */
-        private static final class Value {
+        public static final class Value {
             private String name;
             private String value;
             private Collection<String> recommendedValues = new ArrayList<>();
