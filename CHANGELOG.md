@@ -2,6 +2,20 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.0 (04/05/2019)
+
+### Bugfix / Breaking Change
+
+**PR**: [Fix connector tasks & plugins query](https://github.com/SourceLabOrg/kafka-connect-client/pull/19)
+
+[tchiotludo](https://github.com/tchiotludo) discovered and fixed a bug in the `KafkaConnectClient::getConnectorPlugins()` and 
+`KafkaConnectClient::getConnectorTasks()` client methods.  
+
+Previous to this version these methods incorrectly returned a
+`Collection<Map<>>` instead of `Collection<ConnectorPlugin>` and `Collection<Task>` respectively.
+
+This release fixes these two methods to return the correct types as defined by their signatures. Any users of this library who were interacting with this incorrect return type will need to update their code for this release.
+
 ## 1.3.0 (02/06/2019)
 
 ### New Features
