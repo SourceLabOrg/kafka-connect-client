@@ -21,6 +21,8 @@ import org.apache.http.HttpStatus;
 import org.junit.Test;
 import org.sourcelab.kafka.connect.apiclient.rest.RestClient;
 import org.sourcelab.kafka.connect.apiclient.rest.RestResponse;
+import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ConcurrentConfigModificationException;
+import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ResourceNotFoundException;
 import org.sourcelab.kafka.connect.apiclient.rest.exceptions.UnauthorizedRequestException;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -32,15 +34,14 @@ import static org.mockito.Mockito.when;
  */
 public class KafkaConnectClientUnitTest {
 
+    private final Configuration configuration = new Configuration("http://localhost:9092");
+
     /**
      * This test verifies that if the underlying RestClient returns a response with Http Status Code 401,
      * then KafkaConnectClient will throw an UnauthorizedRequestException.
      */
     @Test(expected = UnauthorizedRequestException.class)
     public void unAuthorizedException() {
-        // Create configuration
-        final Configuration configuration = new Configuration("http://localhost:9092");
-
         // Create mock RestResponse
         final RestResponse restResponse = new RestResponse("Invalid credentials.", HttpStatus.SC_UNAUTHORIZED);
 
@@ -54,5 +55,53 @@ public class KafkaConnectClientUnitTest {
 
         // Call any method that makes a request via RestClient.
         client.getConnectors();
+    }
+
+    /**
+     * This test verifies that if the underlying RestClient returns a response with Http Status Code 404,
+     * then KafkaConnectClient will throw a ResourceNotFoundException.
+     */
+    @Test(expected = ResourceNotFoundException.class)
+    public void on404_resourceNotFoundException() {
+        // Create mock RestResponse
+        final String connectorName = "DoesNotExist";
+        final String result = "{\"error_code\":404,\"message\":\"Connector " + connectorName + " not found\"}";
+
+        final RestResponse restResponse = new RestResponse(result, HttpStatus.SC_NOT_FOUND);
+
+        // Create mock RestClient
+        final RestClient mockRestClient = mock(RestClient.class);
+        when(mockRestClient.submitRequest(any()))
+            .thenReturn(restResponse);
+
+        // Create client
+        final KafkaConnectClient client = new KafkaConnectClient(configuration, mockRestClient);
+
+        // Call any method that makes a request via RestClient.
+        client.getConnector(connectorName);
+    }
+
+    /**
+     * This test verifies that if the underlying RestClient returns a response with Http Status Code 409,
+     * then KafkaConnectClient will throw a ConcurrentConfigModificationException.
+     */
+    @Test(expected = ConcurrentConfigModificationException.class)
+    public void on409_concurrentConfigModificationException() {
+        // Create mock RestResponse
+        final String connectorName = "DoesNotExist";
+        final String result = "{\"error_code\":409,\"message\":\"Rebalance in progress.\"}";
+
+        final RestResponse restResponse = new RestResponse(result, HttpStatus.SC_CONFLICT);
+
+        // Create mock RestClient
+        final RestClient mockRestClient = mock(RestClient.class);
+        when(mockRestClient.submitRequest(any()))
+            .thenReturn(restResponse);
+
+        // Create client
+        final KafkaConnectClient client = new KafkaConnectClient(configuration, mockRestClient);
+
+        // Call any method that makes a request via RestClient.
+        client.getConnector(connectorName);
     }
 }
