@@ -26,10 +26,10 @@ import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorPlugins;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class GetConnectorPluginsTest extends AbstractRequestTest {
     private static final Logger logger = LoggerFactory.getLogger(GetConnectorPluginsTest.class);

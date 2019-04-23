@@ -19,25 +19,18 @@ package org.sourcelab.kafka.connect.apiclient.request.get.connector;
 
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
-import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPlugin;
 import org.sourcelab.kafka.connect.apiclient.request.dto.Task;
-import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorPlugins;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTasks;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class GetConnectorTasksTest extends AbstractRequestTest {
-    private static final Logger logger = LoggerFactory.getLogger(GetConnectorTasksTest.class);
-
     /**
      * Test Parsing GET /connectors response.
      */
