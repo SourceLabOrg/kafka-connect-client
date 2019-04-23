@@ -118,7 +118,7 @@ public class TestHttpServer implements AutoCloseable {
             // SSL requires a certificate so we configure a factory for ssl contents with information pointing to what
             // keystore the ssl connection needs to know about. Much more configuration is available the ssl context,
             // including things like choosing the particular certificate out of a keystore to be used.
-            final SslContextFactory sslContextFactory = new SslContextFactory();
+            final SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
 
             // define server side key
             sslContextFactory.setKeyStorePath(keyStoreFile);
