@@ -2,6 +2,15 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.1 (04/23/2019)
+
+### Bugfix
+- Updated ConnectorPluginConfigValidationResults classes to be publicly scoped. Thanks [tchiotludo](https://github.com/tchiotludo)!
+
+### Internal Dependency Updates
+- Updated Google Guava from 27.0.1-JRE to 27.1-JRE
+- Updated HttpComponents from 4.5.7 to 4.5.8 
+
 ## 2.0.0 (04/05/2019)
 
 ### Bugfix / Breaking Change
