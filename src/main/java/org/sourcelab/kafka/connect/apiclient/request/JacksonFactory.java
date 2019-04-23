@@ -20,6 +20,9 @@ package org.sourcelab.kafka.connect.apiclient.request;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.type.MapType;
+
+import java.util.Map;
 
 /**
  * Creates properly configured Jackson XML Mapper instances.
@@ -31,6 +34,12 @@ public final class JacksonFactory {
      * ThreadSafe so this should be OK to stash as a static and shared.
      */
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    /**
+     * Defines a "type safe" Map[String, String] deserialization type for Jackson.
+     */
+    public static final MapType mapTypeStringString = mapper.getTypeFactory()
+        .constructMapType(Map.class, String.class, String.class);
 
     /*
      * Statically configure the instance.
