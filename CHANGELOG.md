@@ -2,6 +2,11 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.2 (06/06/2019)
+
+### Internal Dependency Updates
+- Update Jackson dependency from 2.9.8 to 2.9.9 [CVE-2019-12086](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-12086).
+
 ## 2.0.1 (04/23/2019)
 
 ### Bugfix
