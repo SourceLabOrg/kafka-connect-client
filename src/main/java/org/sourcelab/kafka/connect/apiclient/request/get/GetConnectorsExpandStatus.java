@@ -2,6 +2,7 @@ package org.sourcelab.kafka.connect.apiclient.request.get;
 
 
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedMetadata;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedStatus;
 
 import java.io.IOException;
@@ -15,6 +16,6 @@ public class GetConnectorsExpandStatus implements GetRequest<ConnectorsWithExpan
 
     @Override
     public ConnectorsWithExpandedStatus parseResponse(final String responseStr) throws IOException {
-        return JacksonFactory.newInstance().readValue(responseStr, ConnectorsWithExpandedStatus.class);
+        return JacksonFactory.newInstance().readValue(responseStr, ConnectorsWithExpandedMetadata.class);
     }
 }

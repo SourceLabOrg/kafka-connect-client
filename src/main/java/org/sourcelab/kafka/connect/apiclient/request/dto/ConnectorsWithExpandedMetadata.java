@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ConnectorsWithExpandedMetadata {
+public class ConnectorsWithExpandedMetadata implements ConnectorsWithExpandedInfo, ConnectorsWithExpandedStatus {
     @JsonAnySetter
     private Map<String, ConnectorsWithExpandedMetadata.ConnectorWithExpandedMetadata> results = new HashMap<>();
 
