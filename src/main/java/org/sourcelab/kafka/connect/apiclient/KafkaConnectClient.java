@@ -154,7 +154,7 @@ public class KafkaConnectClient {
 
     /**
      * Get a list of deployed connectors, including all metadata available.
-     * Currently includes both 'info' {@see getConnectorsWithExpandedInfo} and 'status' {@see getConnectorsWithExpandedStatus}
+     * Currently includes both 'info' and 'status'
      * metadata.
      * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors
      *
