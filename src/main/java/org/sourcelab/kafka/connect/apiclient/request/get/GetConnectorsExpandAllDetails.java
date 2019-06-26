@@ -17,40 +17,38 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.get;
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import org.sourcelab.kafka.connect.apiclient.exception.ResponseParseException;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
-import org.sourcelab.kafka.connect.apiclient.request.dto.TaskStatus;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedMetadata;
 
 import java.io.IOException;
-import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
- * Defines a request to get the status of a connector's task.
+ * Defines a request to retrieve all deployed Connectors extended with all available associated metadata.
+ *
+ * Currently this includes both 'info' and 'status' metadata.
+ *
+ * Requires Kafka-Connect server 2.3.0+
  */
-public final class GetConnectorTaskStatus implements GetRequest<TaskStatus> {
-
-    private final String connectorName;
-    private final int taskId;
-
-    /**
-     * Constructor.
-     * @param connectorName Name of the connector.
-     * @param taskId Task id.
-     */
-    public GetConnectorTaskStatus(final String connectorName, final int taskId) {
-        Objects.requireNonNull(connectorName);
-        this.connectorName = connectorName;
-        this.taskId = taskId;
-    }
+public class GetConnectorsExpandAllDetails implements GetRequest<ConnectorsWithExpandedMetadata> {
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/tasks/" + taskId + "/status";
+        return "/connectors?expand=info&expand=status";
     }
 
     @Override
-    public TaskStatus parseResponse(final String responseStr) throws IOException {
-        return JacksonFactory.newInstance().readValue(responseStr, TaskStatus.class);
+    public ConnectorsWithExpandedMetadata parseResponse(final String responseStr) throws IOException {
+        try {
+            return JacksonFactory.newInstance().readValue(responseStr, ConnectorsWithExpandedMetadata.class);
+        } catch (final MismatchedInputException exception) {
+            throw new ResponseParseException(
+                "Failed to parse response. The end point you requested requires Kafka-Connect 2.3.0+..."
+                + "are you sure you're querying against the right version?",
+                exception
+            );
+        }
     }
 }
+

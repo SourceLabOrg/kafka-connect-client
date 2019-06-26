@@ -15,41 +15,41 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.sourcelab.kafka.connect.apiclient.request.get;
+package org.sourcelab.kafka.connect.apiclient.request.dto;
 
-import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
-import org.sourcelab.kafka.connect.apiclient.request.dto.Task;
-
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
+import java.util.Map;
 
 /**
- * Defines request to get tasks for a connector.
+ * Deployed Connectors extended with their associated ConnectorDefinitions.
+ *
+ * Requires Kafka-Connect server 2.3.0+
  */
-public final class GetConnectorTasks implements GetRequest<Collection<Task>> {
-
-    private final String connectorName;
+public interface ConnectorsWithExpandedStatus {
 
     /**
-     * Constructor.
-     * @param connectorName name of the connector.
+     * Names for all deployed connectors.
+     * @return Names of all deployed connectors.
      */
-    public GetConnectorTasks(final String connectorName) {
-        Objects.requireNonNull(connectorName);
-        this.connectorName = connectorName;
-    }
+    Collection<String> getConnectorNames();
 
-    @Override
-    public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/tasks";
-    }
+    /**
+     * Given a connector name, return the status for the connector.
+     * @param connectorName name of connector to return status for.
+     * @return ConnectorStatus for the given connector name.
+     * @throws IllegalArgumentException if passed a connector name not included in the results.
+     */
+    ConnectorStatus getStatusForConnector(final String connectorName);
 
-    @Override
-    public Collection<Task> parseResponse(final String responseStr) throws IOException {
-        return Arrays.asList(JacksonFactory.newInstance().readValue(responseStr, Task[].class));
-    }
+    /**
+     * All connector statuses.
+     * @return All connector statuses.
+     */
+    Collection<ConnectorStatus> getAllStatuses();
+
+    /**
+     * Map of ConnectorName to its respective Status.
+     * @return Map of ConnectorName to its respective Status.
+     */
+    Map<String, ConnectorStatus> getMappedStatuses();
 }

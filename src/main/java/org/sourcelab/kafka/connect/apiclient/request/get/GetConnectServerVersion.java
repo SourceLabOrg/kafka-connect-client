@@ -18,39 +18,21 @@
 package org.sourcelab.kafka.connect.apiclient.request.get;
 
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
-import org.sourcelab.kafka.connect.apiclient.request.dto.TaskStatus;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectServerVersion;
 
 import java.io.IOException;
-import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
- * Defines a request to get the status of a connector's task.
+ * Defines a request for getting details about the Kafka-Connect service being queried.
  */
-public final class GetConnectorTaskStatus implements GetRequest<TaskStatus> {
-
-    private final String connectorName;
-    private final int taskId;
-
-    /**
-     * Constructor.
-     * @param connectorName Name of the connector.
-     * @param taskId Task id.
-     */
-    public GetConnectorTaskStatus(final String connectorName, final int taskId) {
-        Objects.requireNonNull(connectorName);
-        this.connectorName = connectorName;
-        this.taskId = taskId;
-    }
-
+public class GetConnectServerVersion implements GetRequest<ConnectServerVersion> {
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/tasks/" + taskId + "/status";
+        return "/";
     }
 
     @Override
-    public TaskStatus parseResponse(final String responseStr) throws IOException {
-        return JacksonFactory.newInstance().readValue(responseStr, TaskStatus.class);
+    public ConnectServerVersion parseResponse(final String responseStr) throws IOException {
+        return JacksonFactory.newInstance().readValue(responseStr, ConnectServerVersion.class);
     }
 }

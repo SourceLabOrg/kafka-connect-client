@@ -1,0 +1,90 @@
+{
+  "MyTestConnector": {
+    "info": {
+      "name": "MyTestConnector",
+      "config": {
+        "connector.class": "org.apache.kafka.connect.tools.VerifiableSourceConnector",
+        "tasks.max": "3",
+        "topics": "test-topic",
+        "name": "MyTestConnector"
+      },
+      "tasks": [
+        {
+          "connector": "MyTestConnector",
+          "task": 0
+        },
+        {
+          "connector": "MyTestConnector",
+          "task": 1
+        },
+        {
+          "connector": "MyTestConnector",
+          "task": 2
+        }
+      ],
+      "type": "source"
+    },
+    "status": {
+      "name": "MyTestConnector",
+      "connector": {
+        "state": "RUNNING",
+        "worker_id": "127.0.0.1:8083"
+      },
+      "tasks": [
+        {
+          "id": 0,
+          "state": "FAILED",
+          "worker_id": "127.0.0.1:8083",
+          "trace": "trace0"
+        },
+        {
+          "id": 1,
+          "state": "RUNNING",
+          "worker_id": "127.0.0.1:8083",
+          "trace": "trace1"
+        },
+        {
+          "id": 2,
+          "state": "PAUSED",
+          "worker_id": "127.0.0.1:8083",
+          "trace": "trace2"
+        }
+      ],
+      "type": "source"
+    }
+  },
+  "MyTestConnector2": {
+    "info": {
+      "name": "MyTestConnector2",
+      "config": {
+        "connector.class": "org.apache.kafka.connect.tools.SomeOtherConnectorClass",
+        "tasks.max": "1",
+        "topics": "another-topic",
+        "name": "MyTestConnector2"
+      },
+      "tasks": [
+        {
+          "connector": "MyTestConnector2",
+          "task": 0
+        }
+      ],
+      "type": "source"
+    },
+    "status": {
+      "name": "MyTestConnector2",
+      "connector": {
+        "state": "RUNNING",
+        "worker_id": "127.0.0.1:8083"
+      },
+      "tasks": [
+        {
+          "id": 0,
+          "state": "RUNNING",
+          "worker_id": "127.0.0.1:8083",
+          "trace": "trace0"
+        }
+      ],
+      "type": "source"
+    }
+  }
+}

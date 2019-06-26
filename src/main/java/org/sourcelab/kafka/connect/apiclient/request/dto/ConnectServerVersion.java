@@ -15,42 +15,46 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.sourcelab.kafka.connect.apiclient.request.get;
-
-import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
-import org.sourcelab.kafka.connect.apiclient.request.dto.TaskStatus;
-
-import java.io.IOException;
-import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
+package org.sourcelab.kafka.connect.apiclient.request.dto;
 
 /**
- * Defines a request to get the status of a connector's task.
+ * Represents details about the kafka-connect server.
  */
-public final class GetConnectorTaskStatus implements GetRequest<TaskStatus> {
-
-    private final String connectorName;
-    private final int taskId;
+public class ConnectServerVersion {
+    private String version;
+    private String commit;
+    private String kafkaClusterId;
 
     /**
-     * Constructor.
-     * @param connectorName Name of the connector.
-     * @param taskId Task id.
+     * Version of running Kafka-Connect server.
+     * @return Version of running Kafka-Connect server.
      */
-    public GetConnectorTaskStatus(final String connectorName, final int taskId) {
-        Objects.requireNonNull(connectorName);
-        this.connectorName = connectorName;
-        this.taskId = taskId;
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * Commit hash of running Kafka-Connect server.
+     * @return Commit hash of running Kafka-Connect server.
+     */
+    public String getCommit() {
+        return commit;
+    }
+
+    /**
+     * Kafka Cluster Identifier.
+     * @return Kafka Cluster Identifier.
+     */
+    public String getKafkaClusterId() {
+        return kafkaClusterId;
     }
 
     @Override
-    public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/tasks/" + taskId + "/status";
-    }
-
-    @Override
-    public TaskStatus parseResponse(final String responseStr) throws IOException {
-        return JacksonFactory.newInstance().readValue(responseStr, TaskStatus.class);
+    public String toString() {
+        return "ConnectServerVersion{"
+            + "version='" + version + '\''
+            + ", commit='" + commit + '\''
+            + ", kafkaClusterId='" + kafkaClusterId + '\''
+            + '}';
     }
 }

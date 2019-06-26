@@ -15,42 +15,31 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.sourcelab.kafka.connect.apiclient.request.get;
+package org.sourcelab.kafka.connect.apiclient.request.get.connector;
 
-import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
-import org.sourcelab.kafka.connect.apiclient.request.dto.TaskStatus;
+import org.junit.Test;
+import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectServerVersion;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectServerVersion;
 
 import java.io.IOException;
-import java.util.Objects;
 
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-/**
- * Defines a request to get the status of a connector's task.
- */
-public final class GetConnectorTaskStatus implements GetRequest<TaskStatus> {
-
-    private final String connectorName;
-    private final int taskId;
-
+public class GetConnectServerVersionTest extends AbstractRequestTest {
     /**
-     * Constructor.
-     * @param connectorName Name of the connector.
-     * @param taskId Task id.
+     * Test Parsing GET / response.
      */
-    public GetConnectorTaskStatus(final String connectorName, final int taskId) {
-        Objects.requireNonNull(connectorName);
-        this.connectorName = connectorName;
-        this.taskId = taskId;
-    }
+    @Test
+    public void testParseResponse() throws IOException {
+        final String mockResponse = readFile("getConnectServerVersion.json");
+        final ConnectServerVersion result = new GetConnectServerVersion().parseResponse(mockResponse);
 
-    @Override
-    public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/tasks/" + taskId + "/status";
-    }
-
-    @Override
-    public TaskStatus parseResponse(final String responseStr) throws IOException {
-        return JacksonFactory.newInstance().readValue(responseStr, TaskStatus.class);
+        // Validate
+        assertNotNull("Should not be null", result);
+        assertEquals("2.1.1", result.getVersion());
+        assertEquals("21234bee31165527", result.getCommit());
+        assertEquals("Fo2ySm4CT1Wvz4Kvm2jIhw", result.getKafkaClusterId());
     }
 }

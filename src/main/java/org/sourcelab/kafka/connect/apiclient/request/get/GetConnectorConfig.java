@@ -47,11 +47,6 @@ public final class GetConnectorConfig implements GetRequest<Map<String, String>>
     }
 
     @Override
-    public Object getRequestBody() {
-        return null;
-    }
-
-    @Override
     public Map<String, String> parseResponse(final String responseStr) throws IOException {
         return JacksonFactory.newInstance().readValue(responseStr, JacksonFactory.mapTypeStringString);
     }

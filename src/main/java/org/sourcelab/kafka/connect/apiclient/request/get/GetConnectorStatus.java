@@ -47,11 +47,6 @@ public final class GetConnectorStatus implements GetRequest<ConnectorStatus> {
     }
 
     @Override
-    public Object getRequestBody() {
-        return null;
-    }
-
-    @Override
     public ConnectorStatus parseResponse(final String responseStr) throws IOException {
         return JacksonFactory.newInstance().readValue(responseStr, ConnectorStatus.class);
     }

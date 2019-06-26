@@ -35,11 +35,6 @@ public final class GetConnectorPlugins implements GetRequest<Collection<Connecto
     }
 
     @Override
-    public Object getRequestBody() {
-        return null;
-    }
-
-    @Override
     public Collection<ConnectorPlugin> parseResponse(final String responseStr) throws IOException {
         return Arrays.asList(JacksonFactory.newInstance().readValue(responseStr, ConnectorPlugin[].class));
     }

@@ -15,42 +15,20 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.sourcelab.kafka.connect.apiclient.request.get;
+package org.sourcelab.kafka.connect.apiclient.exception;
 
-import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
-import org.sourcelab.kafka.connect.apiclient.request.dto.TaskStatus;
-
-import java.io.IOException;
-import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 /**
- * Defines a request to get the status of a connector's task.
+ * Thrown when the library is unable to properly parse the response from Kafka-Connect.
  */
-public final class GetConnectorTaskStatus implements GetRequest<TaskStatus> {
-
-    private final String connectorName;
-    private final int taskId;
-
+public class ResponseParseException extends RuntimeException {
     /**
      * Constructor.
-     * @param connectorName Name of the connector.
-     * @param taskId Task id.
+     * @param message error msg
+     * @param exception underlying exception, if available.
      */
-    public GetConnectorTaskStatus(final String connectorName, final int taskId) {
-        Objects.requireNonNull(connectorName);
-        this.connectorName = connectorName;
-        this.taskId = taskId;
-    }
-
-    @Override
-    public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/tasks/" + taskId + "/status";
-    }
-
-    @Override
-    public TaskStatus parseResponse(final String responseStr) throws IOException {
-        return JacksonFactory.newInstance().readValue(responseStr, TaskStatus.class);
+    public ResponseParseException(final String message, final MismatchedInputException exception) {
+        super(message, exception);
     }
 }

@@ -1,0 +1,46 @@
+{
+  "MyTestConnector": {
+    "info": {
+      "name": "MyTestConnector",
+      "config": {
+        "connector.class": "org.apache.kafka.connect.tools.VerifiableSourceConnector",
+        "tasks.max": "3",
+        "topics": "test-topic",
+        "name": "MyTestConnector"
+      },
+      "tasks": [
+        {
+          "connector": "MyTestConnector",
+          "task": 0
+        },
+        {
+          "connector": "MyTestConnector",
+          "task": 1
+        },
+        {
+          "connector": "MyTestConnector",
+          "task": 2
+        }
+      ],
+      "type": "source"
+    }
+  },
+  "MyTestConnector2": {
+    "info": {
+      "name": "MyTestConnector2",
+      "config": {
+        "connector.class": "org.apache.kafka.connect.tools.SomeOtherConnectorClass",
+        "tasks.max": "1",
+        "topics": "another-topic",
+        "name": "MyTestConnector2"
+      },
+      "tasks": [
+        {
+          "connector": "MyTestConnector2",
+          "task": 0
+        }
+      ],
+      "type": "source"
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "MyTestConnector": {
+    "status": {
+      "name": "MyTestConnector",
+      "connector": {
+        "state": "RUNNING",
+        "worker_id": "127.0.0.1:8083"
+      },
+      "tasks": [
+        {
+          "id": 0,
+          "state": "FAILED",
+          "worker_id": "127.0.0.1:8083",
+          "trace": "trace0"
+        },
+        {
+          "id": 1,
+          "state": "RUNNING",
+          "worker_id": "127.0.0.1:8083",
+          "trace": "trace1"
+        },
+        {
+          "id": 2,
+          "state": "PAUSED",
+          "worker_id": "127.0.0.1:8083",
+          "trace": "trace2"
+        }
+      ],
+      "type": "source"
+    }
+  },
+  "MyTestConnector2": {
+    "status": {
+      "name": "MyTestConnector2",
+      "connector": {
+        "state": "RUNNING",
+        "worker_id": "127.0.0.1:8083"
+      },
+      "tasks": [
+        {
+          "id": 0,
+          "state": "RUNNING",
+          "worker_id": "127.0.0.1:8083",
+          "trace": "trace0"
+        }
+      ],
+      "type": "source"
+    }
+  }
+}

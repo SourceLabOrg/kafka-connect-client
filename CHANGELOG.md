@@ -2,6 +2,57 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.1.0 (06/26/2019)
+
+### New Features
+- Added support to retrieve information about the Kafka-Connect server being queried.
+
+```java
+    /**
+     * Retrieve details about the Kafka-Connect service itself.
+     * @return ConnectServerVersion
+     */
+    public ConnectServerVersion getConnectServerVersion()
+```
+
+- Added support for [Expanded Connectors API Endpoint KIP-465](https://cwiki.apache.org/confluence/display/KAFKA/KIP-465%3A+Add+Consolidated+Connector+Endpoint+to+Connect+REST+API).
+
+Only supported by Kafka-Connect servers running version 2.3.0+ the following methods were added:
+
+```java
+    /**
+     * Get a list of deployed connectors, including the status for each connector.
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors
+     *
+     * Requires Kafka-Connect 2.3.0+
+     *
+     * @return All deployed connectors, and their respective statuses.
+     */
+    public ConnectorsWithExpandedStatus getConnectorsWithExpandedStatus()
+
+    /**
+     * Get a list of deployed connectors, including the definition for each connector.
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors
+     *
+     * Requires Kafka-Connect 2.3.0+
+     *
+     * @return All deployed connectors, and their respective definition.
+     */
+    public ConnectorsWithExpandedInfo getConnectorsWithExpandedInfo()
+
+    /**
+     * Get a list of deployed connectors, including all metadata available.
+     * Currently includes both 'info' {@see getConnectorsWithExpandedInfo} and 'status' {@see getConnectorsWithExpandedStatus}
+     * metadata.
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors
+     *
+     * Requires Kafka-Connect 2.3.0+
+     *
+     * @return All deployed connectors, and their respective metadata.
+     */
+    public ConnectorsWithExpandedMetadata getConnectorsWithAllExpandedMetadata()
+```
+
 ## 2.0.2 (06/06/2019)
 
 ### Internal Dependency Updates
