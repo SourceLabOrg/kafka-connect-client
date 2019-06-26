@@ -49,11 +49,6 @@ public final class GetConnectorTasks implements GetRequest<Collection<Task>> {
     }
 
     @Override
-    public Object getRequestBody() {
-        return null;
-    }
-
-    @Override
     public Collection<Task> parseResponse(final String responseStr) throws IOException {
         return Arrays.asList(JacksonFactory.newInstance().readValue(responseStr, Task[].class));
     }

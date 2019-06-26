@@ -24,14 +24,19 @@ import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.Request;
 import org.sourcelab.kafka.connect.apiclient.request.RequestErrorResponse;
 import org.sourcelab.kafka.connect.apiclient.request.delete.DeleteConnector;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectServerVersion;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPlugin;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigValidationResults;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedMetadata;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedInfo;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedStatus;
 import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.Task;
 import org.sourcelab.kafka.connect.apiclient.request.dto.TaskStatus;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectServerVersion;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnector;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorConfig;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorPlugins;
@@ -39,6 +44,9 @@ import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorStatus;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTaskStatus;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTasks;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectors;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorsExpandAllDetails;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorsExpandInfo;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorsExpandStatus;
 import org.sourcelab.kafka.connect.apiclient.request.post.PostConnector;
 import org.sourcelab.kafka.connect.apiclient.request.post.PostConnectorRestart;
 import org.sourcelab.kafka.connect.apiclient.request.post.PostConnectorTaskRestart;
@@ -59,7 +67,7 @@ import java.util.Map;
 /**
  * API Client for interacting with the Kafka-Connect Rest Endpoint.
  * Official Rest Endpoint documentation can be found here:
- *   https://docs.confluent.io/current/connect/restapi.html
+ *   https://docs.confluent.io/current/connect/references/restapi.html
  */
 public class KafkaConnectClient {
     private static final Logger logger = LoggerFactory.getLogger(KafkaConnectClient.class);
@@ -92,7 +100,7 @@ public class KafkaConnectClient {
     /**
      * Constructor for injecting a RestClient implementation.
      * Typically only used in testing.
-     * @param configuration Pardot Api Configuration.
+     * @param configuration Api Client Configuration.
      * @param restClient RestClient implementation to use.
      */
     public KafkaConnectClient(final Configuration configuration, final RestClient restClient) {
@@ -101,8 +109,16 @@ public class KafkaConnectClient {
     }
 
     /**
-     * Get a list of active connectors.
-     * https://docs.confluent.io/current/connect/restapi.html#get--connectors
+     * Retrieve details about the Kafka-Connect service itself.
+     * @return ConnectServerVersion
+     */
+    public ConnectServerVersion getConnectServerVersion() {
+        return submitRequest(new GetConnectServerVersion());
+    }
+
+    /**
+     * Get a list of deployed connectors.
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors
      *
      * @return Collection of connector names currently deployed.
      */
@@ -111,8 +127,46 @@ public class KafkaConnectClient {
     }
 
     /**
+     * Get a list of deployed connectors, including the status for each connector.
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors
+     *
+     * Requires Kafka-Connect 2.3.0+
+     *
+     * @return All deployed connectors, and their respective statuses.
+     */
+    public ConnectorsWithExpandedStatus getConnectorsWithExpandedStatus() {
+        return submitRequest(new GetConnectorsExpandStatus());
+    }
+
+    /**
+     * Get a list of deployed connectors, including the definition for each connector.
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors
+     *
+     * Requires Kafka-Connect 2.3.0+
+     *
+     * @return All deployed connectors, and their respective definition.
+     */
+    public ConnectorsWithExpandedInfo getConnectorsWithExpandedInfo() {
+        return submitRequest(new GetConnectorsExpandInfo());
+    }
+
+    /**
+     * Get a list of deployed connectors, including all metadata available.
+     * Currently includes both 'info' {@see getConnectorsWithExpandedInfo} and 'status' {@see getConnectorsWithExpandedStatus}
+     * metadata.
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors
+     *
+     * Requires Kafka-Connect 2.3.0+
+     *
+     * @return All deployed connectors, and their respective metadata.
+     */
+    public ConnectorsWithExpandedMetadata getConnectorsWithAllExpandedMetadata() {
+        return submitRequest(new GetConnectorsExpandAllDetails());
+    }
+
+    /**
      * Get information about the connector.
-     * https://docs.confluent.io/current/connect/restapi.html#get--connectors-(string-name)
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors-(string-name)
      * @param connectorName Name of connector.
      * @return Connector details.
      */
@@ -122,7 +176,7 @@ public class KafkaConnectClient {
 
     /**
      * Get the configuration for the connector.
-     * https://docs.confluent.io/current/connect/restapi.html#get--connectors-(string-name)-config
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors-(string-name)-config
      * @param connectorName Name of connector.
      * @return Configuration for connector.
      */
@@ -132,7 +186,7 @@ public class KafkaConnectClient {
 
     /**
      * Get the status of specified connector by name.
-     * https://docs.confluent.io/current/connect/restapi.html#get--connectors-(string-name)-config
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors-(string-name)-config
      *
      * @param connectorName Name of connector.
      * @return Status details of the connector.
@@ -143,7 +197,7 @@ public class KafkaConnectClient {
 
     /**
      * Create a new connector, returning the current connector info if successful.
-     * https://docs.confluent.io/current/connect/restapi.html#post--connectors
+     * https://docs.confluent.io/current/connect/references/restapi.html#post--connectors
      *
      * @param connectorDefinition Defines the new connector to deploy
      * @return connector info.
@@ -154,7 +208,7 @@ public class KafkaConnectClient {
 
     /**
      * Update a connector's configuration.
-     * https://docs.confluent.io/current/connect/restapi.html#put--connectors-(string-name)-config
+     * https://docs.confluent.io/current/connect/references/restapi.html#put--connectors-(string-name)-config
      *
      * @param connectorName Name of connector to update.
      * @param config Configuration values to set.
@@ -166,7 +220,7 @@ public class KafkaConnectClient {
 
     /**
      * Restart a connector.
-     * https://docs.confluent.io/current/connect/restapi.html#post--connectors-(string-name)-restart
+     * https://docs.confluent.io/current/connect/references/restapi.html#post--connectors-(string-name)-restart
      *
      * @param connectorName Name of connector to restart.
      * @return Boolean true if success.
@@ -177,7 +231,7 @@ public class KafkaConnectClient {
 
     /**
      * Pause a connector.
-     * https://docs.confluent.io/current/connect/restapi.html#put--connectors-(string-name)-pause
+     * https://docs.confluent.io/current/connect/references/restapi.html#put--connectors-(string-name)-pause
      *
      * @param connectorName Name of connector to pause.
      * @return Boolean true if success.
@@ -188,7 +242,7 @@ public class KafkaConnectClient {
 
     /**
      * Resume a connector.
-     * https://docs.confluent.io/current/connect/restapi.html#put--connectors-(string-name)-resume
+     * https://docs.confluent.io/current/connect/references/restapi.html#put--connectors-(string-name)-resume
      *
      * @param connectorName Name of connector to resume.
      * @return Boolean true if success.
@@ -199,7 +253,7 @@ public class KafkaConnectClient {
 
     /**
      * Resume a connector.
-     * https://docs.confluent.io/current/connect/restapi.html#put--connectors-(string-name)-resume
+     * https://docs.confluent.io/current/connect/references/restapi.html#put--connectors-(string-name)-resume
      *
      * @param connectorName Name of connector to resume.
      * @return Boolean true if success.
@@ -210,7 +264,7 @@ public class KafkaConnectClient {
 
     /**
      * Get a list of tasks currently running for the connector.
-     * https://docs.confluent.io/current/connect/restapi.html#get--connectors-(string-name)-tasks
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors-(string-name)-tasks
      *
      * @param connectorName Name of connector to retrieve tasks for.
      * @return Collection of details about each task.
@@ -221,7 +275,7 @@ public class KafkaConnectClient {
 
     /**
      * Get a task’s status.
-     * https://docs.confluent.io/current/connect/restapi.html#get--connectors-(string-name)-tasks-(int-taskid)-status
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors-(string-name)-tasks-(int-taskid)-status
      *
      * @param connectorName Name of connector to retrieve tasks for.
      * @param taskId Id of task to get status for.
@@ -233,7 +287,7 @@ public class KafkaConnectClient {
 
     /**
      * Restart an individual task.
-     * https://docs.confluent.io/current/connect/restapi.html#post--connectors-(string-name)-tasks-(int-taskid)-restart
+     * https://docs.confluent.io/current/connect/references/restapi.html#post--connectors-(string-name)-tasks-(int-taskid)-restart
      *
      * @param connectorName Name of connector to restart tasks for.
      * @param taskId Id of task to restart
@@ -245,7 +299,7 @@ public class KafkaConnectClient {
 
     /**
      * Return a list of connector plugins installed in the Kafka Connect cluster.
-     * https://docs.confluent.io/current/connect/restapi.html#get--connector-plugins-
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connector-plugins-
      *
      * @return Collection of available connector plugins.
      */
@@ -256,7 +310,7 @@ public class KafkaConnectClient {
     /**
      * Validate the provided configuration values against the configuration definition. This API performs per config
      * validation, returns suggested values and error messages during validation.
-     * https://docs.confluent.io/current/connect/restapi.html#put--connector-plugins-(string-name)-config-validate
+     * https://docs.confluent.io/current/connect/references/restapi.html#put--connector-plugins-(string-name)-config-validate
      *
      * @param configDefinition Defines the configuration to validate.
      * @return Results of the validation.

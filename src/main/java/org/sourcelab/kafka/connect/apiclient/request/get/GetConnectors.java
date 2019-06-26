@@ -33,11 +33,6 @@ public final class GetConnectors implements GetRequest<Collection<String>> {
     }
 
     @Override
-    public Object getRequestBody() {
-        return null;
-    }
-
-    @Override
     public Collection<String> parseResponse(final String responseStr) throws IOException {
         return Arrays.asList(JacksonFactory.newInstance().readValue(responseStr, String[].class));
     }

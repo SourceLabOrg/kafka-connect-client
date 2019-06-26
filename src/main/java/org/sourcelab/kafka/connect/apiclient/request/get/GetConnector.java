@@ -47,11 +47,6 @@ public final class GetConnector implements GetRequest<ConnectorDefinition> {
     }
 
     @Override
-    public Object getRequestBody() {
-        return null;
-    }
-
-    @Override
     public ConnectorDefinition parseResponse(final String responseStr) throws IOException {
         return JacksonFactory.newInstance().readValue(responseStr, ConnectorDefinition.class);
     }

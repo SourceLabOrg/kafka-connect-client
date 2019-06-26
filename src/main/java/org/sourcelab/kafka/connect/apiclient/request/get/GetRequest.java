@@ -25,8 +25,22 @@ import org.sourcelab.kafka.connect.apiclient.request.RequestMethod;
  * @param <T> Defines the return type of the request.
  */
 public interface GetRequest<T> extends Request<T> {
+
+    /**
+     * All GET requests use GET.
+     * @return RequestMethod.GET
+     */
     @Override
     default RequestMethod getRequestMethod() {
         return RequestMethod.GET;
+    }
+
+    /**
+     * Not used in GET requests.
+     * @return null.
+     */
+    @Override
+    default Object getRequestBody() {
+        return null;
     }
 }

@@ -71,12 +71,53 @@ public class KafkaConnectClientTest {
     }
 
     /**
+     * Test retrieving information about the kafka-connect server we are querying.
+     */
+    @Test
+    public void testGetConnectServerVersion() {
+        logger.info("Result: {}", kafkaConnectClient.getConnectServerVersion());
+    }
+
+    /**
      * Tests retrieving all connectors deployed.
      * https://docs.confluent.io/current/connect/restapi.html#get--connectors
      */
     @Test
     public void testGetConnectors() {
         logger.info("Result: {}", kafkaConnectClient.getConnectors());
+    }
+
+    /**
+     * Tests retrieving all connectors deployed with their statuses.
+     * Only supported in Kafka 2.3.0+
+     *
+     * https://docs.confluent.io/current/connect/restapi.html#get--connectors
+     */
+    @Test
+    public void testGetConnectorsWithExpandedStatus() {
+        logger.info("Result: {}", kafkaConnectClient.getConnectorsWithExpandedStatus());
+    }
+
+    /**
+     * Tests retrieving all connectors deployed with their statuses.
+     * Only supported in Kafka 2.3.0+
+     *
+     * https://docs.confluent.io/current/connect/restapi.html#get--connectors
+     */
+    @Test
+    public void testGetConnectorsWithExpandedInfo() {
+        logger.info("Result: {}", kafkaConnectClient.getConnectorsWithExpandedInfo());
+    }
+
+    /**
+     * Tests retrieving all connectors deployed with all available metadata.
+     * Only supported in Kafka 2.3.0+
+     *
+     * https://docs.confluent.io/current/connect/restapi.html#get--connectors
+     */
+    @Test
+    public void getConnectorsWithAllExpandedMetadata() {
+        logger.info("Result: {}", kafkaConnectClient.getConnectorsWithAllExpandedMetadata());
     }
 
     /**
