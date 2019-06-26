@@ -1,3 +1,20 @@
+/**
+ * Copyright 2018, 2019 SourceLab.org https://github.com/SourceLabOrg/kafka-connect-client
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+ * persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package org.sourcelab.kafka.connect.apiclient.request.dto;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -9,14 +26,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Deployed Connectors extended with all available associated Metadata.
+ *
+ * Currently this includes both 'info' and 'status' metadata.
+ *
+ * Requires Kafka-Connect server 2.3.0+
+ */
 public class ConnectorsWithExpandedMetadata implements ConnectorsWithExpandedInfo, ConnectorsWithExpandedStatus {
     @JsonAnySetter
     private Map<String, ConnectorsWithExpandedMetadata.ConnectorWithExpandedMetadata> results = new HashMap<>();
 
+    @Override
     public Collection<String> getConnectorNames() {
         return results.keySet();
     }
 
+    @Override
     public ConnectorDefinition getDefinitionForConnector(final String connectorName) {
         if (!results.containsKey(connectorName)) {
             throw new IllegalArgumentException("Results do not contain connector: " + connectorName);
@@ -24,6 +50,7 @@ public class ConnectorsWithExpandedMetadata implements ConnectorsWithExpandedInf
         return results.get(connectorName).getInfo();
     }
 
+    @Override
     public Collection<ConnectorDefinition> getAllDefinitions() {
         return results
             .values()
@@ -32,6 +59,7 @@ public class ConnectorsWithExpandedMetadata implements ConnectorsWithExpandedInf
             .collect(Collectors.toList());
     }
 
+    @Override
     public Map<String, ConnectorDefinition> getMappedDefinitions() {
         return Collections.unmodifiableMap(
             results
@@ -41,6 +69,7 @@ public class ConnectorsWithExpandedMetadata implements ConnectorsWithExpandedInf
         );
     }
 
+    @Override
     public ConnectorStatus getStatusForConnector(final String connectorName) {
         if (!results.containsKey(connectorName)) {
             throw new IllegalArgumentException("Results do not contain connector: " + connectorName);
@@ -48,6 +77,7 @@ public class ConnectorsWithExpandedMetadata implements ConnectorsWithExpandedInf
         return results.get(connectorName).getStatus();
     }
 
+    @Override
     public Collection<ConnectorStatus> getAllStatuses() {
         return results
             .values()
@@ -56,6 +86,7 @@ public class ConnectorsWithExpandedMetadata implements ConnectorsWithExpandedInf
             .collect(Collectors.toList());
     }
 
+    @Override
     public Map<String, ConnectorStatus> getMappedStatuses() {
         return Collections.unmodifiableMap(
             results
@@ -72,6 +103,9 @@ public class ConnectorsWithExpandedMetadata implements ConnectorsWithExpandedInf
             + '}';
     }
 
+    /**
+     * Expanded metadata included with the connector response.
+     */
     public static class ConnectorWithExpandedMetadata {
 
         @JsonProperty("info")
@@ -90,10 +124,18 @@ public class ConnectorsWithExpandedMetadata implements ConnectorsWithExpandedInf
 
         @Override
         public String toString() {
-            return "Connector{" +
-                "info=" + info +
-                ", status=" + status +
-                '}';
+            String value = "ConnectorMetadata{";
+            if (info != null) {
+                value += "info=" + info;
+                if (status != null) {
+                    value += ", ";
+                }
+            }
+            if (status != null) {
+                value += "status=" + status;
+            }
+            value += '}';
+            return value;
         }
     }
 }
