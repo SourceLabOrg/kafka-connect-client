@@ -19,11 +19,13 @@ package org.sourcelab.kafka.connect.apiclient.request.get.connector;
 
 import org.junit.Test;
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedStatus;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorsExpandStatus;
 
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -37,10 +39,81 @@ public class GetConnectorsWithExpandStatusTest extends AbstractRequestTest {
         final String mockResponse = readFile("getConnectorsWithExpandedStatus.json");
         final ConnectorsWithExpandedStatus result = new GetConnectorsExpandStatus().parseResponse(mockResponse);
 
-        // Validate
+        // Validate High Level Checks
         assertNotNull("Should not be null", result);
+        assertNotNull(result.getAllStatuses());
+        assertNotNull(result.getConnectorNames());
+        assertNotNull(result.getMappedStatuses());
 
-        // TODO write test
-        assertTrue(false);
+        // High level count checks
+        assertEquals(2, result.getConnectorNames().size());
+        assertEquals(2, result.getAllStatuses().size());
+        assertEquals(2, result.getMappedStatuses().size());
+
+        // Validate 'MyTestConnector'
+        assertTrue(result.getConnectorNames().contains("MyTestConnector"));
+        assertTrue(result.getMappedStatuses().containsKey("MyTestConnector"));
+        validateTestConnectorStatus(result.getStatusForConnector("MyTestConnector"));
+        validateTestConnectorStatus(result.getMappedStatuses().get("MyTestConnector"));
+
+        // Validate 'MyTestConnector2'
+        assertTrue(result.getConnectorNames().contains("MyTestConnector2"));
+        assertTrue(result.getMappedStatuses().containsKey("MyTestConnector2"));
+        validateTestConnectorStatus2(result.getStatusForConnector("MyTestConnector2"));
+        validateTestConnectorStatus2(result.getMappedStatuses().get("MyTestConnector2"));
+    }
+
+    private void validateTestConnectorStatus(final ConnectorStatus connectorStatus) {
+        final String expectedConnectorName = "MyTestConnector";
+
+        assertNotNull(connectorStatus);
+        assertEquals(expectedConnectorName, connectorStatus.getName());
+        assertEquals("source", connectorStatus.getType());
+        assertNotNull(connectorStatus.getConnector());
+        assertNotNull(connectorStatus.getTasks());
+
+        // Validate connector
+        assertEquals("RUNNING", connectorStatus.getConnector().get("state"));
+        assertEquals("127.0.0.1:8083", connectorStatus.getConnector().get("worker_id"));
+
+        // Validate tasks
+        assertEquals(3, connectorStatus.getTasks().size());
+
+        assertEquals(0, connectorStatus.getTasks().get(0).getId());
+        assertEquals("FAILED", connectorStatus.getTasks().get(0).getState());
+        assertEquals("trace0", connectorStatus.getTasks().get(0).getTrace());
+        assertEquals("127.0.0.1:8083", connectorStatus.getTasks().get(0).getWorkerId());
+
+        assertEquals(1, connectorStatus.getTasks().get(1).getId());
+        assertEquals("RUNNING", connectorStatus.getTasks().get(1).getState());
+        assertEquals("trace1", connectorStatus.getTasks().get(1).getTrace());
+        assertEquals("127.0.0.1:8083", connectorStatus.getTasks().get(1).getWorkerId());
+
+        assertEquals(2, connectorStatus.getTasks().get(2).getId());
+        assertEquals("PAUSED", connectorStatus.getTasks().get(2).getState());
+        assertEquals("trace2", connectorStatus.getTasks().get(2).getTrace());
+        assertEquals("127.0.0.1:8083", connectorStatus.getTasks().get(2).getWorkerId());
+    }
+
+    private void validateTestConnectorStatus2(final ConnectorStatus connectorStatus) {
+        final String expectedConnectorName = "MyTestConnector2";
+
+        assertNotNull(connectorStatus);
+        assertEquals(expectedConnectorName, connectorStatus.getName());
+        assertEquals("source", connectorStatus.getType());
+        assertNotNull(connectorStatus.getConnector());
+        assertNotNull(connectorStatus.getTasks());
+
+        // Validate connector
+        assertEquals("RUNNING", connectorStatus.getConnector().get("state"));
+        assertEquals("127.0.0.1:8083", connectorStatus.getConnector().get("worker_id"));
+
+        // Validate tasks
+        assertEquals(1, connectorStatus.getTasks().size());
+
+        assertEquals(0, connectorStatus.getTasks().get(0).getId());
+        assertEquals("RUNNING", connectorStatus.getTasks().get(0).getState());
+        assertEquals("trace0", connectorStatus.getTasks().get(0).getTrace());
+        assertEquals("127.0.0.1:8083", connectorStatus.getTasks().get(0).getWorkerId());
     }
 }

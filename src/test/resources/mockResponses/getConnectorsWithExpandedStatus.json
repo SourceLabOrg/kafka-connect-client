@@ -11,19 +11,19 @@
           "id": 0,
           "state": "FAILED",
           "worker_id": "127.0.0.1:8083",
-          "trace": "org.apache.kafka.connect.errors.ConnectException: Invalid VerifiableSourceTask configuration\n\tat org.apache.kafka.connect.tools.VerifiableSourceTask.start(VerifiableSourceTask.java:78)\n\tat org.apache.kafka.connect.runtime.WorkerSourceTask.execute(WorkerSourceTask.java:199)\n\tat org.apache.kafka.connect.runtime.WorkerTask.doRun(WorkerTask.java:177)\n\tat org.apache.kafka.connect.runtime.WorkerTask.run(WorkerTask.java:227)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\nCaused by: java.lang.NumberFormatException: null\n\tat java.lang.Long.parseLong(Long.java:552)\n\tat java.lang.Long.parseLong(Long.java:631)\n\tat org.apache.kafka.connect.tools.VerifiableSourceTask.start(VerifiableSourceTask.java:76)\n\t... 8 more\n"
+          "trace": "trace0"
         },
         {
           "id": 1,
-          "state": "FAILED",
+          "state": "RUNNING",
           "worker_id": "127.0.0.1:8083",
-          "trace": "org.apache.kafka.connect.errors.ConnectException: Invalid VerifiableSourceTask configuration\n\tat org.apache.kafka.connect.tools.VerifiableSourceTask.start(VerifiableSourceTask.java:78)\n\tat org.apache.kafka.connect.runtime.WorkerSourceTask.execute(WorkerSourceTask.java:199)\n\tat org.apache.kafka.connect.runtime.WorkerTask.doRun(WorkerTask.java:177)\n\tat org.apache.kafka.connect.runtime.WorkerTask.run(WorkerTask.java:227)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\nCaused by: java.lang.NumberFormatException: null\n\tat java.lang.Long.parseLong(Long.java:552)\n\tat java.lang.Long.parseLong(Long.java:631)\n\tat org.apache.kafka.connect.tools.VerifiableSourceTask.start(VerifiableSourceTask.java:76)\n\t... 8 more\n"
+          "trace": "trace1"
         },
         {
           "id": 2,
-          "state": "FAILED",
+          "state": "PAUSED",
           "worker_id": "127.0.0.1:8083",
-          "trace": "org.apache.kafka.connect.errors.ConnectException: Invalid VerifiableSourceTask configuration\n\tat org.apache.kafka.connect.tools.VerifiableSourceTask.start(VerifiableSourceTask.java:78)\n\tat org.apache.kafka.connect.runtime.WorkerSourceTask.execute(WorkerSourceTask.java:199)\n\tat org.apache.kafka.connect.runtime.WorkerTask.doRun(WorkerTask.java:177)\n\tat org.apache.kafka.connect.runtime.WorkerTask.run(WorkerTask.java:227)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\nCaused by: java.lang.NumberFormatException: null\n\tat java.lang.Long.parseLong(Long.java:552)\n\tat java.lang.Long.parseLong(Long.java:631)\n\tat org.apache.kafka.connect.tools.VerifiableSourceTask.start(VerifiableSourceTask.java:76)\n\t... 8 more\n"
+          "trace": "trace2"
         }
       ],
       "type": "source"
@@ -41,7 +41,7 @@
           "id": 0,
           "state": "RUNNING",
           "worker_id": "127.0.0.1:8083",
-          "trace": "org.apache.kafka.connect.errors.ConnectException: Invalid VerifiableSourceTask configuration\n\tat org.apache.kafka.connect.tools.VerifiableSourceTask.start(VerifiableSourceTask.java:78)\n\tat org.apache.kafka.connect.runtime.WorkerSourceTask.execute(WorkerSourceTask.java:199)\n\tat org.apache.kafka.connect.runtime.WorkerTask.doRun(WorkerTask.java:177)\n\tat org.apache.kafka.connect.runtime.WorkerTask.run(WorkerTask.java:227)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\nCaused by: java.lang.NumberFormatException: null\n\tat java.lang.Long.parseLong(Long.java:552)\n\tat java.lang.Long.parseLong(Long.java:631)\n\tat org.apache.kafka.connect.tools.VerifiableSourceTask.start(VerifiableSourceTask.java:76)\n\t... 8 more\n"
+          "trace": "trace0"
         }
       ],
       "type": "source"

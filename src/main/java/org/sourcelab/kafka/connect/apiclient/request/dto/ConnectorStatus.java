@@ -17,6 +17,7 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.dto;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import java.util.Map;
  */
 public class ConnectorStatus {
     private String name;
+    private String type;
     private Map<String, String> connector;
     private List<TaskStatus> tasks;
 
@@ -33,11 +35,15 @@ public class ConnectorStatus {
     }
 
     public Map<String, String> getConnector() {
-        return connector;
+        return Collections.unmodifiableMap(connector);
     }
 
     public List<TaskStatus> getTasks() {
-        return tasks;
+        return Collections.unmodifiableList(tasks);
+    }
+
+    public String getType() {
+        return type;
     }
 
     @Override
@@ -46,6 +52,7 @@ public class ConnectorStatus {
             + "name='" + name + '\''
             + ", connector=" + connector
             + ", tasks=" + tasks
+            + ", type=" + type
             + '}';
     }
 
