@@ -18,6 +18,7 @@
 package org.sourcelab.kafka.connect.apiclient.request.get.connector;
 
 import org.junit.Test;
+import org.sourcelab.kafka.connect.apiclient.exception.ResponseParseException;
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedInfo;
@@ -62,6 +63,17 @@ public class GetConnectorsWithExpandInfoTest extends AbstractRequestTest {
         assertTrue(result.getMappedDefinitions().containsKey("MyTestConnector2"));
         validateTestConnectorDefinition2(result.getDefinitionForConnector("MyTestConnector2"));
         validateTestConnectorDefinition2(result.getMappedDefinitions().get("MyTestConnector2"));
+    }
+
+    /**
+     * Test what happens if we get back a pre 2.3.0 response for this request.
+     *
+     * It should throw a ResponseParseException.
+     */
+    @Test(expected = ResponseParseException.class)
+    public void testParseResponseForKafkaConnectVersionEarlierThan2_3_0() throws IOException {
+        final String mockResponse = readFile("getConnector.json");
+        final ConnectorsWithExpandedInfo result = new GetConnectorsExpandInfo().parseResponse(mockResponse);
     }
 
     private void validateTestConnectorDefinition(final ConnectorDefinition connector) {

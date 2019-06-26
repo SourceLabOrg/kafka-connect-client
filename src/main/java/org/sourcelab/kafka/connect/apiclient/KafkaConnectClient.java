@@ -17,9 +17,11 @@
 
 package org.sourcelab.kafka.connect.apiclient;
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sourcelab.kafka.connect.apiclient.exception.ResponseParseException;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.Request;
 import org.sourcelab.kafka.connect.apiclient.request.RequestErrorResponse;
@@ -340,6 +342,8 @@ public class KafkaConnectClient {
 
             try {
                 return request.parseResponse(responseStr);
+            } catch (final MismatchedInputException exception) {
+                throw new ResponseParseException(exception.getMessage(), exception);
             } catch (final IOException exception) {
                 throw new RuntimeException(exception.getMessage(), exception);
             }

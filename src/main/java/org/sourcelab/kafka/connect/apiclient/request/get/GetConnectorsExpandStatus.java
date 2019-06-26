@@ -17,6 +17,8 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.get;
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import org.sourcelab.kafka.connect.apiclient.exception.ResponseParseException;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedMetadata;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedStatus;
@@ -37,6 +39,14 @@ public class GetConnectorsExpandStatus implements GetRequest<ConnectorsWithExpan
 
     @Override
     public ConnectorsWithExpandedStatus parseResponse(final String responseStr) throws IOException {
-        return JacksonFactory.newInstance().readValue(responseStr, ConnectorsWithExpandedMetadata.class);
+        try {
+            return JacksonFactory.newInstance().readValue(responseStr, ConnectorsWithExpandedMetadata.class);
+        } catch (final MismatchedInputException exception) {
+            throw new ResponseParseException(
+                "Failed to parse response. The end point you requested requires Kafka-Connect 2.3.0+..."
+                + "are you sure you're querying against the right version?",
+                exception
+            );
+        }
     }
 }
