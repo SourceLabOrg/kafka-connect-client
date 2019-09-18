@@ -2,6 +2,16 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.1.1 (UNRELEASED)
+
+#### Internal Dependency Updates
+- Checkstyle plugin from 8.19 -> 8.24
+- org.apache.logging.log4j from 2.11.2 -> 2.12.1
+- org.apache.httpcomponents from 4.5.8 -> 4.5.10
+- com.google.guava:guava from 27.1-jre -> 28.1-jre
+- org.eclipse.jetty:jetty-server (test dependency) from 9.4.17.v20190418 -> 9.4.20.v20190813
+- org.mockito:mockito-core (test dependency) from 2.27.0 -> 2.28.2
+
 ## 2.1.0 (06/26/2019)
 
 ### New Features
