@@ -19,8 +19,8 @@ package org.sourcelab.kafka.connect.apiclient;
 
 import org.apache.http.HttpStatus;
 import org.junit.Test;
-import org.sourcelab.kafka.connect.apiclient.rest.RestClient;
-import org.sourcelab.kafka.connect.apiclient.rest.RestResponse;
+import org.sourcelab.http.rest.RestClient;
+import org.sourcelab.http.rest.RestResponse;
 import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ConcurrentConfigModificationException;
 import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ResourceNotFoundException;
 import org.sourcelab.kafka.connect.apiclient.rest.exceptions.UnauthorizedRequestException;

@@ -17,6 +17,10 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.put;
 
+import org.sourcelab.http.rest.request.PutRequest;
+import org.sourcelab.http.rest.request.body.NoBodyContent;
+import org.sourcelab.http.rest.request.body.RequestBodyContent;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -43,8 +47,8 @@ public final class PutConnectorPause implements PutRequest<Boolean> {
     }
 
     @Override
-    public Object getRequestBody() {
-        return null;
+    public RequestBodyContent getRequestBody() {
+        return new NoBodyContent();
     }
 
     @Override

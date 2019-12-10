@@ -77,11 +77,10 @@
 
     <!-- Project Dependencies -->
     <dependencies>
-        <!-- Http Client -->
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${http-components.version}</version>
+            <groupId>org.sourcelab.http</groupId>
+            <artifactId>HttpClientWrapper</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
         </dependency>
 
         <!-- Guava for Preconditions and URI Escaping -->

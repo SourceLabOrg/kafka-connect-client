@@ -19,15 +19,24 @@ package org.sourcelab.kafka.connect.apiclient.rest;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.sourcelab.http.rest.HttpClientRestClient;
+import org.sourcelab.http.rest.RestResponse;
+import org.sourcelab.http.rest.request.Request;
+import org.sourcelab.http.rest.request.RequestMethod;
+import org.sourcelab.http.rest.request.body.RequestBodyContent;
+import org.sourcelab.http.rest.request.body.UrlEncodedFormBodyContent;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
-import org.sourcelab.kafka.connect.apiclient.request.Request;
-import org.sourcelab.kafka.connect.apiclient.request.RequestMethod;
 import testserver.TestHttpServer;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @deprecated Test remains to ensure backwards compatibility with underlying library swap.
+ */
 public class HttpClientRestClientTest {
 
     private static final int HTTP_PORT = 10880;
@@ -154,13 +163,13 @@ public class HttpClientRestClientTest {
     private static class DummyRequest implements Request {
         private final String endPoint;
         private final RequestMethod requestMethod;
-        private final String requestBody;
+        private final Map<String, String> requestBody;
 
         public DummyRequest() {
-            this("/", RequestMethod.GET, null);
+            this("/", RequestMethod.GET, Collections.emptyMap());
         }
 
-        public DummyRequest(final String endPoint, final RequestMethod requestMethod, final String requestBody) {
+        public DummyRequest(final String endPoint, final RequestMethod requestMethod, final Map<String, String> requestBody) {
             this.endPoint = endPoint;
             this.requestMethod = requestMethod;
             this.requestBody = requestBody;
@@ -177,8 +186,11 @@ public class HttpClientRestClientTest {
         }
 
         @Override
-        public Object getRequestBody() {
-            return requestBody;
+        public RequestBodyContent getRequestBody() {
+            final UrlEncodedFormBodyContent content = new UrlEncodedFormBodyContent();
+            requestBody.forEach(content::addParameter);
+
+            return content;
         }
 
         @Override

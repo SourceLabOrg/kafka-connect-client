@@ -18,6 +18,7 @@
 package org.sourcelab.kafka.connect.apiclient.request.get;
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import org.sourcelab.http.rest.request.GetRequest;
 import org.sourcelab.kafka.connect.apiclient.exception.ResponseParseException;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedInfo;

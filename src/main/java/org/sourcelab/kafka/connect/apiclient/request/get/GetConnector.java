@@ -17,6 +17,7 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.get;
 
+import org.sourcelab.http.rest.request.GetRequest;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 

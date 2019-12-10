@@ -17,6 +17,10 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.put;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.sourcelab.http.rest.request.PutRequest;
+import org.sourcelab.http.rest.request.body.RequestBodyContent;
+import org.sourcelab.http.rest.request.body.StringBodyContent;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 
@@ -53,8 +57,14 @@ public final class PutConnectorConfig implements PutRequest<ConnectorDefinition>
     }
 
     @Override
-    public Object getRequestBody() {
-        return config;
+    public RequestBodyContent getRequestBody() {
+        try {
+            return new StringBodyContent(
+                JacksonFactory.newInstance().writeValueAsString(config)
+            );
+        } catch (final JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

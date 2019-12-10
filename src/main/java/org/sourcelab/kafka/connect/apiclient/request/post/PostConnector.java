@@ -17,6 +17,10 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.post;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.sourcelab.http.rest.request.PostRequest;
+import org.sourcelab.http.rest.request.body.RequestBodyContent;
+import org.sourcelab.http.rest.request.body.StringBodyContent;
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
@@ -45,8 +49,14 @@ public final class PostConnector implements PostRequest<ConnectorDefinition> {
     }
 
     @Override
-    public Object getRequestBody() {
-        return connectorDefinition;
+    public RequestBodyContent getRequestBody() {
+        try {
+            return new StringBodyContent(
+                JacksonFactory.newInstance().writeValueAsString(connectorDefinition)
+            );
+        } catch (final JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

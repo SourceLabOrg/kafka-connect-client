@@ -17,72 +17,24 @@
 
 package org.sourcelab.kafka.connect.apiclient;
 
-import java.io.File;
-import java.util.Objects;
+import org.sourcelab.http.rest.configuration.BasicConfiguration;
+import org.sourcelab.http.rest.configuration.ProxyConfiguration;
 
 /**
  * Configure your Kafka Connect API client.
  *
  * Also allows for configuring an optional proxy with or without authentication.
  */
-public final class Configuration {
-    // Defines the URL/Hostname of Kafka-Connect
-    private final String apiHost;
-
-    // Optional Connection options
-    private int requestTimeoutInSeconds = 300;
-
-    // Optional BasicAuth options
-    private String basicAuthUsername = null;
-    private String basicAuthPassword = null;
-
-    // Optional settings to validate Kafka-Connect's SSL certificate.
-    private boolean ignoreInvalidSslCertificates = false;
-    private File trustStoreFile = null;
-    private String trustStorePassword = null;
-
-    // Optional settings to send a client certificate with request.
-    private File keyStoreFile = null;
-    private String keyStorePassword = null;
-
-    // Optional Proxy Configuration
-    private String proxyHost = null;
-    private int proxyPort = 0;
-    private String proxyScheme = "HTTP";
-
-    // Optional Proxy Authentication.
-    private String proxyUsername = null;
-    private String proxyPassword = null;
+public final class Configuration extends BasicConfiguration<Configuration> {
+    // Used to provide non-breaking compatibility.
+    private final ProxyConfiguration.Builder proxyConfigBuilder = ProxyConfiguration.newBuilder();
 
     /**
      * Default Constructor.
      * @param kafkaConnectHost Hostname of Kafka-Connect
      */
     public Configuration(final String kafkaConnectHost) {
-        if (kafkaConnectHost == null) {
-            throw new NullPointerException("Kafka Connect Host parameter cannot be null!");
-        }
-
-        // Normalize into "http://<hostname>" if not specified.
-        if (kafkaConnectHost.startsWith("http://") || kafkaConnectHost.startsWith("https://")) {
-            this.apiHost = kafkaConnectHost;
-        } else {
-            // Assume http protocol
-            this.apiHost = "http://" + kafkaConnectHost;
-        }
-    }
-
-    /**
-     * Allow setting http Basic-Authentication username and password to authenticate requests.
-     *
-     * @param username username to authenticate requests to Kafka-Connect with.
-     * @param password password to authenticate requests to Kafka-Connect with.
-     * @return Configuration instance.
-     */
-    public Configuration useBasicAuth(final String username, final String password) {
-        this.basicAuthUsername = username;
-        this.basicAuthPassword = password;
-        return this;
+        super(kafkaConnectHost);
     }
 
     /**
@@ -92,12 +44,11 @@ public final class Configuration {
      * @param proxyPort Post for the proxy to use.
      * @param proxyScheme Scheme to use, HTTP/HTTPS
      * @return Configuration instance.
+     * @deprecated Replaced with useProxy(ProxyConfiguration) method.
      */
     public Configuration useProxy(final String proxyHost, final int proxyPort, final String proxyScheme) {
-        this.proxyHost = proxyHost;
-        this.proxyPort = proxyPort;
-        this.proxyScheme = proxyScheme;
-        return this;
+        proxyConfigBuilder.useProxy(proxyHost, proxyPort, proxyScheme);
+        return useProxy(proxyConfigBuilder.build());
     }
 
     /**
@@ -106,146 +57,99 @@ public final class Configuration {
      * @param proxyUsername Username for proxy.
      * @param proxyPassword Password for proxy.
      * @return Configuration instance.
+     * @deprecated Replaced with useProxy(ProxyConfiguration) method.
      */
     public Configuration useProxyAuthentication(final String proxyUsername, final String proxyPassword) {
-        this.proxyUsername = proxyUsername;
-        this.proxyPassword = proxyPassword;
-        return this;
+        proxyConfigBuilder.useProxyAuthentication(proxyUsername, proxyPassword);
+        return useProxy(proxyConfigBuilder.build());
     }
 
     /**
-     * Skip all validation of SSL Certificates.  This is insecure and highly discouraged!
-     *
-     * @return Configuration instance.
+     * Return the configured proxy hostname.
+     * @return Configured proxy hostname, or null if not configured.
+     * @deprecated Replaced by getProxyConfiguration()
      */
-    public Configuration useInsecureSslCertificates() {
-        this.ignoreInvalidSslCertificates = true;
-        return this;
-    }
-
-    /**
-     * (Optional) Supply a path to a JKS trust store to be used to validate SSL certificates with.  You'll need this
-     * if you're using Self Signed certificates.
-     *
-     * Alternatively you can can explicitly add your certificate to the JVM's truststore using a command like:
-     * keytool -importcert -keystore truststore.jks -file servercert.pem
-     *
-     * @param trustStoreFile file path to truststore.
-     * @param password (optional) Password for truststore. Pass null if no password.
-     * @return Configuration instance.
-     */
-    public Configuration useTrustStore(final File trustStoreFile, final String password) {
-        this.trustStoreFile = Objects.requireNonNull(trustStoreFile);
-        this.trustStorePassword = password;
-        return this;
-    }
-
-    /**
-     * (Optional) Supply a path to a JKS key store to be used for client validation.  You'll need this if your
-     * Kafka-Connect instance is configured to only accept requests from clients with a valid certificate.
-     *
-     * @param keyStoreFile file path to keystore.
-     * @param password (optional) Password for keystore. Pass null if no password.
-     * @return Configuration instance.
-     */
-    public Configuration useKeyStore(final File keyStoreFile, final String password) {
-        this.keyStoreFile = Objects.requireNonNull(keyStoreFile);
-        this.keyStorePassword = password;
-        return this;
-    }
-
-    /**
-     * Set the request timeout value, in seconds.
-     * @param requestTimeoutInSeconds How long before a request times out, in seconds.
-     * @return Configuration instance.
-     */
-    public Configuration useRequestTimeoutInSeconds(final int requestTimeoutInSeconds) {
-        this.requestTimeoutInSeconds = requestTimeoutInSeconds;
-        return this;
-    }
-
     public String getProxyHost() {
-        return proxyHost;
+        if (super.getProxyConfiguration() != null) {
+            return super.getProxyConfiguration().getProxyHost();
+        }
+        return null;
     }
 
+    /**
+     * Return the configured proxy port.
+     * @return Configured proxy port, or 0 if not configured.
+     * @deprecated Replaced by getProxyConfiguration()
+     */
     public int getProxyPort() {
-        return proxyPort;
+        if (super.getProxyConfiguration() != null) {
+            return super.getProxyConfiguration().getProxyPort();
+        }
+        return 0;
     }
 
+    /**
+     * Return the configured proxy scheme.
+     * @return Configured proxy scheme, or null if not configured.
+     * @deprecated Replaced by getProxyConfiguration()
+     */
     public String getProxyScheme() {
-        return proxyScheme;
+        if (super.getProxyConfiguration() != null) {
+            return super.getProxyConfiguration().getProxyScheme();
+        }
+        return null;
     }
 
+    /**
+     * Return the configured proxy username for proxy authentication.
+     * @return Configured proxy username, or null if not configured.
+     * @deprecated Replaced by getProxyConfiguration()
+     */
     public String getProxyUsername() {
-        return proxyUsername;
+        if (super.getProxyConfiguration() != null) {
+            return super.getProxyConfiguration().getProxyUsername();
+        }
+        return null;
     }
 
+    /**
+     * Return the configured proxy password for proxy authentication.
+     * @return Configured proxy username, or null if not configured.
+     * @deprecated Replaced by getProxyConfiguration()
+     */
     public String getProxyPassword() {
-        return proxyPassword;
-    }
-
-    public String getApiHost() {
-        return apiHost;
-    }
-
-    public boolean getIgnoreInvalidSslCertificates() {
-        return ignoreInvalidSslCertificates;
-    }
-
-    public File getTrustStoreFile() {
-        return trustStoreFile;
-    }
-
-    public String getTrustStorePassword() {
-        return trustStorePassword;
-    }
-
-    public int getRequestTimeoutInSeconds() {
-        return requestTimeoutInSeconds;
-    }
-
-    public File getKeyStoreFile() {
-        return keyStoreFile;
-    }
-
-    public String getKeyStorePassword() {
-        return keyStorePassword;
-    }
-
-    public String getBasicAuthUsername() {
-        return basicAuthUsername;
-    }
-
-    public String getBasicAuthPassword() {
-        return basicAuthPassword;
+        if (super.getProxyConfiguration() != null) {
+            return super.getProxyConfiguration().getProxyPassword();
+        }
+        return null;
     }
 
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder("Configuration{")
-            .append("apiHost='").append(apiHost).append('\'')
-            .append(", requestTimeout='").append(requestTimeoutInSeconds).append('\'');
-        if (proxyHost != null) {
+            .append("apiHost='").append(getApiHost()).append('\'')
+            .append(", requestTimeout='").append(getRequestTimeoutInSeconds()).append('\'');
+        if (getProxyConfiguration() != null) {
             stringBuilder
-                .append(", proxy='").append(proxyScheme).append("://");
+                .append(", proxy='").append(getProxyConfiguration().getProxyScheme()).append("://");
 
             // Append configured proxy auth details
-            if (proxyUsername != null) {
-                stringBuilder.append(proxyUsername).append(':').append("XXXXXXX@");
+            if (getProxyConfiguration().getProxyUsername() != null) {
+                stringBuilder.append(getProxyConfiguration().getProxyUsername()).append(':').append("XXXXXXX@");
             }
 
-            stringBuilder.append(proxyHost).append(":").append(proxyPort).append('\'');
+            stringBuilder.append(getProxyConfiguration().getProxyHost()).append(":").append(getProxyConfiguration().getProxyPort()).append('\'');
         }
-        stringBuilder.append(", ignoreInvalidSslCertificates='").append(ignoreInvalidSslCertificates).append('\'');
-        if (trustStoreFile != null) {
-            stringBuilder.append(", sslTrustStoreFile='").append(trustStoreFile).append('\'');
-            if (trustStorePassword != null) {
+        stringBuilder.append(", ignoreInvalidSslCertificates='").append(getIgnoreInvalidSslCertificates()).append('\'');
+        if (getTrustStoreFile() != null) {
+            stringBuilder.append(", sslTrustStoreFile='").append(getTrustStoreFile()).append('\'');
+            if (getTrustStorePassword() != null) {
                 stringBuilder.append(", sslTrustStorePassword='******'");
             }
         }
-        if (basicAuthUsername != null) {
+        if (getBasicAuthUsername() != null) {
             stringBuilder
-                .append(", basicAuthUsername='").append(basicAuthUsername).append('\'')
+                .append(", basicAuthUsername='").append(getBasicAuthUsername()).append('\'')
                 .append(", basicAuthPassword='******'");
         }
         stringBuilder.append('}');

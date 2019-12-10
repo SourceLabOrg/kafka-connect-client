@@ -17,6 +17,10 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.post;
 
+import org.sourcelab.http.rest.request.PostRequest;
+import org.sourcelab.http.rest.request.body.NoBodyContent;
+import org.sourcelab.http.rest.request.body.RequestBodyContent;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -43,8 +47,8 @@ public final class PostConnectorRestart implements PostRequest<Boolean> {
     }
 
     @Override
-    public Object getRequestBody() {
-        return "";
+    public RequestBodyContent getRequestBody() {
+        return new NoBodyContent();
     }
 
     @Override
