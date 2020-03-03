@@ -2,14 +2,39 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 2.1.1 (UNRELEASED)
+## 3.0.0 (UNRELEASED)
+
+#### Possible Breaking Dependency Change
+
+- Removed `org.apache.logging.log4j` dependency, instead relying on the org.slf4j logging interface/facade dependency explicitly.
+  - If your project was **NOT** depending on this transitive dependency, **no changes are required to upgrade**.
+  - If your project **WAS** depending on this transitive dependency, you may need to add it to your own project:
+
+  ```xml
+  <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.12.1</version>
+  </dependency>
+  <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.12.1</version>
+  </dependency>
+  <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.12.1</version>
+  </dependency>
+  ```
 
 #### Internal Dependency Updates
 - Checkstyle plugin from 8.19 -> 8.24
+- com.fasterxml.jackson.core from 2.9.9 -> 2.10.2
 - org.apache.logging.log4j from 2.11.2 -> 2.12.1
-- org.apache.httpcomponents from 4.5.8 -> 4.5.10
-- com.google.guava:guava from 27.1-jre -> 28.1-jre
-- org.eclipse.jetty:jetty-server (test dependency) from 9.4.17.v20190418 -> 9.4.20.v20190813
+- org.apache.httpcomponents from 4.5.8 -> 4.5.11
+- com.google.guava:guava from 27.1-jre -> 28.2-jre
+- org.eclipse.jetty:jetty-server (test dependency) from 9.4.17.v20190418 -> 9.4.27.v20200227
 - org.mockito:mockito-core (test dependency) from 2.27.0 -> 2.28.2
 
 ## 2.1.0 (06/26/2019)
