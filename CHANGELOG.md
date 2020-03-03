@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 #### Possible Breaking Dependency Change
 
 - Removed `org.apache.logging.log4j` dependency, instead relying on the org.slf4j logging interface/facade dependency explicitly.
-  - If your project was depending on this transitive dependency you may need to add it to your own project:
+  - If your project was **NOT** depending on this transitive dependency, **no changes are required to upgrade**.
+  - If your project **WAS** depending on this transitive dependency, you may need to add it to your own project:
 
   ```xml
   <dependency>
