@@ -2,7 +2,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 3.0.0 (UNRELEASED)
+## 3.0.0 (03/20/2020)
 
 #### Possible Breaking Dependency Change
 
