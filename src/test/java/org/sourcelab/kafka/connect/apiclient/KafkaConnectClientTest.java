@@ -233,6 +233,22 @@ public class KafkaConnectClientTest {
     }
 
     /**
+     * Test retrieving topics for a connector.
+     */
+    @Test
+    public void testGetConnectorTopics() {
+        logger.info("Result: {}", kafkaConnectClient.getConnectorTopics(connectorName));
+    }
+
+    /**
+     * Test resetting topics for a connector.
+     */
+    @Test
+    public void testResetConnectorTopics() {
+        logger.info("Result: {}", kafkaConnectClient.resetConnectorTopics(connectorName));
+    }
+
+    /**
      * Test retrieving available connector plugins.
      */
     @Test

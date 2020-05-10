@@ -2,6 +2,18 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.1.0 (05/10/2020)
+
+### New Features
+- Add support for `/connectors/<connector-name>/topics` and `/connectors/<connector-name>/topics/reset` endpoints 
+added in Kafka 2.5.0 via `getConnectorTopics()` and `resetConnectorTopics()` methods on KafkaConnectClient.
+
+#### Internal Dependency Updates
+- com.google.guava:guava from 28.2-jre -> 29.0-jre
+- org.apache.httpcomponents from 4.5.11 -> 4.5.12
+- com.fasterxml.jackson.core from 2.10.2 -> 2.10.4
+- Checkstyle plugin from 8.24 -> 8.32
+
 ## 3.0.0 (03/20/2020)
 
 #### Possible Breaking Dependency Change

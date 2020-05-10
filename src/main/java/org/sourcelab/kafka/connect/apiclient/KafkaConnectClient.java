@@ -32,6 +32,7 @@ import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPlugin;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigValidationResults;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorTopics;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedInfo;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedMetadata;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedStatus;
@@ -45,6 +46,7 @@ import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorPlugins;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorStatus;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTaskStatus;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTasks;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTopics;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectors;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorsExpandAllDetails;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorsExpandInfo;
@@ -56,6 +58,7 @@ import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorConfig;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorPause;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorPluginConfigValidate;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorResume;
+import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorTopicsReset;
 import org.sourcelab.kafka.connect.apiclient.rest.HttpClientRestClient;
 import org.sourcelab.kafka.connect.apiclient.rest.RestClient;
 import org.sourcelab.kafka.connect.apiclient.rest.RestResponse;
@@ -112,6 +115,7 @@ public class KafkaConnectClient {
 
     /**
      * Retrieve details about the Kafka-Connect service itself.
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--
      * @return ConnectServerVersion
      */
     public ConnectServerVersion getConnectServerVersion() {
@@ -195,6 +199,30 @@ public class KafkaConnectClient {
      */
     public ConnectorStatus getConnectorStatus(final String connectorName) {
         return submitRequest(new GetConnectorStatus(connectorName));
+    }
+
+    /**
+     * Get the set of topics that a specific connector is using since the connector was created or since a request
+     * to reset its set of active topics was issued.
+     * https://docs.confluent.io/current/connect/references/restapi.html#get--connectors-(string-name)-topics
+     *
+     * Requires Kafka-Connect 2.5.0+
+     *
+     * @param connectorName Name of connector.
+     */
+    public ConnectorTopics getConnectorTopics(final String connectorName) {
+        return submitRequest(new GetConnectorTopics(connectorName));
+    }
+
+    /**
+     * Send a request to empty the set of active topics of a connector.
+     * https://docs.confluent.io/current/connect/references/restapi.html#put--connectors-(string-name)-topics-reset
+     * Requires Kafka-Connect 2.5.0+
+     *
+     * @param connectorName Name of connector.
+     */
+    public boolean resetConnectorTopics(final String connectorName) {
+        return submitRequest(new PutConnectorTopicsReset(connectorName));
     }
 
     /**
