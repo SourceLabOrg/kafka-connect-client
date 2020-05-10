@@ -209,6 +209,7 @@ public class KafkaConnectClient {
      * Requires Kafka-Connect 2.5.0+
      *
      * @param connectorName Name of connector.
+     * @return Connector Topics response.
      */
     public ConnectorTopics getConnectorTopics(final String connectorName) {
         return submitRequest(new GetConnectorTopics(connectorName));
@@ -220,6 +221,7 @@ public class KafkaConnectClient {
      * Requires Kafka-Connect 2.5.0+
      *
      * @param connectorName Name of connector.
+     * @return true on success.
      */
     public boolean resetConnectorTopics(final String connectorName) {
         return submitRequest(new PutConnectorTopicsReset(connectorName));
