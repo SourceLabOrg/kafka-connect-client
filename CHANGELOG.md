@@ -2,6 +2,11 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.1.1 (UNRELEASED)
+
+#### Internal Dependency Updates
+- com.fasterxml.jackson.core from 2.10.4 -> 2.11.2
+
 ## 3.1.0 (05/10/2020)
 
 ### New Features
