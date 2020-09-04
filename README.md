@@ -4,7 +4,7 @@
 
 ## What is it? 
 
-This library intends to give you an easy way to interact with the [Kafka-Connect](https://docs.confluent.io/current/connect/restapi.html) REST service (V4). 
+This library provides an easy to use client library for interacting with the [Kafka-Connect](https://docs.confluent.io/current/connect/references/restapi.html) REST service (V4). 
 
 ## How to use this library
 
