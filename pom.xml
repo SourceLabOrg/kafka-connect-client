@@ -50,7 +50,7 @@
         <guava.version>29.0-jre</guava.version>
 
         <!-- Http Components version -->
-        <http-components.version>4.5.12</http-components.version>
+        <http-components.version>4.5.13</http-components.version>
 
         <!-- Jackson version -->
         <jackson.version>2.11.2</jackson.version>
