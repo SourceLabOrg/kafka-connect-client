@@ -56,7 +56,7 @@
         <jackson.version>2.11.2</jackson.version>
 
         <!-- Define which version of junit you'll be running -->
-        <junit.version>4.13</junit.version>
+        <junit.version>4.13.1</junit.version>
 
         <!-- Specify which Checkstyle ruleset to use -->
         <checkstyle.ruleset>build/checkstyle-v1.5.xml</checkstyle.ruleset>
