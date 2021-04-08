@@ -2,10 +2,20 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 3.1.1 (UNRELEASED)
+## 3.1.1 (04/08/2021)
+
+#### Bugfixes
+- [Issue-51](https://github.com/SourceLabOrg/kafka-connect-client/issues/51) Can't set request timeout
+  Previously `ConfigurationBuilder::useRequestTimeoutInSeconds()` was incorrectly setting the request time to live property instead of the request time out property.  It's been updated to correctly set the request timeout value on the underlying http client.
+  Additionally `ConfigurationBuilder::useConnectionTimeToLiveInSeconds()` was added to allow for setting the request time to live property on the underlying http client.
+  
+
+  Thanks [IvanZhilyakov28](https://github.com/IvanZhilyakov28) for supplying the bugfix!
 
 #### Internal Dependency Updates
-- com.fasterxml.jackson.core from 2.10.4 -> 2.11.2
+- com.fasterxml.jackson.core from 2.10.4 -> 2.12.2
+- org.apache.httpcomponents from 4.5.12 -> 4.5.13
+- com.google.guava:guava from 29.0-jre -> - 30.1.1-jre
 
 ## 3.1.0 (05/10/2020)
 

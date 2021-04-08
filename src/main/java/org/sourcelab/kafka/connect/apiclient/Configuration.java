@@ -166,7 +166,7 @@ public final class Configuration {
     }
 
     /**
-     * Sets maximum time to live for persistent connections
+     * Sets maximum time to live for persistent connections.
      * @param connectionTimeToLiveInSeconds How long before persistent connection will be interrupted, in seconds
      * @return Configuration instance.
      */
