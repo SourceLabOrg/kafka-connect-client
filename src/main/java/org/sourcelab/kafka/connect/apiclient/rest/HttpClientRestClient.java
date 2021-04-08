@@ -110,13 +110,15 @@ public class HttpClientRestClient implements RestClient {
         final HttpClientBuilder clientBuilder = HttpClientBuilder.create();
         clientBuilder
             // Define timeout
-            .setConnectionTimeToLive(configuration.getRequestTimeoutInSeconds(), TimeUnit.SECONDS)
+            .setConnectionTimeToLive(configuration.getConnectionTimeToLiveInSeconds(), TimeUnit.SECONDS)
 
             // Define SSL Socket Factory instance.
             .setSSLSocketFactory(httpsContextBuilder.createSslSocketFactory());
 
         // Define our RequestConfigBuilder
         final RequestConfig.Builder requestConfigBuilder = RequestConfig.custom();
+
+        requestConfigBuilder.setConnectTimeout(configuration.getRequestTimeoutInSeconds() * 1_000);
 
         // Define our Credentials Provider
         final CredentialsProvider credsProvider = new BasicCredentialsProvider();
