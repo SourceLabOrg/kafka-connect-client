@@ -31,6 +31,7 @@ public final class Configuration {
 
     // Optional Connection options
     private int requestTimeoutInSeconds = 300;
+    private int connectionTimeToLiveInSeconds = 300;
 
     // Optional BasicAuth options
     private String basicAuthUsername = null;
@@ -164,6 +165,16 @@ public final class Configuration {
         return this;
     }
 
+    /**
+     * Sets maximum time to live for persistent connections
+     * @param connectionTimeToLiveInSeconds How long before persistent connection will be interrupted, in seconds
+     * @return Configuration instance.
+     */
+    public Configuration useConnectionTimeToLiveInSeconds(final int connectionTimeToLiveInSeconds) {
+        this.connectionTimeToLiveInSeconds = connectionTimeToLiveInSeconds;
+        return this;
+    }
+
     public String getProxyHost() {
         return proxyHost;
     }
@@ -204,6 +215,10 @@ public final class Configuration {
         return requestTimeoutInSeconds;
     }
 
+    public int getConnectionTimeToLiveInSeconds() {
+        return connectionTimeToLiveInSeconds;
+    }
+
     public File getKeyStoreFile() {
         return keyStoreFile;
     }
@@ -224,7 +239,8 @@ public final class Configuration {
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder("Configuration{")
             .append("apiHost='").append(apiHost).append('\'')
-            .append(", requestTimeout='").append(requestTimeoutInSeconds).append('\'');
+            .append(", requestTimeout='").append(requestTimeoutInSeconds).append('\'')
+            .append("connectionTimeToLiveInSeconds='").append(connectionTimeToLiveInSeconds).append('\'');
         if (proxyHost != null) {
             stringBuilder
                 .append(", proxy='").append(proxyScheme).append("://");
