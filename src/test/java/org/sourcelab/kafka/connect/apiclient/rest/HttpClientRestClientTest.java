@@ -17,6 +17,7 @@
 
 package org.sourcelab.kafka.connect.apiclient.rest;
 
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
@@ -27,6 +28,8 @@ import testserver.TestHttpServer;
 import java.io.File;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class HttpClientRestClientTest {
 
@@ -75,6 +78,29 @@ public class HttpClientRestClientTest {
             // Validate response.
             assertEquals(RESPONSE_DATA, result.getResponseStr());
         }
+    }
+
+    /**
+     * Test that the HttpClientRestClient actually uses the builder returned from the
+     * {@link HttpClientRestClient#createHttpClientBuilder()} method.
+     */
+    @Test
+    public void doHttp_withCustomHttpClientBuilder() {
+        // Create a mock builder and a rest client that uses the mock builder
+        final HttpClientBuilder builderMock = mock(HttpClientBuilder.class);
+        HttpClientRestClient restClient = new HttpClientRestClient() {
+            @Override
+            protected HttpClientBuilder createHttpClientBuilder() {
+                return builderMock;
+            }
+        };
+
+        // Init the rest client
+        final Configuration configuration = new Configuration("http://localhost:" + HTTP_PORT);
+        restClient.init(configuration);
+
+        // Verify the mock was used to create the HttpClient
+        verify(builderMock).build();
     }
 
     /**

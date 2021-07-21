@@ -107,7 +107,7 @@ public class HttpClientRestClient implements RestClient {
         final HttpsContextBuilder httpsContextBuilder = new HttpsContextBuilder(configuration);
 
         // Setup client builder
-        final HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+        final HttpClientBuilder clientBuilder = createHttpClientBuilder();
         clientBuilder
             // Define timeout
             .setConnectionTimeToLive(configuration.getConnectionTimeToLiveInSeconds(), TimeUnit.SECONDS)
@@ -204,6 +204,15 @@ public class HttpClientRestClient implements RestClient {
             }
         }
         httpClient = null;
+    }
+
+    /**
+     * Create the HttpClientBuilder which is used to create the HttpClient.
+     * This method allows users to extend this class and use a custom builder if needed.
+     * @return The HttpClientBuilder to use for creating the HttpClient.
+     */
+    protected HttpClientBuilder createHttpClientBuilder() {
+        return HttpClientBuilder.create();
     }
 
     /**
