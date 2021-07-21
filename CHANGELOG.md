@@ -2,6 +2,14 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.1.2 (07/21/2021)
+
+- [Issue-54](https://github.com/SourceLabOrg/kafka-connect-client/issues/54) Resolution for issue-54
+
+#### Internal Dependency Updates
+- org.apache.logging.log4j from 2.13.2 -> 2.14.1
+- org.slf4j:slf4j from 1.7.30 -> 1.7.32
+
 ## 3.1.1 (04/08/2021)
 
 #### Bugfixes
