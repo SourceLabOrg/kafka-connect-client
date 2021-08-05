@@ -17,6 +17,10 @@
 
 package org.sourcelab.kafka.connect.apiclient.rest;
 
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,10 +30,16 @@ import org.sourcelab.kafka.connect.apiclient.request.RequestMethod;
 import testserver.TestHttpServer;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class HttpClientRestClientTest {
 
@@ -101,6 +111,48 @@ public class HttpClientRestClientTest {
 
         // Verify the mock was used to create the HttpClient
         verify(builderMock).build();
+    }
+
+    /**
+     * Test that the every request uses a new HttpClientContext.
+     */
+    @Test
+    public void doHttp_verifyNewHttpContextOnEveryRequest() throws IOException {
+        AtomicReference<HttpClientContext> firstContext = new AtomicReference<>();
+        CloseableHttpClient httpClientMock = mock(CloseableHttpClient.class);
+        when(httpClientMock.execute(any(HttpUriRequest.class), any(ResponseHandler.class), any(HttpClientContext.class)))
+                .then(invocation -> {
+                    // Store the context of first request
+                    HttpClientContext context = invocation.getArgument(2);
+                    firstContext.set(context);
+                    return null;
+                })
+                .then(invocation -> {
+                    // Compare the context of second request with the first context
+                    HttpClientContext context = invocation.getArgument(2);
+                    assertNotSame(context, firstContext.get());
+                    return null;
+                });
+
+        // Create a mock builder and a rest client that uses the mock builder
+        final HttpClientBuilder builderMock = mock(HttpClientBuilder.class);
+        HttpClientRestClient restClient = new HttpClientRestClient() {
+            @Override
+            protected HttpClientBuilder createHttpClientBuilder() {
+                return builderMock;
+            }
+        };
+        when(builderMock.build()).thenReturn(httpClientMock);
+
+        // Init the rest client
+        final Configuration configuration = new Configuration("http://localhost:" + HTTP_PORT);
+        restClient.init(configuration);
+
+        restClient.submitRequest(new DummyRequest());
+        restClient.submitRequest(new DummyRequest());
+
+        verify(httpClientMock, times(2))
+                .execute(any(HttpUriRequest.class), any(ResponseHandler.class), any(HttpClientContext.class));
     }
 
     /**
