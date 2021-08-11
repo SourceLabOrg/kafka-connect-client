@@ -1,7 +1,5 @@
 # Kafka-Connect Java REST API Client
 
-[![Build Status](https://travis-ci.org/SourceLabOrg/kafka-connect-client.svg?branch=master)](https://travis-ci.org/SourceLabOrg/kafka-connect-client)
-
 ## What is it? 
 
 This library provides an easy to use client library for interacting with the [Kafka-Connect](https://docs.confluent.io/current/connect/references/restapi.html) REST service (V4). 
