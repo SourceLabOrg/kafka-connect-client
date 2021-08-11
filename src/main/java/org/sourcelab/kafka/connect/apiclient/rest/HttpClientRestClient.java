@@ -60,6 +60,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -130,7 +131,10 @@ public class HttpClientRestClient implements RestClient {
         final HttpsContextBuilder httpsContextBuilder = configHooks.createHttpsContextBuilder(configuration);
 
         // Create and setup client builder
-        HttpClientBuilder clientBuilder = configHooks.createHttpClientBuilder(configuration);
+        HttpClientBuilder clientBuilder = Objects.requireNonNull(
+            configHooks.createHttpClientBuilder(configuration),
+            "HttpClientConfigHook::createHttpClientBuilder() must return non-null instance."
+        );
         clientBuilder
             // Define timeout
             .setConnectionTimeToLive(configuration.getConnectionTimeToLiveInSeconds(), TimeUnit.SECONDS)
@@ -139,15 +143,24 @@ public class HttpClientRestClient implements RestClient {
             .setSSLSocketFactory(httpsContextBuilder.createSslSocketFactory());
 
         // Define our RequestConfigBuilder
-        RequestConfig.Builder requestConfigBuilder = configHooks.createRequestConfigBuilder(configuration);
+        RequestConfig.Builder requestConfigBuilder = Objects.requireNonNull(
+            configHooks.createRequestConfigBuilder(configuration),
+            "HttpClientConfigHook::createRequestConfigBuilder() must return non-null instance."
+        );
 
         requestConfigBuilder.setConnectTimeout(configuration.getRequestTimeoutInSeconds() * 1_000);
 
         // Define our Credentials Provider
-        credsProvider = configHooks.createCredentialsProvider(configuration);
+        credsProvider = Objects.requireNonNull(
+            configHooks.createCredentialsProvider(configuration),
+            "HttpClientConfigHook::createCredentialsProvider() must return non-null instance."
+        );
 
         // Define our auth cache
-        authCache = configHooks.createAuthCache(configuration);
+        authCache = Objects.requireNonNull(
+            configHooks.createAuthCache(configuration),
+            "HttpClientConfigHook::createAuthCache() must return non-null instance."
+        );
 
         // If we have a configured proxy host
         if (configuration.getProxyHost() != null) {
@@ -201,9 +214,18 @@ public class HttpClientRestClient implements RestClient {
         }
 
         // Call Modify hooks
-        authCache = configHooks.modifyAuthCache(configuration, authCache);
-        credsProvider = configHooks.modifyCredentialsProvider(configuration, credsProvider);
-        requestConfigBuilder = configHooks.modifyRequestConfig(configuration, requestConfigBuilder);
+        authCache = Objects.requireNonNull(
+            configHooks.modifyAuthCache(configuration, authCache),
+            "HttpClientConfigHook::modifyAuthCache() must return non-null instance."
+        );
+        credsProvider = Objects.requireNonNull(
+            configHooks.modifyCredentialsProvider(configuration, credsProvider),
+            "HttpClientConfigHook::modifyCredentialsProvider() must return non-null instance."
+        );
+        requestConfigBuilder = Objects.requireNonNull(
+            configHooks.modifyRequestConfig(configuration, requestConfigBuilder),
+            "HttpClientConfigHook::modifyRequestConfig() must return non-null instance."
+        );
 
         // Attach Credentials provider to client builder.
         clientBuilder.setDefaultCredentialsProvider(credsProvider);
@@ -212,7 +234,10 @@ public class HttpClientRestClient implements RestClient {
         clientBuilder.setDefaultRequestConfig(requestConfigBuilder.build());
 
         // build http client
-        clientBuilder = configHooks.modifyHttpClientBuilder(configuration, clientBuilder);
+        clientBuilder = Objects.requireNonNull(
+            configHooks.modifyHttpClientBuilder(configuration, clientBuilder),
+            "HttpClientConfigHook::modifyHttpClientBuilder() must return non-null instance."
+        );
         httpClient = clientBuilder.build();
     }
 
