@@ -97,9 +97,23 @@ public class HttpClientRestClient implements RestClient {
     private CredentialsProvider credsProvider;
 
     /**
+     * Provides an interface for modifying how the underlying HttpClient instance is created.
+     */
+    private final HttpClientConfigHooks configHooks;
+
+    /**
      * Constructor.
      */
     public HttpClientRestClient() {
+        this(new DefaultHttpClientConfigHooks());
+    }
+
+    /**
+     * Constructor allowing for injecting configuration hooks.
+     * @param configHooks For hooking/overriding into how the underlying HttpClient is configured.
+     */
+    public HttpClientRestClient(final HttpClientConfigHooks configHooks) {
+        this.configHooks = configHooks;
     }
 
     /**
@@ -113,10 +127,10 @@ public class HttpClientRestClient implements RestClient {
         this.configuration = configuration;
 
         // Create https context builder utility.
-        final HttpsContextBuilder httpsContextBuilder = new HttpsContextBuilder(configuration);
+        final HttpsContextBuilder httpsContextBuilder = configHooks.createHttpsContextBuilder(configuration);
 
-        // Setup client builder
-        final HttpClientBuilder clientBuilder = createHttpClientBuilder();
+        // Create and setup client builder
+        HttpClientBuilder clientBuilder = configHooks.createHttpClientBuilder(configuration);
         clientBuilder
             // Define timeout
             .setConnectionTimeToLive(configuration.getConnectionTimeToLiveInSeconds(), TimeUnit.SECONDS)
@@ -125,15 +139,15 @@ public class HttpClientRestClient implements RestClient {
             .setSSLSocketFactory(httpsContextBuilder.createSslSocketFactory());
 
         // Define our RequestConfigBuilder
-        final RequestConfig.Builder requestConfigBuilder = RequestConfig.custom();
+        RequestConfig.Builder requestConfigBuilder = configHooks.createRequestConfigBuilder(configuration);
 
         requestConfigBuilder.setConnectTimeout(configuration.getRequestTimeoutInSeconds() * 1_000);
 
         // Define our Credentials Provider
-        credsProvider = new BasicCredentialsProvider();
+        credsProvider = configHooks.createCredentialsProvider(configuration);
 
         // Define our auth cache
-        authCache = new BasicAuthCache();
+        authCache = configHooks.createAuthCache(configuration);
 
         // If we have a configured proxy host
         if (configuration.getProxyHost() != null) {
@@ -186,6 +200,11 @@ public class HttpClientRestClient implements RestClient {
             }
         }
 
+        // Call Modify hooks
+        authCache = configHooks.modifyAuthCache(configuration, authCache);
+        credsProvider = configHooks.modifyCredentialsProvider(configuration, credsProvider);
+        requestConfigBuilder = configHooks.modifyRequestConfig(configuration, requestConfigBuilder);
+
         // Attach Credentials provider to client builder.
         clientBuilder.setDefaultCredentialsProvider(credsProvider);
 
@@ -193,6 +212,7 @@ public class HttpClientRestClient implements RestClient {
         clientBuilder.setDefaultRequestConfig(requestConfigBuilder.build());
 
         // build http client
+        clientBuilder = configHooks.modifyHttpClientBuilder(configuration, clientBuilder);
         httpClient = clientBuilder.build();
     }
 
@@ -407,12 +427,12 @@ public class HttpClientRestClient implements RestClient {
      */
     private HttpClientContext createHttpClientContext() {
         // Define our context
-        final HttpClientContext httpClientContext = HttpClientContext.create();
+        final HttpClientContext httpClientContext = configHooks.createHttpClientContext(configuration);
 
         // Configure context.
         httpClientContext.setAuthCache(authCache);
         httpClientContext.setCredentialsProvider(credsProvider);
 
-        return httpClientContext;
+        return configHooks.modifyHttpClientContext(configuration, httpClientContext);
     }
 }

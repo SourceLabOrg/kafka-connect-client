@@ -2,6 +2,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.1.3 (08/11/2021)
+- [Issue-55](https://github.com/SourceLabOrg/kafka-connect-client/issues/55) Create new HttpContext for every request.
+- 
+
 ## 3.1.2 (07/21/2021)
 
 - [Issue-54](https://github.com/SourceLabOrg/kafka-connect-client/issues/54) Resolution for issue-54
