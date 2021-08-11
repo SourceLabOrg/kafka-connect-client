@@ -19,15 +19,11 @@ package org.sourcelab.kafka.connect.apiclient.rest;
 
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
 import org.sourcelab.kafka.connect.apiclient.request.Request;
@@ -35,19 +31,14 @@ import org.sourcelab.kafka.connect.apiclient.request.RequestMethod;
 import testserver.TestHttpServer;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 public class HttpClientRestClientTest {
 
