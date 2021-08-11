@@ -30,6 +30,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
@@ -85,7 +86,15 @@ public class HttpClientRestClient implements RestClient {
      */
     private CloseableHttpClient httpClient;
 
-    private HttpClientContext httpClientContext;
+    /**
+     * The AuthCache used when creating the HttpClientContext.
+     */
+    private AuthCache authCache;
+
+    /**
+     * The CredentialsProvider used when creating the HttpClientContext.
+     */
+    private CredentialsProvider credsProvider;
 
     /**
      * Constructor.
@@ -121,13 +130,10 @@ public class HttpClientRestClient implements RestClient {
         requestConfigBuilder.setConnectTimeout(configuration.getRequestTimeoutInSeconds() * 1_000);
 
         // Define our Credentials Provider
-        final CredentialsProvider credsProvider = new BasicCredentialsProvider();
-
-        // Define our context
-        httpClientContext = HttpClientContext.create();
+        credsProvider = new BasicCredentialsProvider();
 
         // Define our auth cache
-        final AuthCache authCache = new BasicAuthCache();
+        authCache = new BasicAuthCache();
 
         // If we have a configured proxy host
         if (configuration.getProxyHost() != null) {
@@ -179,10 +185,6 @@ public class HttpClientRestClient implements RestClient {
                 throw new RuntimeException(exception.getMessage(), exception);
             }
         }
-
-        // Configure context.
-        httpClientContext.setAuthCache(authCache);
-        httpClientContext.setCredentialsProvider(credsProvider);
 
         // Attach Credentials provider to client builder.
         clientBuilder.setDefaultCredentialsProvider(credsProvider);
@@ -272,7 +274,7 @@ public class HttpClientRestClient implements RestClient {
             logger.debug("Executing request {}", get.getRequestLine());
 
             // Execute and return
-            return httpClient.execute(get, responseHandler, httpClientContext);
+            return execute(get, responseHandler);
         } catch (final ClientProtocolException | SocketException | URISyntaxException | SSLHandshakeException connectionException) {
             // Typically this is a connection or certificate issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
@@ -305,7 +307,7 @@ public class HttpClientRestClient implements RestClient {
             logger.debug("Executing request {} with {}", post.getRequestLine(), jsonPayloadStr);
 
             // Execute and return
-            return httpClient.execute(post, responseHandler, httpClientContext);
+            return execute(post, responseHandler);
         } catch (final ClientProtocolException | SocketException | SSLHandshakeException connectionException) {
             // Typically this is a connection issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
@@ -337,7 +339,7 @@ public class HttpClientRestClient implements RestClient {
             logger.debug("Executing request {} with {}", put.getRequestLine(), jsonPayloadStr);
 
             // Execute and return
-            return httpClient.execute(put, responseHandler, httpClientContext);
+            return execute(put, responseHandler);
         } catch (final ClientProtocolException | SocketException | SSLHandshakeException connectionException) {
             // Typically this is a connection issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
@@ -368,7 +370,7 @@ public class HttpClientRestClient implements RestClient {
             logger.debug("Executing request {} with {}", delete.getRequestLine(), jsonPayloadStr);
 
             // Execute and return
-            return httpClient.execute(delete, responseHandler, httpClientContext);
+            return execute(delete, responseHandler);
         } catch (final ClientProtocolException | SocketException | SSLHandshakeException connectionException) {
             // Typically this is a connection issue.
             throw new ConnectionException(connectionException.getMessage(), connectionException);
@@ -379,11 +381,37 @@ public class HttpClientRestClient implements RestClient {
     }
 
     /**
+     * Creates an HttpClientContext and executes the HTTP request.
+     *
+     * @param request The request to execute
+     * @param responseHandler The response Handler to use to parse the response
+     * @param <T> The type that ResponseHandler returns.
+     * @return Parsed response.
+     */
+    private <T> T execute(HttpUriRequest request, ResponseHandler<T> responseHandler) throws IOException {
+        return httpClient.execute(request, responseHandler, createHttpClientContext());
+    }
+
+    /**
      * Internal helper method for generating URLs w/ the appropriate API host and API version.
      * @param endPoint The end point you want to hit.
      * @return Constructed URL for the end point.
      */
     private String constructApiUrl(final String endPoint) {
         return configuration.getApiHost() + endPoint;
+    }
+
+    /**
+     * Creates a new HttpClientContext with the authCache and credsProvider.
+     * @return the created HttpClientContext.
+     */
+    private HttpClientContext createHttpClientContext() {
+        // Define our context
+        HttpClientContext httpClientContext = HttpClientContext.create();
+        // Configure context.
+        httpClientContext.setAuthCache(authCache);
+        httpClientContext.setCredentialsProvider(credsProvider);
+
+        return httpClientContext;
     }
 }
