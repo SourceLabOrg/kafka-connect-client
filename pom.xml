@@ -255,6 +255,7 @@
                         <exclude>**.yaml</exclude>
                         <exclude>**.xml</exclude>
                         <exclude>build/**</exclude>
+                        <exclude>.github/**</exclude>
                         <exclude>src/test/resources/**</exclude>
                         <exclude>src/main/resources/**</exclude>
                     </excludes>
