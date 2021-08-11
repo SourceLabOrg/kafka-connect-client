@@ -17,29 +17,28 @@
 
 package org.sourcelab.kafka.connect.apiclient.rest;
 
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.AuthCache;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
 import org.sourcelab.kafka.connect.apiclient.request.Request;
 import org.sourcelab.kafka.connect.apiclient.request.RequestMethod;
 import testserver.TestHttpServer;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class HttpClientRestClientTest {
 
@@ -88,71 +87,6 @@ public class HttpClientRestClientTest {
             // Validate response.
             assertEquals(RESPONSE_DATA, result.getResponseStr());
         }
-    }
-
-    /**
-     * Test that the HttpClientRestClient actually uses the builder returned from the
-     * {@link HttpClientRestClient#createHttpClientBuilder()} method.
-     */
-    @Test
-    public void doHttp_withCustomHttpClientBuilder() {
-        // Create a mock builder and a rest client that uses the mock builder
-        final HttpClientBuilder builderMock = mock(HttpClientBuilder.class);
-        HttpClientRestClient restClient = new HttpClientRestClient() {
-            @Override
-            protected HttpClientBuilder createHttpClientBuilder() {
-                return builderMock;
-            }
-        };
-
-        // Init the rest client
-        final Configuration configuration = new Configuration("http://localhost:" + HTTP_PORT);
-        restClient.init(configuration);
-
-        // Verify the mock was used to create the HttpClient
-        verify(builderMock).build();
-    }
-
-    /**
-     * Test that the every request uses a new HttpClientContext.
-     */
-    @Test
-    public void doHttp_verifyNewHttpContextOnEveryRequest() throws IOException {
-        AtomicReference<HttpClientContext> firstContext = new AtomicReference<>();
-        CloseableHttpClient httpClientMock = mock(CloseableHttpClient.class);
-        when(httpClientMock.execute(any(HttpUriRequest.class), any(ResponseHandler.class), any(HttpClientContext.class)))
-                .then(invocation -> {
-                    // Store the context of first request
-                    HttpClientContext context = invocation.getArgument(2);
-                    firstContext.set(context);
-                    return null;
-                })
-                .then(invocation -> {
-                    // Compare the context of second request with the first context
-                    HttpClientContext context = invocation.getArgument(2);
-                    assertNotSame(context, firstContext.get());
-                    return null;
-                });
-
-        // Create a mock builder and a rest client that uses the mock builder
-        final HttpClientBuilder builderMock = mock(HttpClientBuilder.class);
-        HttpClientRestClient restClient = new HttpClientRestClient() {
-            @Override
-            protected HttpClientBuilder createHttpClientBuilder() {
-                return builderMock;
-            }
-        };
-        when(builderMock.build()).thenReturn(httpClientMock);
-
-        // Init the rest client
-        final Configuration configuration = new Configuration("http://localhost:" + HTTP_PORT);
-        restClient.init(configuration);
-
-        restClient.submitRequest(new DummyRequest());
-        restClient.submitRequest(new DummyRequest());
-
-        verify(httpClientMock, times(2))
-                .execute(any(HttpUriRequest.class), any(ResponseHandler.class), any(HttpClientContext.class));
     }
 
     /**
@@ -224,6 +158,103 @@ public class HttpClientRestClientTest {
             final RestResponse result = restClient.submitRequest(new DummyRequest());
             assertEquals(RESPONSE_DATA, result.getResponseStr());
         }
+    }
+
+    /**
+     * Verifies that config hooks are called as expected during HttpClientRestClient::init().
+     */
+    @Test
+    public void validateConfigHooks() {
+        // Create mock
+        final HttpClientConfigHooks mockHooks = spy(DefaultHttpClientConfigHooks.class);
+
+        // Define configuration
+        final Configuration configuration = new Configuration("http://localhost:" + HTTP_PORT);
+
+        // Create rest client injecting hooks
+        final HttpClientRestClient restClient = new HttpClientRestClient(mockHooks);
+
+        // Call init
+        restClient.init(configuration);
+
+        // Verify spy was called as expected
+
+        // HttpClient Builder
+        Mockito
+            .verify(mockHooks, times(1))
+            .createHttpClientBuilder(configuration);
+        Mockito
+            .verify(mockHooks, times(1))
+            .modifyHttpClientBuilder(eq(configuration), any(HttpClientBuilder.class));
+
+        // HttpsContext Builder
+        Mockito
+            .verify(mockHooks, times(1))
+            .createHttpsContextBuilder(configuration);
+
+        // Request Builder
+        Mockito
+            .verify(mockHooks, times(1))
+            .createRequestConfigBuilder(configuration);
+        Mockito
+            .verify(mockHooks, times(1))
+            .modifyRequestConfig(eq(configuration), any(RequestConfig.Builder.class));
+
+        // AuthCache
+        Mockito
+            .verify(mockHooks, times(1))
+            .createAuthCache(configuration);
+        Mockito
+            .verify(mockHooks, times(1))
+            .modifyAuthCache(eq(configuration), any(AuthCache.class));
+
+        // CredentialsProvider
+        Mockito
+            .verify(mockHooks, times(1))
+            .createCredentialsProvider(configuration);
+        Mockito
+            .verify(mockHooks, times(1))
+            .modifyCredentialsProvider(eq(configuration), any(CredentialsProvider.class));
+
+        // Verify we had no other odd interactions.
+        verifyNoMoreInteractions(mockHooks);
+    }
+
+    /**
+     * Verifies that config hooks are called as expected during HttpClientRestClient::createHttpClientContext().
+     */
+    @Test
+    public void verifyHttpClientReturnedByHookIsUsed() throws Exception {
+        // Create mock
+        final HttpClientConfigHooks mockHooks = spy(DefaultHttpClientConfigHooks.class);
+
+        // Define configuration
+        final Configuration configuration = new Configuration("http://localhost:" + HTTP_PORT);
+
+        // Create rest client injecting hooks
+        final HttpClientRestClient restClient = new HttpClientRestClient(mockHooks);
+
+        // Call init
+        restClient.init(configuration);
+
+        try (final TestHttpServer httpServer = new TestHttpServer()
+            .withHttp(HTTP_PORT)
+            .withMockData(RESPONSE_DATA)
+            .start()
+        ) {
+            // Make 2 requests
+            RestResponse result = restClient.submitRequest(new DummyRequest());
+            assertEquals(RESPONSE_DATA, result.getResponseStr());
+
+            result = restClient.submitRequest(new DummyRequest());
+            assertEquals(RESPONSE_DATA, result.getResponseStr());
+        }
+
+        // Verify hooks on HttpClientContext
+        verify(mockHooks, times(2))
+            .createHttpClientContext(configuration);
+        verify(mockHooks, times(2))
+            .modifyHttpClientContext(eq(configuration), any(HttpClientContext.class));
     }
 
     /**

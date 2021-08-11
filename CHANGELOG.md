@@ -2,6 +2,24 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.1.3 (08/11/2021)
+- [Issue-55](https://github.com/SourceLabOrg/kafka-connect-client/issues/55) Create new HttpContext for every request.
+- [PR-59](https://github.com/SourceLabOrg/kafka-connect-client/pull/59) Adds supportted way to modify the underlying configuration of HttpClient via HttpClientConfigHooks interface.
+
+Usage of these hooks would look like:
+
+```java
+// Directly create underlying RestClient and pass your HttpClientConfigHooks implementation.
+final RestClient restClient = new HttpClientRestClient(new HttpClientConfigHooks {
+    // Override methods as needed to modify behavior.
+});
+
+// Create KafkaConnectClient, passing configuration and RestClient implementation
+final KafkaConnectClient client = new KafkaConnectClient(configuration, restClient);
+
+// Use client as normal...
+```
+
 ## 3.1.2 (07/21/2021)
 
 - [Issue-54](https://github.com/SourceLabOrg/kafka-connect-client/issues/54) Resolution for issue-54
