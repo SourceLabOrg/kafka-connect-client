@@ -388,7 +388,7 @@ public class HttpClientRestClient implements RestClient {
      * @param <T> The type that ResponseHandler returns.
      * @return Parsed response.
      */
-    private <T> T execute(HttpUriRequest request, ResponseHandler<T> responseHandler) throws IOException {
+    private <T> T execute(final HttpUriRequest request, final ResponseHandler<T> responseHandler) throws IOException {
         return httpClient.execute(request, responseHandler, createHttpClientContext());
     }
 
@@ -407,7 +407,8 @@ public class HttpClientRestClient implements RestClient {
      */
     private HttpClientContext createHttpClientContext() {
         // Define our context
-        HttpClientContext httpClientContext = HttpClientContext.create();
+        final HttpClientContext httpClientContext = HttpClientContext.create();
+
         // Configure context.
         httpClientContext.setAuthCache(authCache);
         httpClientContext.setCredentialsProvider(credsProvider);
