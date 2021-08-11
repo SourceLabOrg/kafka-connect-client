@@ -4,7 +4,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 3.1.3 (08/11/2021)
 - [Issue-55](https://github.com/SourceLabOrg/kafka-connect-client/issues/55) Create new HttpContext for every request.
-- [PR-59](https://github.com/SourceLabOrg/kafka-connect-client/pull/59) Adds supportted way to modify the underlying configuration of HttpClient via HttpClientConfigHooks interface.
+- [PR-59](https://github.com/SourceLabOrg/kafka-connect-client/pull/59) Adds supported method to modify the underlying configuration of HttpClient via HttpClientConfigHooks interface.
 
 Usage of these hooks would look like:
 
