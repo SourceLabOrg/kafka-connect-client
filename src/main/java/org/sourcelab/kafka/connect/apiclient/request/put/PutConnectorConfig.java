@@ -19,14 +19,13 @@ package org.sourcelab.kafka.connect.apiclient.request.put;
 
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
+import org.sourcelab.kafka.connect.apiclient.util.UrlEscapingUtil;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines request to update a connectors configuration.
@@ -49,7 +48,7 @@ public final class PutConnectorConfig implements PutRequest<ConnectorDefinition>
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/config";
+        return "/connectors/" + UrlEscapingUtil.escapePath(connectorName) + "/config";
     }
 
     @Override

@@ -18,12 +18,11 @@
 package org.sourcelab.kafka.connect.apiclient.request.get;
 
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
+import org.sourcelab.kafka.connect.apiclient.util.UrlEscapingUtil;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines a request for getting the configuration for a connector.
@@ -43,7 +42,7 @@ public final class GetConnectorConfig implements GetRequest<Map<String, String>>
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/config";
+        return "/connectors/" + UrlEscapingUtil.escapePath(connectorName) + "/config";
     }
 
     @Override

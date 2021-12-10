@@ -17,10 +17,10 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.put;
 
+import org.sourcelab.kafka.connect.apiclient.util.UrlEscapingUtil;
+
 import java.io.IOException;
 import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Send a request to empty the set of active topics of a connector.
@@ -40,7 +40,7 @@ public class PutConnectorTopicsReset implements PutRequest<Boolean> {
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/topics/reset";
+        return "/connectors/" + UrlEscapingUtil.escapePath(connectorName) + "/topics/reset";
     }
 
     @Override

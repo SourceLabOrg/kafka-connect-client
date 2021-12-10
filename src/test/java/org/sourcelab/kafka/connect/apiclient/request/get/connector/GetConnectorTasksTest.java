@@ -17,7 +17,6 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.get.connector;
 
-import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
 import org.sourcelab.kafka.connect.apiclient.request.dto.Task;
@@ -25,7 +24,9 @@ import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTasks;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -46,14 +47,16 @@ public class GetConnectorTasksTest extends AbstractRequestTest {
         assertEquals("Should have connector", result.get(0).getId().getConnector(), "MyTestConnector");
         assertEquals("Should have task id", result.get(0).getId().getTask(), 0);
 
-        assertEquals("Should have configs", result.get(0).getConfig(), ImmutableMap.<String, String>builder()
-            .put("connector.class", "org.apache.kafka.connect.tools.VerifiableSourceConnector")
-            .put("task.class", "org.apache.kafka.connect.tools.VerifiableSourceTask")
-            .put("tasks.max", "1")
-            .put("topics", "test-topic")
-            .put("name", "MyTestConnector")
-            .put("id", "0")
-            .build()
-        );
+        // Define our expected result.
+        final Map<String, String> expectedMap = new HashMap<>();
+        expectedMap.put("connector.class", "org.apache.kafka.connect.tools.VerifiableSourceConnector");
+        expectedMap.put("task.class", "org.apache.kafka.connect.tools.VerifiableSourceTask");
+        expectedMap.put("tasks.max", "1");
+        expectedMap.put("topics", "test-topic");
+        expectedMap.put("name", "MyTestConnector");
+        expectedMap.put("id", "0");
+
+        // Assert it contains the expected values.
+        assertEquals("Should have configs", result.get(0).getConfig(), expectedMap);
     }
 }

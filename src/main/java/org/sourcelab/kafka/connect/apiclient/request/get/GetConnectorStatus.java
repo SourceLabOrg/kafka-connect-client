@@ -19,11 +19,10 @@ package org.sourcelab.kafka.connect.apiclient.request.get;
 
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
+import org.sourcelab.kafka.connect.apiclient.util.UrlEscapingUtil;
 
 import java.io.IOException;
 import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines request to get the status of a connector.
@@ -43,7 +42,7 @@ public final class GetConnectorStatus implements GetRequest<ConnectorStatus> {
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/status";
+        return "/connectors/" + UrlEscapingUtil.escapePath(connectorName) + "/status";
     }
 
     @Override

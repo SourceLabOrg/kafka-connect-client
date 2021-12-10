@@ -19,13 +19,12 @@ package org.sourcelab.kafka.connect.apiclient.request.get;
 
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.Task;
+import org.sourcelab.kafka.connect.apiclient.util.UrlEscapingUtil;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines request to get tasks for a connector.
@@ -45,7 +44,7 @@ public final class GetConnectorTasks implements GetRequest<Collection<Task>> {
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/tasks";
+        return "/connectors/" + UrlEscapingUtil.escapePath(connectorName) + "/tasks";
     }
 
     @Override

@@ -17,10 +17,10 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.put;
 
+import org.sourcelab.kafka.connect.apiclient.util.UrlEscapingUtil;
+
 import java.io.IOException;
 import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines request to pause a connector.
@@ -39,7 +39,7 @@ public final class PutConnectorPause implements PutRequest<Boolean> {
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/pause";
+        return "/connectors/" + UrlEscapingUtil.escapePath(connectorName) + "/pause";
     }
 
     @Override

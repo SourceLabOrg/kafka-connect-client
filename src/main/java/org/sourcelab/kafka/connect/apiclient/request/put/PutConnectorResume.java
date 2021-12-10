@@ -17,10 +17,10 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.put;
 
+import org.sourcelab.kafka.connect.apiclient.util.UrlEscapingUtil;
+
 import java.io.IOException;
 import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines request to resume a connector.
@@ -39,7 +39,7 @@ public final class PutConnectorResume implements PutRequest<Boolean> {
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/resume";
+        return "/connectors/" + UrlEscapingUtil.escapePath(connectorName) + "/resume";
     }
 
     @Override

@@ -19,11 +19,10 @@ package org.sourcelab.kafka.connect.apiclient.request.get;
 
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorTopics;
+import org.sourcelab.kafka.connect.apiclient.util.UrlEscapingUtil;
 
 import java.io.IOException;
 import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Returns a list of connector topic names.
@@ -47,7 +46,7 @@ public class GetConnectorTopics implements GetRequest<ConnectorTopics> {
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/topics";
+        return "/connectors/" + UrlEscapingUtil.escapePath(connectorName) + "/topics";
     }
 
     @Override
