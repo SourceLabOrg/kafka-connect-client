@@ -2,10 +2,20 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 3.1.4 (12/10/2021)
-- Remove Guava as a dependency.
-- Update Log4j dependency from 2.14.1 to 2.15.0 for [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228).
+## 4.0.0 (12/10/2021)
 
+**Note:** Major release version updated purely out of abundance of caution.
+
+Internal dependency on Google Guava was removed.  Functionally nothing about this library's
+API has changed.  If you were making use of Google Guava via a transitive dependency provided by this
+library, then you'll need to update your project to include it directly.
+
+### New Features
+- Update [/connector/\<name\>/restart](https://docs.confluent.io/platform/current/connect/references/restapi.html#post--connectors-(string-name)-restart) request to support the `includeTasks` and `onlyFailed` parameters from Kafka-Connect 3.0.0. 
+
+#### Internal Dependency Updates
+- Removed Google Guava as a dependency.
+- com.fasterxml.jackson.core from 2.12.2 -> 2.13.0.
 
 ## 3.1.3 (08/11/2021)
 - [Issue-55](https://github.com/SourceLabOrg/kafka-connect-client/issues/55) Create new HttpContext for every request.
