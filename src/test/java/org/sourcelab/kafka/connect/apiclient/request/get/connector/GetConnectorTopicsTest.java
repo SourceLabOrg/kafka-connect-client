@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 
 public class GetConnectorTopicsTest extends AbstractRequestTest {
 
-    @Test
+    @Override
     public void getApiEndpoint() {
         final String name = "This is My Connector name";
         final String expectedResult = "/connectors/This%20is%20My%20Connector%20name/topics";

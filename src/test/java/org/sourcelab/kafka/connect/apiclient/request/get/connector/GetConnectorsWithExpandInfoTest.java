@@ -22,6 +22,7 @@ import org.sourcelab.kafka.connect.apiclient.exception.ResponseParseException;
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorsWithExpandedInfo;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnector;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorsExpandInfo;
 
 import java.io.IOException;
@@ -124,5 +125,12 @@ public class GetConnectorsWithExpandInfoTest extends AbstractRequestTest {
             assertEquals(expectedConnectorName, taskDefinitions.get(taskId).getConnector());
             assertEquals(taskId, taskDefinitions.get(taskId).getTask());
         }
+    }
+
+    @Override
+    public void getApiEndpoint() {
+        final String expectedUrl = "/connectors?expand=info";
+        final String result = new GetConnectorsExpandInfo().getApiEndpoint();
+        assertEquals("Unexpected URL returned!", expectedUrl, result);
     }
 }

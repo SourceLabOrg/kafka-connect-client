@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPlugin;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnector;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorConfig;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorPlugins;
 
 import java.io.IOException;
@@ -53,5 +55,12 @@ public class GetConnectorPluginsTest extends AbstractRequestTest {
         assertEquals("Should have connector", result.get(1).getClassName(), "org.apache.kafka.connect.file.FileStreamSourceConnector");
         assertEquals("Should have type", result.get(1).getType(), "source");
         assertEquals("Should have version", result.get(1).getVersion(), "1.0.0-cp1");
+    }
+
+    @Override
+    public void getApiEndpoint() {
+        final String expectedUrl = "/connector-plugins";
+        final String result = new GetConnectorPlugins().getApiEndpoint();
+        assertEquals("Unexpected URL returned!", expectedUrl, result);
     }
 }

@@ -19,6 +19,7 @@ package org.sourcelab.kafka.connect.apiclient.request.get.connector;
 
 import org.junit.Test;
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnector;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectors;
 
 import java.io.IOException;
@@ -43,5 +44,12 @@ public class GetConnectorsTest extends AbstractRequestTest {
         assertEquals("Should have two entries", 2, result.size());
         assertTrue("Should have connector", result.contains("My Test Connector"));
         assertTrue("Should have connector", result.contains("My Other Test Connector"));
+    }
+
+    @Override
+    public void getApiEndpoint() {
+        final String expectedUrl = "/connectors";
+        final String result = new GetConnectors().getApiEndpoint();
+        assertEquals("Unexpected URL returned!", expectedUrl, result);
     }
 }

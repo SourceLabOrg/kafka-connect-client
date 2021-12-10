@@ -18,6 +18,7 @@
 package org.sourcelab.kafka.connect.apiclient.request.get.connector;
 
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnector;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorConfig;
 
 import java.util.Map;
@@ -39,5 +40,13 @@ public class GetConnectorConfigTest extends AbstractRequestTest {
         assertEquals("10", result.get("tasks.max"));
         assertEquals("test-topic", result.get("topics"));
         assertEquals("My Test Connector", result.get("name"));
+    }
+
+    @Override
+    public void getApiEndpoint() {
+        final String inputName = "My Test Connector";
+        final String expectedUrl = "/connectors/My%20Test%20Connector/config";
+        final String result = new GetConnectorConfig(inputName).getApiEndpoint();
+        assertEquals("Unexpected URL returned!", expectedUrl, result);
     }
 }

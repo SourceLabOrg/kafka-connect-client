@@ -36,6 +36,13 @@ abstract public class AbstractRequestTest {
     public abstract void testParseResponse() throws Exception;
 
     /**
+     * Verifies the behavior of the getApiEndPoint to properly return an escaped URL
+     * when the connector name requires escaping.
+     */
+    @Test
+    public abstract void getApiEndpoint();
+
+    /**
      * Utility method to help load mock responses from resources.
      * @param fileName file name to load from resources
      * @return The contents of the file, as a UTF-8 string.

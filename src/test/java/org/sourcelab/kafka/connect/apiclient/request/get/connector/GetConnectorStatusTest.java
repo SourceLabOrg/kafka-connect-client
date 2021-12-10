@@ -20,6 +20,7 @@ package org.sourcelab.kafka.connect.apiclient.request.get.connector;
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnector;
+import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorPlugins;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -44,5 +45,13 @@ public class GetConnectorStatusTest extends AbstractRequestTest {
         // Validate tasks
         assertNotNull("Should not be null", result.getTasks());
         assertTrue("Should be empty", result.getTasks().isEmpty());
+    }
+
+    @Override
+    public void getApiEndpoint() {
+        final String inputName = "My Test Connector";
+        final String expectedUrl = "/connectors/My%20Test%20Connector";
+        final String result = new GetConnector(inputName).getApiEndpoint();
+        assertEquals("Unexpected URL returned!", expectedUrl, result);
     }
 }
