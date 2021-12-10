@@ -12,7 +12,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>org.sourcelab</groupId>
     <artifactId>kafka-connect-client</artifactId>
-    <version>3.1.4</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 

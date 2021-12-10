@@ -45,7 +45,8 @@ public final class PostConnectorRestart implements PostRequest<Boolean> {
 
     /**
      * Only available from Kafka Connect version 3.0.0 and up.
-     * @param includeTasks Specifies whether to restart the connector instance and task instances (includeTasks=true`) or just the connector instance (includeTasks=false).
+     * @param includeTasks Specifies whether to restart the connector instance and task instances (includeTasks=true`) or
+     *                     just the connector instance (includeTasks=false).
      * @return self reference for method chaining.
      */
     public PostConnectorRestart withIncludeTasks(final boolean includeTasks)
@@ -56,7 +57,8 @@ public final class PostConnectorRestart implements PostRequest<Boolean> {
 
     /**
      * Only available from Kafka Connect version 3.0.0 and up.
-     * @param onlyFailed specifies whether to restart just the instances with a FAILED status (onlyFailed=true) or all instances (onlyFailed=false).
+     * @param onlyFailed specifies whether to restart just the instances with a FAILED status (onlyFailed=true)
+     *                   or all instances (onlyFailed=false).
      * @return self reference for method chaining.
      */
     public PostConnectorRestart withOnlyFailed(final boolean onlyFailed)
