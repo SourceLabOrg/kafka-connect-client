@@ -19,14 +19,13 @@ package org.sourcelab.kafka.connect.apiclient.request.put;
 
 import org.sourcelab.kafka.connect.apiclient.request.JacksonFactory;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPluginConfigValidationResults;
+import org.sourcelab.kafka.connect.apiclient.util.UrlEscapingUtil;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines request to validate a connector plugin's configuration.
@@ -49,7 +48,7 @@ public final class PutConnectorPluginConfigValidate implements PutRequest<Connec
 
     @Override
     public String getApiEndpoint() {
-        return "/connector-plugins/" + urlPathSegmentEscaper().escape(connectorPluginName) + "/config/validate";
+        return "/connector-plugins/" + UrlEscapingUtil.escapePath(connectorPluginName) + "/config/validate";
     }
 
     @Override

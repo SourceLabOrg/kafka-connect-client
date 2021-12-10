@@ -125,4 +125,11 @@ public class GetConnectorsWithExpandInfoTest extends AbstractRequestTest {
             assertEquals(taskId, taskDefinitions.get(taskId).getTask());
         }
     }
+
+    @Override
+    public void getApiEndpoint() {
+        final String expectedUrl = "/connectors?expand=info";
+        final String result = new GetConnectorsExpandInfo().getApiEndpoint();
+        assertEquals("Unexpected URL returned!", expectedUrl, result);
+    }
 }

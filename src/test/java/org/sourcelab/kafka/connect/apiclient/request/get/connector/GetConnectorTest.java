@@ -49,4 +49,12 @@ public class GetConnectorTest extends AbstractRequestTest {
         assertNotNull("Should not be null", result.getTasks());
         assertTrue("Should be empty", result.getTasks().isEmpty());
     }
+
+    @Override
+    public void getApiEndpoint() {
+        final String inputName = "My Test Connector";
+        final String expectedUrl = "/connectors/My%20Test%20Connector";
+        final String result = new GetConnector(inputName).getApiEndpoint();
+        assertEquals("Unexpected URL returned!", expectedUrl, result);
+    }
 }

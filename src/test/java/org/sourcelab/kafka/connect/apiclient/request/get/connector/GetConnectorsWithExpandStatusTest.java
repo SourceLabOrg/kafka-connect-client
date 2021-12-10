@@ -128,4 +128,11 @@ public class GetConnectorsWithExpandStatusTest extends AbstractRequestTest {
         assertEquals("trace0", connectorStatus.getTasks().get(0).getTrace());
         assertEquals("127.0.0.1:8083", connectorStatus.getTasks().get(0).getWorkerId());
     }
+
+    @Override
+    public void getApiEndpoint() {
+        final String expectedUrl = "/connectors?expand=status";
+        final String result = new GetConnectorsExpandStatus().getApiEndpoint();
+        assertEquals("Unexpected URL returned!", expectedUrl, result);
+    }
 }

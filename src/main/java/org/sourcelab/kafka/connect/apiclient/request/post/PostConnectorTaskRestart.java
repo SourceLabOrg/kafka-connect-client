@@ -18,10 +18,10 @@
 package org.sourcelab.kafka.connect.apiclient.request.post;
 
 
+import org.sourcelab.kafka.connect.apiclient.util.UrlEscapingUtil;
+
 import java.io.IOException;
 import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines request to restart a connector's task.
@@ -43,7 +43,7 @@ public final class PostConnectorTaskRestart implements PostRequest<Boolean> {
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName) + "/tasks/" + taskId + "/restart";
+        return "/connectors/" + UrlEscapingUtil.escapePath(connectorName) + "/tasks/" + taskId + "/restart";
     }
 
     @Override

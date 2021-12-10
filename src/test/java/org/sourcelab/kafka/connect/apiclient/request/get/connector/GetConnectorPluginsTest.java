@@ -54,4 +54,11 @@ public class GetConnectorPluginsTest extends AbstractRequestTest {
         assertEquals("Should have type", result.get(1).getType(), "source");
         assertEquals("Should have version", result.get(1).getVersion(), "1.0.0-cp1");
     }
+
+    @Override
+    public void getApiEndpoint() {
+        final String expectedUrl = "/connector-plugins";
+        final String result = new GetConnectorPlugins().getApiEndpoint();
+        assertEquals("Unexpected URL returned!", expectedUrl, result);
+    }
 }

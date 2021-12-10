@@ -17,10 +17,10 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.delete;
 
+import org.sourcelab.kafka.connect.apiclient.util.UrlEscapingUtil;
+
 import java.io.IOException;
 import java.util.Objects;
-
-import static com.google.common.net.UrlEscapers.urlPathSegmentEscaper;
 
 /**
  * Defines a request to delete a connector.
@@ -39,7 +39,7 @@ public final class DeleteConnector implements DeleteRequest<Boolean> {
 
     @Override
     public String getApiEndpoint() {
-        return "/connectors/" + urlPathSegmentEscaper().escape(connectorName);
+        return "/connectors/" + UrlEscapingUtil.escapePath(connectorName);
     }
 
     @Override

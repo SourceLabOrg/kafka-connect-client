@@ -44,4 +44,11 @@ public class GetConnectorsTest extends AbstractRequestTest {
         assertTrue("Should have connector", result.contains("My Test Connector"));
         assertTrue("Should have connector", result.contains("My Other Test Connector"));
     }
+
+    @Override
+    public void getApiEndpoint() {
+        final String expectedUrl = "/connectors";
+        final String result = new GetConnectors().getApiEndpoint();
+        assertEquals("Unexpected URL returned!", expectedUrl, result);
+    }
 }

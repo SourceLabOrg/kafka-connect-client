@@ -2,6 +2,21 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.0.0 (12/10/2021)
+
+**Note:** Major release version updated purely out of abundance of caution.
+
+Internal dependency on Google Guava was removed.  Functionally nothing about this library's
+API has changed as a result of removing this dependency.  However, if you were making use of Google Guava via a transitive 
+dependency previously provided by this library, you will need to update your project to include this dependency directly.
+
+### New Features
+- Update [/connector/\<connector name\>/restart](https://docs.confluent.io/platform/current/connect/references/restapi.html#post--connectors-(string-name)-restart) requests to support the `includeTasks` and `onlyFailed` parameters added in Kafka-Connect version 3.0.0. 
+
+#### Internal Dependency Updates
+- Removed Google Guava as a dependency.
+- com.fasterxml.jackson.core from 2.12.2 -> 2.13.0.
+
 ## 3.1.3 (08/11/2021)
 - [Issue-55](https://github.com/SourceLabOrg/kafka-connect-client/issues/55) Create new HttpContext for every request.
 - [PR-59](https://github.com/SourceLabOrg/kafka-connect-client/pull/59) Adds supported method to modify the underlying configuration of HttpClient via HttpClientConfigHooks interface.

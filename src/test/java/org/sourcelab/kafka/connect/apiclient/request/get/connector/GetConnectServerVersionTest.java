@@ -42,4 +42,11 @@ public class GetConnectServerVersionTest extends AbstractRequestTest {
         assertEquals("21234bee31165527", result.getCommit());
         assertEquals("Fo2ySm4CT1Wvz4Kvm2jIhw", result.getKafkaClusterId());
     }
+
+    @Override
+    public void getApiEndpoint() {
+        final String expectedUrl = "/";
+        final String result = new GetConnectServerVersion().getApiEndpoint();
+        assertEquals("Unexpected URL returned!", expectedUrl, result);
+    }
 }

@@ -40,4 +40,12 @@ public class GetConnectorConfigTest extends AbstractRequestTest {
         assertEquals("test-topic", result.get("topics"));
         assertEquals("My Test Connector", result.get("name"));
     }
+
+    @Override
+    public void getApiEndpoint() {
+        final String inputName = "My Test Connector";
+        final String expectedUrl = "/connectors/My%20Test%20Connector/config";
+        final String result = new GetConnectorConfig(inputName).getApiEndpoint();
+        assertEquals("Unexpected URL returned!", expectedUrl, result);
+    }
 }
