@@ -20,7 +20,6 @@ package org.sourcelab.kafka.connect.apiclient.request.get.connector;
 import org.junit.Test;
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
 import org.sourcelab.kafka.connect.apiclient.request.dto.Task;
-import org.sourcelab.kafka.connect.apiclient.request.get.GetConnector;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorTasks;
 
 import java.io.IOException;

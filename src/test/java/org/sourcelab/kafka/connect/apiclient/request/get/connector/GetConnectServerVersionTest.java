@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectServerVersion;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectServerVersion;
-import org.sourcelab.kafka.connect.apiclient.request.get.GetConnector;
 
 import java.io.IOException;
 

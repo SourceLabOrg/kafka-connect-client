@@ -2,6 +2,11 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.1.4 (12/10/2021)
+- Remove Guava as a dependency.
+- Update Log4j dependency from 2.14.1 to 2.15.0 for [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228).
+
+
 ## 3.1.3 (08/11/2021)
 - [Issue-55](https://github.com/SourceLabOrg/kafka-connect-client/issues/55) Create new HttpContext for every request.
 - [PR-59](https://github.com/SourceLabOrg/kafka-connect-client/pull/59) Adds supported method to modify the underlying configuration of HttpClient via HttpClientConfigHooks interface.

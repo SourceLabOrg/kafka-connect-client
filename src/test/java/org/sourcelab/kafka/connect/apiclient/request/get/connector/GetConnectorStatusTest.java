@@ -20,7 +20,6 @@ package org.sourcelab.kafka.connect.apiclient.request.get.connector;
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnector;
-import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorPlugins;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

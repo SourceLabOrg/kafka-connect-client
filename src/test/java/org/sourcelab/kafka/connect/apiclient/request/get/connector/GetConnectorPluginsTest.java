@@ -22,8 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.request.AbstractRequestTest;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorPlugin;
-import org.sourcelab.kafka.connect.apiclient.request.get.GetConnector;
-import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorConfig;
 import org.sourcelab.kafka.connect.apiclient.request.get.GetConnectorPlugins;
 
 import java.io.IOException;
