@@ -21,6 +21,11 @@ public class UrlEscapingUtilTest {
         assertEquals("Unexpected result!", expectedResult, result);
     }
 
+    /**
+     * To be honest I'm not entirely sure if this is the appropriate escaping for paths,
+     * but aiming for backwards compatibility, and until someone complains and provides a test case
+     * that is incorrect, I'm just going with the below sample values.
+     */
     @DataProvider
     public static Object[][] provideTestCases() {
         return new Object[][] {
@@ -36,8 +41,9 @@ public class UrlEscapingUtilTest {
             { "easy_input", "easy_input" },
 
             // The general delimiters "@" and ":" remain the same.
-            { "easy:input", "easy:input" },
+
             { "easy@input", "easy@input" },
+            { "easy:input", "easy:input" },
 
             // The subdelimiters "!", "$", "&", "'", "(", ")", "*", "+", ",", ";", and "=" remain the same.
             { "easy!input", "easy!input" },
@@ -57,9 +63,10 @@ public class UrlEscapingUtilTest {
             { " 123  456", "%20123%20%20456" },
             { "  123  456 ", "%20%20123%20%20456%20" },
 
-            // Slashes
+            // Others
             { "12\\3", "12%5C3" },
             { "12/3/4", "12%2F3%2F4" },
+            { "?easy=input&other=value", "%3Feasy=input&other=value" },
 
             // All other characters are converted into one or more bytes using UTF-8 encoding and each byte is then
             // represented by the 3-character string "%XY", where "XY" is the two-digit, uppercase, hexadecimal representation of the byte value.
