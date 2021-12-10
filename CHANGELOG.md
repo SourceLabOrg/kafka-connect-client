@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 **Note:** Major release version updated purely out of abundance of caution.
 
 Internal dependency on Google Guava was removed.  Functionally nothing about this library's
-API has changed.  If you were making use of Google Guava via a transitive dependency provided by this
-library, then you'll need to update your project to include it directly.
+API has changed as a result of removing this dependency.  However, if you were making use of Google Guava via a transitive 
+dependency previously provided by this library, you will need to update your project to include this dependency directly.
 
 ### New Features
-- Update [/connector/\<name\>/restart](https://docs.confluent.io/platform/current/connect/references/restapi.html#post--connectors-(string-name)-restart) request to support the `includeTasks` and `onlyFailed` parameters from Kafka-Connect 3.0.0. 
+- Update [/connector/\<connector name\>/restart](https://docs.confluent.io/platform/current/connect/references/restapi.html#post--connectors-(string-name)-restart) requests to support the `includeTasks` and `onlyFailed` parameters added in Kafka-Connect version 3.0.0. 
 
 #### Internal Dependency Updates
 - Removed Google Guava as a dependency.
