@@ -61,7 +61,7 @@
         <checkstyle.version>8.32</checkstyle.version>
 
         <!-- Log4J Version -->
-        <log4j2.version>2.17.0</log4j2.version>
+        <log4j2.version>2.17.1</log4j2.version>
         <slf4j.version>1.7.32</slf4j.version>
 
         <!-- test toggling -->
