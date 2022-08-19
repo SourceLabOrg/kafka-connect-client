@@ -2,6 +2,11 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.0.1 (08/20/2022)
+#### Internal Dependency Updates
+- com.fasterxml.jackson.core from 2.13.0 -> 2.13.3
+- org.apache.logging.log4j.log4j-api from 2.17.1 -> 2.18.0
+
 ## 4.0.0 (12/10/2021)
 
 **Note:** Major release version updated purely out of abundance of caution.
