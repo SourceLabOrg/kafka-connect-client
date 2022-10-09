@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Add Constructors to various internal classes: 
   - [ConnectServerVersion](https://github.com/SourceLabOrg/kafka-connect-client/blob/master/src/main/java/org/sourcelab/kafka/connect/apiclient/request/dto/ConnectServerVersion.java#L23)
   - [Task](https://github.com/SourceLabOrg/kafka-connect-client/blob/master/src/main/java/org/sourcelab/kafka/connect/apiclient/request/dto/Task.java#L25)
-
+- com.fasterxml.jackson.core from 2.13.3 -> 2.13.4
+- 
 ## 4.0.1 (08/20/2022)
 #### Internal Dependency Updates
 - com.fasterxml.jackson.core from 2.13.0 -> 2.13.3
