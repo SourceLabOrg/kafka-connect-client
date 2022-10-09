@@ -284,8 +284,8 @@ public class KafkaConnectClient {
     }
 
     /**
-     * Resume a connector.
-     * https://docs.confluent.io/current/connect/references/restapi.html#put--connectors-(string-name)-resume
+     * Delete a connector.
+     * https://docs.confluent.io/platform/current/connect/references/restapi.html#delete--connectors-(string-name)-
      *
      * @param connectorName Name of connector to resume.
      * @return Boolean true if success.

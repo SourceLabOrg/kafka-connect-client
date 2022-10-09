@@ -26,6 +26,16 @@ public final class Task {
     private TaskId id;
     private Map<String, String> config;
 
+    public Task() {
+
+    }
+
+    public Task(final TaskId id, Map<String, String> config)
+    {
+        this.id = id;
+        this.config = config;
+    }
+
     public TaskId getId() {
         return id;
     }
@@ -49,6 +59,16 @@ public final class Task {
         private String connector;
         private int task;
 
+        public TaskId()
+        {
+
+        }
+
+        public TaskId(final String connector, final int task) {
+            this.connector = connector;
+            this.task = task;
+        }
+
         public String getConnector() {
             return connector;
         }
@@ -65,4 +85,5 @@ public final class Task {
                 + '}';
         }
     }
+
 }

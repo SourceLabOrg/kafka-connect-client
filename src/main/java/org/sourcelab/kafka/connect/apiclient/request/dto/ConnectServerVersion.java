@@ -26,6 +26,22 @@ public class ConnectServerVersion {
     private String kafkaClusterId;
 
     /**
+     * Constructor.
+     */
+    public ConnectServerVersion()
+    {
+    }
+
+    /**
+     * Constructor.
+     */
+    public ConnectServerVersion(final String version, final String commit, final String kafkaClusterId) {
+        this.version = version;
+        this.commit = commit;
+        this.kafkaClusterId = kafkaClusterId;
+    }
+
+    /**
      * Version of running Kafka-Connect server.
      * @return Version of running Kafka-Connect server.
      */
