@@ -30,8 +30,14 @@ import java.util.Objects;
  * Defines a request to restart a connector.
  */
 public final class PostConnectorRestart implements PostRequest<Boolean> {
+    /**
+     * Defines the name of the connector to restart.
+     */
     private final String connectorName;
 
+    /**
+     * Additional options to pass with the request.
+     */
     private Map<String, Boolean> options = new HashMap<>();
 
     /**

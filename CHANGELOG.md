@@ -3,10 +3,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 4.0.2 (10/09/2022)
+- Adds `KafkaConnectClient::restartConnector(final PostConnectorRestart connectorRestartRequest)` [Issue-78](https://github.com/SourceLabOrg/kafka-connect-client/issues/78).
 - Fix Javadoc on KafkaConnectClient::deleteConnector(). [issue-76](https://github.com/SourceLabOrg/kafka-connect-client/issues/76).
-- Add Constructors to various internal classes: 
-  - [ConnectServerVersion](https://github.com/SourceLabOrg/kafka-connect-client/blob/master/src/main/java/org/sourcelab/kafka/connect/apiclient/request/dto/ConnectServerVersion.java#L23)
-  - [Task](https://github.com/SourceLabOrg/kafka-connect-client/blob/master/src/main/java/org/sourcelab/kafka/connect/apiclient/request/dto/Task.java#L25)
+- Add Constructors to various internal "DTO" classes, this allows for easier testing/mocking of responses. 
 - com.fasterxml.jackson.core from 2.13.3 -> 2.13.4
 - 
 ## 4.0.1 (08/20/2022)
