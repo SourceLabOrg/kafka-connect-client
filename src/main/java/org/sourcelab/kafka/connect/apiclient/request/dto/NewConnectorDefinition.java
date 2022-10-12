@@ -29,6 +29,14 @@ public final class NewConnectorDefinition {
     private final Map<String, String> config;
 
     /**
+     * Create new Builder instance for NewConnectorDefinition.
+     * @return new Builder instance for NewConnectorDefinition.
+     */
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    /**
      * Constructor.
      * @param name Name of Connector.
      * @param config Configuration values for connector.
@@ -44,10 +52,6 @@ public final class NewConnectorDefinition {
 
     public Map<String, String> getConfig() {
         return config;
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
     }
 
     @Override

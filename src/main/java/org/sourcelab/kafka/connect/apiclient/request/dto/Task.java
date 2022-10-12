@@ -17,6 +17,7 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.dto;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,14 +27,19 @@ public final class Task {
     private TaskId id;
     private Map<String, String> config;
 
+    /**
+     * Default constructor.
+     */
     public Task() {
-
     }
 
-    public Task(final TaskId id, Map<String, String> config)
+    /**
+     * Constructor.
+     */
+    public Task(final TaskId id, final Map<String, String> config)
     {
         this.id = id;
-        this.config = config;
+        this.config = new HashMap<>(config);
     }
 
     public TaskId getId() {
@@ -59,11 +65,16 @@ public final class Task {
         private String connector;
         private int task;
 
+        /**
+         * Default constructor.
+         */
         public TaskId()
         {
-
         }
 
+        /**
+         * Constructor.
+         */
         public TaskId(final String connector, final int task) {
             this.connector = connector;
             this.task = task;

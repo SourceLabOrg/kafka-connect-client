@@ -26,6 +26,22 @@ public final class TaskStatus {
     private String trace;
     private String workerId;
 
+    /**
+     * Default constructor.
+     */
+    public TaskStatus() {
+    }
+
+    /**
+     * Constructor.
+     */
+    public TaskStatus(final int id, final String state, final String trace, final String workerId) {
+        this.id = id;
+        this.state = state;
+        this.trace = trace;
+        this.workerId = workerId;
+    }
+
     public int getId() {
         return id;
     }

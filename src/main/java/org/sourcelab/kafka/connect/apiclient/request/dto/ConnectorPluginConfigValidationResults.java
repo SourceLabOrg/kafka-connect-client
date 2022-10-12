@@ -29,6 +29,27 @@ public final class ConnectorPluginConfigValidationResults {
     private Collection<String> groups = new ArrayList<>();
     private Collection<Config> configs = new ArrayList<>();
 
+    /**
+     * Default constructor.
+     */
+    public ConnectorPluginConfigValidationResults() {
+    }
+
+    /**
+     * Constructor.
+     */
+    public ConnectorPluginConfigValidationResults(
+        final String name,
+        final int errorCount,
+        final Collection<String> groups,
+        final Collection<Config> configs
+    ) {
+        this.name = name;
+        this.errorCount = errorCount;
+        this.groups = new ArrayList<>(groups);
+        this.configs = new ArrayList<>(configs);
+    }
+
     public String getName() {
         return name;
     }
@@ -62,6 +83,20 @@ public final class ConnectorPluginConfigValidationResults {
         private Definition definition;
         private Value value;
 
+        /**
+         * Default constructor.
+         */
+        public Config() {
+        }
+
+        /**
+         * Constructor.
+         */
+        public Config(final Definition definition, final Value value) {
+            this.definition = definition;
+            this.value = value;
+        }
+
         public Definition getDefinition() {
             return definition;
         }
@@ -93,6 +128,41 @@ public final class ConnectorPluginConfigValidationResults {
             private String displayName;
             private Collection<String> dependents = new ArrayList<>();
             private int order;
+
+            /**
+             * Default constructor.
+             */
+            public Definition() {
+            }
+
+            /**
+             * Constructor.
+             */
+            public Definition(
+                final String name,
+                final String type,
+                final boolean required,
+                final String defaultValue,
+                final String importance,
+                final String documentation,
+                final String group,
+                final String width,
+                final String displayName,
+                final Collection<String> dependents,
+                final int order
+            ) {
+                this.name = name;
+                this.type = type;
+                this.required = required;
+                this.defaultValue = defaultValue;
+                this.importance = importance;
+                this.documentation = documentation;
+                this.group = group;
+                this.width = width;
+                this.displayName = displayName;
+                this.dependents = new ArrayList<>(dependents);
+                this.order = order;
+            }
 
             public String getName() {
                 return name;
@@ -165,6 +235,29 @@ public final class ConnectorPluginConfigValidationResults {
             private Collection<String> recommendedValues = new ArrayList<>();
             private Collection<String> errors = new ArrayList<>();
             private boolean visible = true;
+
+            /**
+             * Default constructor.
+             */
+            public Value() {
+            }
+
+            /**
+             * Constructor.
+             */
+            public Value(
+                final String name,
+                final String value,
+                final Collection<String> recommendedValues,
+                final Collection<String> errors,
+                final boolean visible
+            ) {
+                this.name = name;
+                this.value = value;
+                this.recommendedValues = new ArrayList<>(recommendedValues);
+                this.errors = new ArrayList<>(errors);
+                this.visible = visible;
+            }
 
             public String getName() {
                 return name;

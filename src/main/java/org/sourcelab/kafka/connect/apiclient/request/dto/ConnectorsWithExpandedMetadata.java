@@ -29,13 +29,26 @@ import java.util.stream.Collectors;
 /**
  * Deployed Connectors extended with all available associated Metadata.
  *
- * Currently this includes both 'info' and 'status' metadata.
+ * Currently, this includes both 'info' and 'status' metadata.
  *
  * Requires Kafka-Connect server 2.3.0+
  */
 public class ConnectorsWithExpandedMetadata implements ConnectorsWithExpandedInfo, ConnectorsWithExpandedStatus {
     @JsonAnySetter
     private Map<String, ConnectorsWithExpandedMetadata.ConnectorWithExpandedMetadata> results = new HashMap<>();
+
+    /**
+     * Default Constructor.
+     */
+    public ConnectorsWithExpandedMetadata() {
+    }
+
+    /**
+     * Constructor.
+     */
+    public ConnectorsWithExpandedMetadata(final Map<String, ConnectorWithExpandedMetadata> results) {
+        this.results = new HashMap<>(results);
+    }
 
     @Override
     public Collection<String> getConnectorNames() {
@@ -113,6 +126,20 @@ public class ConnectorsWithExpandedMetadata implements ConnectorsWithExpandedInf
 
         @JsonProperty("status")
         private ConnectorStatus status;
+
+        /**
+         * Default constructor.
+         */
+        public ConnectorWithExpandedMetadata() {
+        }
+
+        /**
+         * Constructor.
+         */
+        public ConnectorWithExpandedMetadata(final ConnectorDefinition info, final ConnectorStatus status) {
+            this.info = info;
+            this.status = status;
+        }
 
         public ConnectorStatus getStatus() {
             return status;

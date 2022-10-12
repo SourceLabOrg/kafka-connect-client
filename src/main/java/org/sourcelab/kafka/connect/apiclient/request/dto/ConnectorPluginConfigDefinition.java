@@ -29,6 +29,14 @@ public final class ConnectorPluginConfigDefinition {
     private final Map<String, String> config;
 
     /**
+     * Create new Builder instance for ConnectorPluginConfigDefinition.
+     * @return Builder instance for ConnectorPluginConfigDefinition.
+     */
+    public static ConnectorPluginConfigDefinition.Builder newBuilder() {
+        return new ConnectorPluginConfigDefinition.Builder();
+    }
+
+    /**
      * Constructor.
      * @param connectorPluginName Name of Connector Plugin.
      * @param config Configuration values for connector.
@@ -44,10 +52,6 @@ public final class ConnectorPluginConfigDefinition {
 
     public Map<String, String> getConfig() {
         return config;
-    }
-
-    public static ConnectorPluginConfigDefinition.Builder newBuilder() {
-        return new ConnectorPluginConfigDefinition.Builder();
     }
 
     @Override

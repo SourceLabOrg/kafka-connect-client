@@ -26,7 +26,7 @@ public class ConnectServerVersion {
     private String kafkaClusterId;
 
     /**
-     * Constructor.
+     * Default Constructor.
      */
     public ConnectServerVersion()
     {

@@ -17,7 +17,9 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.dto;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +31,22 @@ public class ConnectorStatus {
     private String type;
     private Map<String, String> connector;
     private List<TaskStatus> tasks;
+
+    /**
+     * Default constructor.
+     */
+    public ConnectorStatus() {
+    }
+
+    /**
+     * Constructor.
+     */
+    public ConnectorStatus(final String name, final String type, final Map<String, String> connector, final List<TaskStatus> tasks) {
+        this.name = name;
+        this.type = type;
+        this.connector = new HashMap<>(connector);
+        this.tasks = new ArrayList<>(tasks);
+    }
 
     public String getName() {
         return name;
@@ -64,6 +82,22 @@ public class ConnectorStatus {
         private String state;
         private String workerId;
         private String trace;
+
+        /**
+         * Default constructor.
+         */
+        public TaskStatus() {
+        }
+
+        /**
+         * Constructor.
+         */
+        public TaskStatus(final int id, final String state, final String workerId, final String trace) {
+            this.id = id;
+            this.state = state;
+            this.workerId = workerId;
+            this.trace = trace;
+        }
 
         public int getId() {
             return id;

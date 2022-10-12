@@ -28,6 +28,21 @@ public final class ConnectorPlugin {
     private String type;
     private String version;
 
+    /**
+     * Default constructor.
+     */
+    public ConnectorPlugin() {
+    }
+
+    /**
+     * Constructor.
+     */
+    public ConnectorPlugin(final String className, final String type, final String version) {
+        this.className = className;
+        this.type = type;
+        this.version = version;
+    }
+
     public String getClassName() {
         return className;
     }
@@ -44,6 +59,8 @@ public final class ConnectorPlugin {
     public String toString() {
         return "ConnectorPlugin{"
             + "className='" + className + '\''
+            + ", type='" + type + '\''
+            + ", version='" + version + '\''
             + '}';
     }
 }
