@@ -258,7 +258,19 @@ public class KafkaConnectClient {
      * @return Boolean true if success.
      */
     public Boolean restartConnector(final String connectorName) {
-        return submitRequest(new PostConnectorRestart(connectorName));
+        return restartConnector(new PostConnectorRestart(connectorName));
+    }
+
+    /**
+     * Restart a connector.
+     * https://docs.confluent.io/current/connect/references/restapi.html#post--connectors-(string-name)-restart
+     *
+     * @param connectorRestartRequest Defines the connector restart request.
+     * @return Boolean true if success.
+     */
+    public Boolean restartConnector(final PostConnectorRestart connectorRestartRequest)
+    {
+        return submitRequest(connectorRestartRequest);
     }
 
     /**
@@ -284,8 +296,8 @@ public class KafkaConnectClient {
     }
 
     /**
-     * Resume a connector.
-     * https://docs.confluent.io/current/connect/references/restapi.html#put--connectors-(string-name)-resume
+     * Delete a connector.
+     * https://docs.confluent.io/platform/current/connect/references/restapi.html#delete--connectors-(string-name)-
      *
      * @param connectorName Name of connector to resume.
      * @return Boolean true if success.

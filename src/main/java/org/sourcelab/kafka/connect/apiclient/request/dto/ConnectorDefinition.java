@@ -17,6 +17,8 @@
 
 package org.sourcelab.kafka.connect.apiclient.request.dto;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +30,23 @@ public final class ConnectorDefinition {
     private String type;
     private Map<String, String> config;
     private List<TaskDefinition> tasks;
+
+    /**
+     * Default constructor.
+     */
+    public ConnectorDefinition()
+    {
+    }
+
+    /**
+     * Constructor.
+     */
+    public ConnectorDefinition(final String name, final String type, final Map<String, String> config, final List<TaskDefinition> tasks) {
+        this.name = name;
+        this.type = type;
+        this.config = new HashMap<>(config);
+        this.tasks = new ArrayList<>(tasks);
+    }
 
     public String getName() {
         return name;
@@ -61,6 +80,20 @@ public final class ConnectorDefinition {
     public static final class TaskDefinition {
         private String connector;
         private int task;
+
+        /**
+         * Default Constructor.
+         */
+        public TaskDefinition() {
+        }
+
+        /**
+         * Constructor.
+         */
+        public TaskDefinition(final String connector, final int task) {
+            this.connector = connector;
+            this.task = task;
+        }
 
         public String getConnector() {
             return connector;
