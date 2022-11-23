@@ -6,7 +6,7 @@
 
     <groupId>org.sourcelab</groupId>
     <artifactId>kafka-connect-client</artifactId>
-    <version>4.0.2</version>
+    <version>4.0.3</version>
     <packaging>jar</packaging>
 
     <!-- Require Maven 3.3.9 -->
@@ -50,7 +50,7 @@
         <http-components.version>4.5.13</http-components.version>
 
         <!-- Jackson version -->
-        <jackson.version>2.14.0</jackson.version>
+        <jackson.version>2.14.1</jackson.version>
 
         <!-- Define which version of junit you'll be running -->
         <junit.version>4.13.2</junit.version>
@@ -61,7 +61,7 @@
         <checkstyle.version>8.32</checkstyle.version>
 
         <!-- Log4J Version -->
-        <log4j2.version>2.18.0</log4j2.version>
+        <log4j2.version>2.19.0</log4j2.version>
         <slf4j.version>1.7.36</slf4j.version>
 
         <!-- test toggling -->
@@ -138,7 +138,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>9.4.48.v20220622</version>
+            <version>9.4.49.v20220914</version>
             <scope>test</scope>
         </dependency>
 
