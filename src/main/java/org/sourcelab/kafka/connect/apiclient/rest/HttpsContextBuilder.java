@@ -46,7 +46,7 @@ import java.util.Objects;
 /**
  * Utility for properly configuring the SSL Context based on client configuration settings.
  */
-class HttpsContextBuilder {
+public class HttpsContextBuilder {
     private static final Logger logger = LoggerFactory.getLogger(HttpsContextBuilder.class);
 
     /**
@@ -89,7 +89,7 @@ class HttpsContextBuilder {
      * Get HostnameVerifier instance based on client configuration.
      * @return HostnameVerifier instance.
      */
-    HostnameVerifier getHostnameVerifier() {
+    protected HostnameVerifier getHostnameVerifier() {
         // If we're configured to ignore invalid certificates
         if (configuration.getIgnoreInvalidSslCertificates()) {
             // Use the Noop verifier.
@@ -103,7 +103,7 @@ class HttpsContextBuilder {
      * Get properly configured SSLContext instance based on client configuration.
      * @return SSLContext instance.
      */
-    SSLContext getSslContext() {
+    protected SSLContext getSslContext() {
         try {
             // Create default SSLContext
             final SSLContext sslcontext = SSLContexts.createDefault();
@@ -121,7 +121,7 @@ class HttpsContextBuilder {
      * Based on client configuration, construct KeyManager instances to use.
      * @return Array of 0 or more KeyManagers.
      */
-    KeyManager[] getKeyManagers() {
+    protected KeyManager[] getKeyManagers() {
         // If not configured to use a KeyStore
         if (configuration.getKeyStoreFile() == null) {
             // Return null array.
@@ -160,7 +160,7 @@ class HttpsContextBuilder {
      * Based on Client Configuration, construct TrustManager instances to use.
      * @return Array of 0 or more TrustManager instances.
      */
-    TrustManager[] getTrustManagers() {
+    protected TrustManager[] getTrustManagers() {
         try {
             final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 
@@ -205,7 +205,7 @@ class HttpsContextBuilder {
      * Get allowed SSL Protocols.
      * @return allowed SslProtocols.
      */
-    private String[] getSslProtocols() {
+    protected String[] getSslProtocols() {
         return sslProtocols;
     }
 }
