@@ -2,6 +2,11 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.0.4 (02/16/2024)
+- Updates internal dependency Http Components from 4.5.13 -> 4.5.14
+- Updates internal dependency com.fasterxml.jackson.core from 2.14.1 -> 2.14.3
+- Updates internal dependency log4j2-api from 2.19.0 -> 2.22.2
+
 ## 4.0.3 (11/23/2022)
 - Updates internal dependency com.fasterxml.jackson.core from 2.13.4 -> 2.14.1
 
