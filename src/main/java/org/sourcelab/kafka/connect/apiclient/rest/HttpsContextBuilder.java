@@ -50,9 +50,10 @@ public class HttpsContextBuilder {
     private static final Logger logger = LoggerFactory.getLogger(HttpsContextBuilder.class);
 
     /**
-     * Accept TLS1.2, 1.1, and 1.0 protocols.
+     * Accept TLS1.3, and 1.2 protocols.
+     * TLSv1 and TLSv1.1 are insecure and should not be used.
      */
-    private static final String[] sslProtocols = new String[] { "TLSv1.2", "TLSv1.1", "TLSv1" };
+    private static final String[] sslProtocols = new String[] {"TLSv1.3", "TLSv1.2"};
 
     /**
      * Client configuration.
