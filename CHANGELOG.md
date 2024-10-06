@@ -2,6 +2,12 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.0.5 (10/06/2024(
+- Removes TLS v1 and v1.1, adds TLS 1.3 [PR-93](https://github.com/SourceLabOrg/kafka-connect-client/pull/91)
+- Adds support for `Stop Connector` endpoint [PR-89](https://github.com/SourceLabOrg/kafka-connect-client/pull/89)
+
+Thanks [m8719-github](https://github.com/m8719-github) for the contributions!
+
 ## 4.0.4 (02/16/2024)
 - Opens `HttpsContextBuilder` for extension [PR-84](https://github.com/SourceLabOrg/kafka-connect-client/pull/84)
 - Updates internal dependency Http Components from 4.5.13 -> 4.5.14
