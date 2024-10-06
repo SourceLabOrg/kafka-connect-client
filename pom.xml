@@ -6,7 +6,7 @@
 
     <groupId>org.sourcelab</groupId>
     <artifactId>kafka-connect-client</artifactId>
-    <version>4.0.4</version>
+    <version>4.0.5</version>
     <packaging>jar</packaging>
 
     <!-- Require Maven 3.3.9 -->
