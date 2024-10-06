@@ -193,6 +193,14 @@ public class KafkaConnectClientTest {
     }
 
     /**
+     * Test stopping a connector.
+     */
+    @Test
+    public void testStopConnector() {
+        logger.info("Result: {}", kafkaConnectClient.stopConnector(connectorName));
+    }
+
+    /**
      * Test pausing a connector.
      */
     @Test

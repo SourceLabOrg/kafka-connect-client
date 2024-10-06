@@ -56,6 +56,7 @@ import org.sourcelab.kafka.connect.apiclient.request.post.PostConnectorRestart;
 import org.sourcelab.kafka.connect.apiclient.request.post.PostConnectorTaskRestart;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorConfig;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorPause;
+import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorStop;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorPluginConfigValidate;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorResume;
 import org.sourcelab.kafka.connect.apiclient.request.put.PutConnectorTopicsReset;
@@ -282,6 +283,17 @@ public class KafkaConnectClient {
      */
     public Boolean pauseConnector(final String connectorName) {
         return submitRequest(new PutConnectorPause(connectorName));
+    }
+
+    /**
+     * Stop a connector.
+     * https://docs.confluent.io/current/connect/references/restapi.html#put--connectors-(string-name)-stop
+     *
+     * @param connectorName Name of connector to stop.
+     * @return Boolean true if success.
+     */
+    public Boolean stopConnector(final String connectorName) {
+        return submitRequest(new PutConnectorStop(connectorName));
     }
 
     /**
